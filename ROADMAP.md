@@ -78,14 +78,14 @@ Ranked by (impact × likelihood). Each one becomes a numbered task in §3.
 
 ### Phase 0 — safety net
 
-**Task 1 · Put the project in git (+ push a private copy to GitHub). — S, do first**
+**Task 1 · Put the project in git (+ push a private copy to GitHub). — S, do first — ✅ done 2026-07-27** (private repo `github.com/lowellbattles/yama-biyori`, local identity set, `_agentwork` included, `.claude/settings.local.json` ignored)
 Value: protects everything; makes every later task reversible; enables free deploys later. No code changes.
 Say to Claude Code: *"Set up git for this project, write a sensible .gitignore, make the first commit, and walk me through creating a private GitHub repository and pushing to it."*
 Done when: `git log` shows a commit containing index.html + data/ + docs, and the same commit exists on GitHub.
 
 ### Phase 1 — make the site robust (pure code, no data edits)
 
-**Task 2 · Rebuild the weather loader: batched, fault-tolerant, cached. — M**
+**Task 2 · Rebuild the weather loader: batched, fault-tolerant, cached. — M — ✅ done 2026-07-27** (4 batched requests, per-chunk failure tolerance with NA stamps + 失敗分を再試行, 12 s timeout, 45-min sessionStorage cache, null-safe `fmt()`; verified in-browser: happy path, cache reload = 0 API calls, simulated chunk failure, detail page without weather, live recovery)
 The one big technical fix. Design (API behaviour verified by live test):
 - Split the 110 mountains into chunks of ~30 and call Open-Meteo's multi-coordinate form (`latitude=…,…&longitude=…,…&elevation=…,…` → returns a JSON array in the same order). 110 requests → 4.
 - `Promise.allSettled` semantics: a failed chunk marks only *its* mountains as weather-missing; everything else renders. 再試行 refetches only failed chunks. Add a fetch timeout (~10 s) so a hung request can't spin forever, and show progress per chunk (「予報取得中… 60/110」).
@@ -166,8 +166,8 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 
 | Order | Task | Size | Waits on |
 |---|---|---|---|
-| 1 | Git + GitHub | S | — |
-| 2 | Batched fault-tolerant cached fetch | M | — |
+| 1 ✅ | Git + GitHub | S | — |
+| 2 ✅ | Batched fault-tolerant cached fetch | M | — |
 | 3 | Weather-optional rendering | S | 2 |
 | 4 | Ridgeline fixes 十勝岳・トムラウシ | S | — |
 | 5 | Data lint sweep | S | — |

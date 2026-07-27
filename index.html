@@ -195,14 +195,28 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-si
    ============================================================ */
 const state = { view:"date", dayIndex:0, selected:null, hourIdx:null, routeIdx:0, wx:{}, dates:[], loaded:false, error:false };
 
-function omUrl(m){
+/* One batched Open-Meteo URL for a LIST of mountains — comma-separated
+   coordinates; the API answers with an array of results in the same order. */
+function omBatchUrl(list){
   const p = new URLSearchParams({
-    latitude:m.coords.lat, longitude:m.coords.lon, elevation:m.forecast_elevation,
+    latitude:list.map(m=>m.coords.lat).join(","),
+    longitude:list.map(m=>m.coords.lon).join(","),
+    elevation:list.map(m=>m.forecast_elevation).join(","),
     daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max",
     hourly:"freezing_level_height,temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m,weather_code",
     timezone:"Asia/Tokyo", wind_speed_unit:"ms", forecast_days:"7"
   });
   return "https://api.open-meteo.com/v1/forecast?" + p.toString();
+}
+
+/* Open-Meteo occasionally returns null for a value — every number display
+   goes through fmt() so one null can never crash a render. */
+const fmt=(v,dg)=>v==null?"—":v.toFixed(dg||0);
+
+function fetchWithTimeout(url,ms){
+  const ctl=new AbortController();
+  const t=setTimeout(()=>ctl.abort(),ms);
+  return fetch(url,{signal:ctl.signal}).finally(()=>clearTimeout(t));
 }
 
 /* Link to Open-Meteo's own chart page for this mountain (raw source). */
@@ -213,56 +227,114 @@ function omSiteUrl(m){
     +"&timezone=Asia%2FTokyo&wind_speed_unit=ms&forecast_days=7";
 }
 
-async function loadAll(){
-  const st = document.getElementById("status");
-  st.className="status"; st.textContent="Open-Meteo から予報を取得中…（"+MOUNTAINS.length+"山）";
+/* One Open-Meteo result → our per-day structure. */
+function processOm(data){
+  const H = data.hourly;
+  return data.daily.time.map((t,d)=>{
+    const s=d*24;
+    const fl = H.freezing_level_height.slice(s,s+24).filter(v=>v!=null);
+    return {
+      date:t,
+      tmax:data.daily.temperature_2m_max[d], tmin:data.daily.temperature_2m_min[d],
+      precip:data.daily.precipitation_sum[d], snow:data.daily.snowfall_sum[d],
+      wind:data.daily.wind_speed_10m_max[d], gust:data.daily.wind_gusts_10m_max[d],
+      frzMin: fl.length ? Math.round(Math.min(...fl)) : null,
+      hours: H.time.slice(s,s+24).map((ht,j)=>({
+        t:ht.slice(11,16),
+        temp:H.temperature_2m[s+j], pr:H.precipitation[s+j],
+        wind:H.wind_speed_10m[s+j], gust:H.wind_gusts_10m[s+j],
+        code:H.weather_code[s+j]
+      }))
+    };
+  });
+}
+
+/* sessionStorage cache — a reload within 45 min (same calendar day) costs zero API calls. */
+const WX_CACHE_KEY="yb-wx-v1", WX_TTL_MIN=45;
+function readWxCache(){
   try{
-    const results = await Promise.all(MOUNTAINS.map(m => fetch(omUrl(m)).then(r=>{
-      if(!r.ok) throw new Error("HTTP "+r.status); return r.json();
-    })));
-    results.forEach((data,i)=>{
-      const H = data.hourly;
-      const days = data.daily.time.map((t,d)=>{
-        const s=d*24;
-        const fl = H.freezing_level_height.slice(s,s+24).filter(v=>v!=null);
-        return {
-          date:t,
-          tmax:data.daily.temperature_2m_max[d], tmin:data.daily.temperature_2m_min[d],
-          precip:data.daily.precipitation_sum[d], snow:data.daily.snowfall_sum[d],
-          wind:data.daily.wind_speed_10m_max[d], gust:data.daily.wind_gusts_10m_max[d],
-          frzMin: fl.length ? Math.round(Math.min(...fl)) : null,
-          hours: H.time.slice(s,s+24).map((ht,j)=>({
-            t:ht.slice(11,16),
-            temp:H.temperature_2m[s+j], pr:H.precipitation[s+j],
-            wind:H.wind_speed_10m[s+j], gust:H.wind_gusts_10m[s+j],
-            code:H.weather_code[s+j]
-          }))
-        };
-      });
-      state.wx[MOUNTAINS[i].id]=days;
-    });
-    state.dates = state.wx[MOUNTAINS[0].id].map(d=>d.date);
-    state.loaded=true; st.textContent="";
-    buildDateChips(); render();
-  }catch(e){
+    const c=JSON.parse(sessionStorage.getItem(WX_CACHE_KEY));
+    if(!c||!c.savedAt||!c.wx) return null;
+    if(Date.now()-c.savedAt>WX_TTL_MIN*60*1000) return null;
+    if(new Date(c.savedAt).toDateString()!==new Date().toDateString()) return null;
+    return c;
+  }catch(e){ return null; }
+}
+function saveWxCache(){
+  try{ sessionStorage.setItem(WX_CACHE_KEY,JSON.stringify({savedAt:Date.now(), wx:state.wx})); }
+  catch(e){ /* storage full or blocked — cache is best-effort */ }
+}
+
+/* Fetch weather for every mountain not yet in state.wx, ~30 mountains per
+   request. A failed request only loses its own mountains — everything else
+   still renders, and 再試行 refetches just what's missing. */
+const WX_CHUNK=30;
+async function loadMissing(){
+  if(state.fetching) return;
+  state.fetching=true;
+  const st=document.getElementById("status");
+  const missing=MOUNTAINS.filter(m=>!state.wx[m.id]);
+  if(missing.length){
+    st.className="status";
+    st.textContent="Open-Meteo から予報を取得中…（"+(MOUNTAINS.length-missing.length)+"/"+MOUNTAINS.length+"山）";
+    const chunks=[];
+    for(let i=0;i<missing.length;i+=WX_CHUNK) chunks.push(missing.slice(i,i+WX_CHUNK));
+    await Promise.allSettled(chunks.map(list=>
+      fetchWithTimeout(omBatchUrl(list),12000)
+        .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+        .then(data=>{
+          const arr=Array.isArray(data)?data:[data]; // a 1-mountain chunk comes back as a bare object
+          if(arr.length!==list.length) throw new Error("result length mismatch");
+          arr.forEach((res,i)=>{ if(res&&res.daily&&res.hourly) state.wx[list[i].id]=processOm(res); });
+          const have=MOUNTAINS.filter(m=>state.wx[m.id]).length;
+          st.textContent="Open-Meteo から予報を取得中…（"+have+"/"+MOUNTAINS.length+"山）";
+        })
+    ));
+  }
+  state.fetching=false;
+  finalizeWx();
+}
+
+function finalizeWx(){
+  const st=document.getElementById("status");
+  const ok=MOUNTAINS.filter(m=>state.wx[m.id]);
+  if(!ok.length){
     state.error=true;
     st.className="status error";
-    st.innerHTML="予報の取得に失敗しました（インターネット接続を確認してください）。<button onclick=\"loadAll()\">再試行</button>";
+    st.innerHTML="予報の取得に失敗しました（インターネット接続を確認してください）。<button onclick=\"loadMissing()\">再試行</button>";
+    return;
   }
+  state.dates=state.wx[ok[0].id].map(d=>d.date);
+  saveWxCache();
+  state.loaded=true; state.error=false;
+  const fail=MOUNTAINS.length-ok.length;
+  if(fail){
+    st.className="status error";
+    st.innerHTML="⚠ "+fail+"山の予報を取得できませんでした（グレードは「—」表示）。<button onclick=\"loadMissing()\">失敗分を再試行</button>";
+  }else{
+    st.className="status"; st.textContent="";
+  }
+  buildDateChips(); render();
+}
+
+function loadAll(){
+  const c=readWxCache();
+  if(c) state.wx=c.wx;
+  loadMissing();
 }
 
 /* Grade one day for one mountain. Returns {g:'A'|'B'|'C', reasons:[], warns:[]} */
 function gradeDay(m,d){
   const G=m.grading; let lv=0; const reasons=[], warns=[];
   // wind — per-mountain thresholds, so a breezy-but-fine day is NOT auto-C
-  if(d.wind>=G.wind_danger){ lv=2; warns.push("強風 "+d.wind.toFixed(0)+"m/s（突風"+d.gust.toFixed(0)+"）"); }
-  else if(d.wind>=G.wind_caution){ lv=Math.max(lv,1); reasons.push("やや風 "+d.wind.toFixed(0)+"m/s"); }
-  else reasons.push("風 "+d.wind.toFixed(0)+"m/s");
+  if(d.wind>=G.wind_danger){ lv=2; warns.push("強風 "+fmt(d.wind)+"m/s（突風"+fmt(d.gust)+"）"); }
+  else if(d.wind>=G.wind_caution){ lv=Math.max(lv,1); reasons.push("やや風 "+fmt(d.wind)+"m/s"); }
+  else reasons.push("風 "+fmt(d.wind)+"m/s");
   // precipitation
-  if(d.precip>=G.precip_danger){ lv=2; warns.push("降水 "+d.precip.toFixed(0)+"mm"); }
-  else if(d.precip>=G.precip_caution){ lv=Math.max(lv,1); reasons.push("小雨 "+d.precip.toFixed(1)+"mm"); }
+  if(d.precip>=G.precip_danger){ lv=2; warns.push("降水 "+fmt(d.precip)+"mm"); }
+  else if(d.precip>=G.precip_caution){ lv=Math.max(lv,1); reasons.push("小雨 "+fmt(d.precip,1)+"mm"); }
   // fresh snowfall
-  if(d.snow>=5){ lv=2; warns.push("降雪 "+d.snow.toFixed(0)+"cm"); }
+  if(d.snow>=5){ lv=2; warns.push("降雪 "+fmt(d.snow)+"cm"); }
   else if(d.snow>=0.5){ lv=Math.max(lv,1); warns.push("降雪の可能性"); }
   // seasonality-aware freeze check — this is what てんくら misses
   const month = new Date(d.date+"T00:00:00").getMonth()+1;
@@ -270,7 +342,7 @@ function gradeDay(m,d){
     lv=Math.max(lv,1);
     warns.push("凍結高度 "+d.frzMin+"m — 稜線("+G.ridgeline+"m)で凍結・残雪注意");
   }
-  if(d.tmin<=-10){ lv=Math.max(lv,1); warns.push("最低 "+d.tmin.toFixed(0)+"℃ 厳冬装備"); }
+  if(d.tmin<=-10){ lv=Math.max(lv,1); warns.push("最低 "+fmt(d.tmin)+"℃ 厳冬装備"); }
   return { g:["A","B","C"][lv], reasons, warns };
 }
 
@@ -298,8 +370,8 @@ function seasonNoteFor(m, dateStr){
   return m.seasonality.notes[month]||null;
 }
 
-function stampHTML(g){
-  return '<div class="stamp '+g.toLowerCase()+'"><span class="g">'+g+'</span><span class="lbl">YAMABIYORI</span></div>';
+function stampHTML(g){ // g=null → grey 「—」 stamp (weather unavailable)
+  return '<div class="stamp '+(g?g.toLowerCase():'na')+'"><span class="g">'+(g||'—')+'</span><span class="lbl">YAMABIYORI</span></div>';
 }
 
 function openDetail(id){
@@ -310,9 +382,10 @@ function openDetail(id){
 function renderByDate(){
   const dateStr=state.dates[state.dayIndex];
   const ranked=MOUNTAINS.map(m=>{
-    const d=state.wx[m.id][state.dayIndex];
-    const gr=gradeDay(m,d);
-    return {m,d,gr,score:["A","B","C"].indexOf(gr.g)*100+d.wind};
+    const wd=state.wx[m.id];
+    const d=wd?wd[state.dayIndex]:null;
+    const gr=d?gradeDay(m,d):{g:null,reasons:[],warns:[]};
+    return {m,d,gr,score:d?["A","B","C"].indexOf(gr.g)*100+(d.wind||0):9999};
   }).sort((a,b)=>a.score-b.score);
 
   let html='<div class="cards">';
@@ -324,10 +397,10 @@ function renderByDate(){
       +'<span class="region-chip">'+m.region+'</span>'
       +'<span class="meta">'+m.elevation+'m'+(m.hyakumeizan?' · 百名山':'')+'</span></div>'
       +'<div class="metrics">'
-      +'<span><span class="k">最大風速</span><b>'+d.wind.toFixed(0)+' m/s</b></span>'
-      +'<span><span class="k">降水</span><b>'+d.precip.toFixed(1)+' mm</b></span>'
-      +'<span><span class="k">気温</span><b>'+d.tmin.toFixed(0)+' / '+d.tmax.toFixed(0)+'℃</b></span>'
-      +'<span><span class="k">凍結高度</span><b>'+(d.frzMin!=null?d.frzMin+' m':'—')+'</b></span>'
+      +'<span><span class="k">最大風速</span><b>'+(d?fmt(d.wind)+' m/s':'—')+'</b></span>'
+      +'<span><span class="k">降水</span><b>'+(d?fmt(d.precip,1)+' mm':'—')+'</b></span>'
+      +'<span><span class="k">気温</span><b>'+(d?fmt(d.tmin)+' / '+fmt(d.tmax)+'℃':'—')+'</b></span>'
+      +'<span><span class="k">凍結高度</span><b>'+(d&&d.frzMin!=null?d.frzMin+' m':'—')+'</b></span>'
       +'</div><div class="reasons">'
       +gr.warns.map(w=>'<span class="tag warn">⚠ '+w+'</span>').join("")
       +(season?'<span class="tag season">🌸 '+season+'</span>':"")
@@ -349,7 +422,7 @@ function renderMtnList(){
   regions.forEach(rg=>{
     html+='<h3 class="region-head">'+rg+'</h3><div class="mlist">';
     MOUNTAINS.filter(m=>m.region===rg).forEach(m=>{
-      const d=state.wx[m.id][state.dayIndex]; const gr=gradeDay(m,d);
+      const wd=state.wx[m.id]; const gr=wd?gradeDay(m,wd[state.dayIndex]):{g:null,reasons:[],warns:[]};
       html+='<article class="mcard" tabindex="0" data-id="'+m.id+'">'
         +'<div class="mhead"><span class="ja">'+m.name_ja+'</span>'+stampHTML(gr.g)+'</div>'
         +'<div class="meta mono">'+m.region+' · '+m.elevation+'m · '+m.prefecture+'</div>'
@@ -485,20 +558,25 @@ function renderDetail(){
     +'<div class="dhead"><div class="ja">'+m.name_ja+'</div>'
     +'<div class="sub">'+m.name_en+' · '+m.region+' · '+m.prefecture+' · 標高'+m.elevation+'m'+(m.hyakumeizan?' · 日本百名山':'')+'</div></div>';
 
-  // 7-day strip (each day clickable → hourly panel)
-  html+='<section class="block"><h3>週間 登山指数（独自基準）</h3><div class="strip">';
-  days.forEach((d,i)=>{
-    const gr=gradeDay(m,d);
-    html+='<div class="daycell'+(state.hourIdx===i?' sel':'')+'" data-idx="'+i+'" tabindex="0">'
-      +'<span class="d">'+fmtDate(d.date)+'('+youbi(d.date)+')</span><br>'
-      +'<span class="gd '+gr.g.toLowerCase()+'">'+gr.g+'</span><br>'
-      +'風'+d.wind.toFixed(0)+' 雨'+d.precip.toFixed(0)+'<br>'
-      +d.tmin.toFixed(0)+'/'+d.tmax.toFixed(0)+'℃'
-      +(gr.warns.length?'<br><span class="warnline">'+gr.warns[0]+'</span>':"")
-      +'</div>';
-  });
-  html+='</div>';
-  html+='<div id="hourlyBox">'+(state.hourIdx!=null?hourlyHTML(m,state.hourIdx):'')+'</div>';
+  // 7-day strip (each day clickable → hourly panel); weather can be missing for this mountain
+  html+='<section class="block"><h3>週間 登山指数（独自基準）</h3>';
+  if(days){
+    html+='<div class="strip">';
+    days.forEach((d,i)=>{
+      const gr=gradeDay(m,d);
+      html+='<div class="daycell'+(state.hourIdx===i?' sel':'')+'" data-idx="'+i+'" tabindex="0">'
+        +'<span class="d">'+fmtDate(d.date)+'('+youbi(d.date)+')</span><br>'
+        +'<span class="gd '+gr.g.toLowerCase()+'">'+gr.g+'</span><br>'
+        +'風'+fmt(d.wind)+' 雨'+fmt(d.precip)+'<br>'
+        +fmt(d.tmin)+'/'+fmt(d.tmax)+'℃'
+        +(gr.warns.length?'<br><span class="warnline">'+gr.warns[0]+'</span>':"")
+        +'</div>';
+    });
+    html+='</div>';
+    html+='<div id="hourlyBox">'+(state.hourIdx!=null?hourlyHTML(m,state.hourIdx):'')+'</div>';
+  }else{
+    html+='<p class="note">この山の予報を取得できませんでした。<button class="back" onclick="loadMissing()">再試行</button></p>';
+  }
   html+='<p class="note">日付をクリックすると時間別の予報（降水・風・気温）を表示。凍結高度が稜線（'+m.grading.ridgeline+'m）付近まで下がる日は自動的に注意フラグ。'+(m.grading.snow_note||'')+'</p></section>';
 
   // seasonality
