@@ -70,6 +70,7 @@ if (m.routes) {
     if (typeof rt.trailhead === "number" && (!m.trailheads || rt.trailhead >= m.trailheads.length)) errs.push(tag + " route " + r + ": trailhead index out of range");
     if (rt.segments && rt.sample !== true) errs.push(tag + " route " + r + ": segments without sample:true");
     if (rt.sample === true && (!rt.segments || !rt.segments.length)) errs.push(tag + " route " + r + ": sample:true without segments (flag renders nowhere)");
+    if (rt.verified) errs.push(tag + " route " + r + ": expansion drafts must not claim verified (owner sets it after checking)");
   }
 }
 if (m.trailheads) {
@@ -78,6 +79,7 @@ if (m.trailheads) {
     if (!th.access || !th.access.length) { errs.push(tag + " trailhead " + t + ": no access entries"); continue; }
     for (var a = 0; a < th.access.length; a++) {
       if (th.access[a].sample !== true) errs.push(tag + " trailhead " + t + " access " + a + ": missing sample:true");
+      if (th.access[a].verified) errs.push(tag + " trailhead " + t + " access " + a + ": expansion drafts must not claim verified (owner sets it after checking)");
       if (!th.access[a].url) errs.push(tag + " trailhead " + t + " access " + a + ": missing url");
     }
   }

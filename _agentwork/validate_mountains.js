@@ -75,12 +75,23 @@ for (var i = 0; i < MOUNTAINS.length; i++) {
       }
       if (typeof rt.trailhead === "number" && (!m.trailheads || rt.trailhead >= m.trailheads.length)) errs.push(tag + " route " + r + ": trailhead index out of range");
       if (rt.sample === true && (!rt.segments || !rt.segments.length)) errs.push(tag + " route " + r + ": sample:true without segments (flag renders nowhere)");
+      if (rt.sample === true && rt.verified) errs.push(tag + " route " + r + ": sample and verified are mutually exclusive");
+      if (rt.verified && !/^\d{4}-\d{2}-\d{2}$/.test(rt.verified)) errs.push(tag + " route " + r + ": bad verified date (YYYY-MM-DD)");
+      if (rt.verified && (!rt.segments || !rt.segments.length)) errs.push(tag + " route " + r + ": verified without segments (flag renders nowhere)");
+      if (rt.segments && rt.segments.length && rt.sample !== true && !rt.verified) errs.push(tag + " route " + r + ": segments need sample:true or verified:\"YYYY-MM-DD\"");
     }
   }
   if (m.trailheads) {
     for (var t = 0; t < m.trailheads.length; t++) {
       var th = m.trailheads[t];
-      if (!th.access || !th.access.length) errs.push(tag + " trailhead " + t + ": no access entries");
+      if (!th.access || !th.access.length) { errs.push(tag + " trailhead " + t + ": no access entries"); continue; }
+      for (var a = 0; a < th.access.length; a++) {
+        var ac = th.access[a];
+        var hasS = ac.sample === true, hasV = !!ac.verified;
+        if (hasS && hasV) errs.push(tag + " trailhead " + t + " access " + a + ": sample and verified are mutually exclusive");
+        if (!hasS && !hasV) errs.push(tag + " trailhead " + t + " access " + a + ": needs sample:true or verified:\"YYYY-MM-DD\"");
+        if (hasV && !/^\d{4}-\d{2}-\d{2}$/.test(ac.verified)) errs.push(tag + " trailhead " + t + " access " + a + ": bad verified date (YYYY-MM-DD)");
+      }
     }
   }
 }

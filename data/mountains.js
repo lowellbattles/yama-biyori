@@ -34,7 +34,8 @@
          weekday: "…発 例: …",  weekend: "…発 例: …",
          season: "運行期間",
          url: "https://official-operator-site/",
-         sample: true           // keep true until owner verifies vs official site
+         sample: true,          // 未検証の間 true。公式サイトと照合できたら sample を消して↓に置き換える
+         verified: "YYYY-MM-DD" // 最終確認日（sample と排他 — 必ずどちらか一方。validatorが強制。UIは「確認 日付」表示）
        }]
      }],
      huts: [{ name: "", elevation: 0, open: "", reservation: "",
@@ -54,7 +55,8 @@
        segments: [              // 区間タイム（休憩含まず）。省略可
          { from: "登山口", to: "小屋", up: "2:00", down: "1:30" }
        ],
-       sample: true             // 区間タイム未検証の間 true → SAMPLE表示
+       sample: true,            // 区間タイム未検証の間 true → SAMPLE表示（segmentsがある時のみ付ける）
+     verified: "YYYY-MM-DD"   // 区間タイムの最終確認日（sample と排他。segmentsがある時のみ）
      }],
      seasonality: { best: [], notes: {月: "一文"} }
    }
@@ -80,7 +82,7 @@ const MOUNTAINS = [
        season:"4月下旬〜11月上旬（2026年は4/24〜11/3・冬期運休）", url:"https://nan-an.co.jp/nakabusa/", sample:true},
       {mode:"直行バス", line:"毎日あるぺん号（夜行・要予約）", from:"東京・竹橋（毎日新聞社前）",
        duration:"夜行 約6時間30分", weekday:"竹橋発 例: 23:00（シーズン中ほぼ毎日運行、運行日は要確認）", weekend:"竹橋発 例: 23:00（夏山シーズンはほぼ毎日、晩秋は金・土など特定日のみ）",
-       season:"4月下旬〜11月下旬の登山シーズン（2026年は4/24頃〜11/21、10月中旬以降は運行日限定）", url:"https://bus.maitabi.jp/"}
+       season:"4月下旬〜11月下旬の登山シーズン（2026年は4/24頃〜11/21、10月中旬以降は運行日限定）", url:"https://bus.maitabi.jp/", verified:"2026-07-18"}
     ]
   }],
   huts:[
@@ -120,7 +122,7 @@ const MOUNTAINS = [
       {mode:"ゴンドラ・リフト", line:"八方アルペンライン（ゴンドラ「アダム」＋リフト2本乗継）", from:"白馬八方・八方駅",
        duration:"約40分（乗り継ぎ含む）",
        weekday:"八方駅発 例: 始発8:00頃〜上り最終16:00頃（随時運行・ゴンドラ営業自体は16:50まで、上り利用はグラートクワッド営業終了30分前まで・日により変動）", weekend:"同左（夏季・連休・紅葉期は始発6:30〜7:30に繰り上げ。夏季は平日も繰り上げの日あり）",
-       season:"5月末の週末＋6月上旬〜11月上旬（2026年は5/30・31および6/6〜11/3・冬期はスキー営業）", url:"https://www.happo-one.jp/trekking/alpenline/"},
+       season:"5月末の週末＋6月上旬〜11月上旬（2026年は5/30・31および6/6〜11/3・冬期はスキー営業）", url:"https://www.happo-one.jp/trekking/alpenline/", verified:"2026-07-18"},
       {mode:"バス", line:"アルピコ交通 白馬駅—白馬八方—栂池高原線（八方バスターミナル下車、ゴンドラ駅まで徒歩約10分）", from:"JR白馬駅",
        duration:"約8分",
        weekday:"白馬駅発 例: 9:22 / 11:05 / 12:02 / 15:02（急行13:40は7月18日〜8月16日のみ運行）", weekend:"平日・土休日同ダイヤ（白馬駅から徒歩でも約20分）",
@@ -335,7 +337,7 @@ const MOUNTAINS = [
       {mode:"バス", line:"アルピコ交通 美濃戸口線（茅野駅〜美濃戸口）", from:"JR中央本線 茅野駅西口④番のりば",
        duration:"約38分",
        weekday:"運休（8/1〜8/30は毎日運行 例: 9:35 / 14:20 / 15:00。冬ダイヤの12/30〜1/4も毎日運行）", weekend:"茅野駅発 例: 9:35 / 14:20 / 15:00（復路 美濃戸口発 10:30 / 15:15 / 16:00）",
-       season:"夏ダイヤ（2026年は5/2〜10/25）は土日祝＋8/1〜8/30毎日（8/31は運休）。冬ダイヤ（2025年度は10/27〜5/1）は土日祝＋12/30〜1/4 例: 9:40 / 14:10", url:"https://www.alpico.co.jp/traffic/local/suwa/minotoguchi/"}
+       season:"夏ダイヤ（2026年は5/2〜10/25）は土日祝＋8/1〜8/30毎日（8/31は運休）。冬ダイヤ（2025年度は10/27〜5/1）は土日祝＋12/30〜1/4 例: 9:40 / 14:10", url:"https://www.alpico.co.jp/traffic/local/suwa/minotoguchi/", verified:"2026-07-18"}
     ]
   }],
   huts:[
@@ -379,7 +381,7 @@ const MOUNTAINS = [
       {mode:"バス", line:"アルピコ交通 北八ヶ岳ロープウェイ線（車山高原方面直通便）", from:"JR中央本線 茅野駅西口②番のりば",
        duration:"約60分",
        weekday:"運休（8/1〜8/30のみ毎日運行 例: 9:35）", weekend:"茅野駅発 例: 9:35（1日1便。復路 蓼科山登山口 16:27発が最終）",
-       season:"土日祝＋8/1〜8/30毎日のみ運行（2026年は5/2〜10/25）", url:"https://www.alpico.co.jp/traffic/local/suwa/kitayatsugatake/"}
+       season:"土日祝＋8/1〜8/30毎日のみ運行（2026年は5/2〜10/25）", url:"https://www.alpico.co.jp/traffic/local/suwa/kitayatsugatake/", verified:"2026-07-18"}
     ]
   },{
     name:"七合目登山口（標高1,900m）",
@@ -431,7 +433,7 @@ const MOUNTAINS = [
       {mode:"バス", line:"アルピコ交通 北八ヶ岳ロープウェイ線", from:"JR中央本線 茅野駅西口②番のりば",
        duration:"約45分〜1時間",
        weekday:"茅野駅発 例: 9:35 / 13:30", weekend:"茅野駅発 例: 9:35 / 10:40 / 13:30 / 14:30",
-       season:"通年運行（冬期ダイヤは初便9:40など時刻変更あり・降雪時は一部区間折返しの場合あり）", url:"https://www.alpico.co.jp/traffic/local/suwa/kitayatsugatake/"},
+       season:"通年運行（冬期ダイヤは初便9:40など時刻変更あり・降雪時は一部区間折返しの場合あり）", url:"https://www.alpico.co.jp/traffic/local/suwa/kitayatsugatake/", verified:"2026-07-18"},
       {mode:"ロープウェイ", line:"北八ヶ岳ロープウェイ（山麓駅1,771m〜山頂駅2,237m）", from:"北八ヶ岳ロープウェイ山麓駅",
        duration:"約7分",
        weekday:"山麓駅発 毎時00・20・40分（8:40頃〜16:40頃）", weekend:"同左（8:20頃〜17:00頃）",
@@ -478,7 +480,7 @@ const MOUNTAINS = [
        season:"通年（冬期は大丸温泉止まりの場合あり・要確認）", url:"https://www.kantobus.co.jp/", sample:true},
       {mode:"ロープウェイ", line:"那須ロープウェイ（山頂駅=9合目）", from:"山麓駅",
        duration:"約4分", weekday:"8:30〜16:30（毎時00・20・40分発、上り最終16:00）", weekend:"同左（混雑時増便）",
-       season:"3月下旬〜12月中旬（2026年は3/20〜12/13・強風時運休多し）", url:"https://www.nasu-ropeway.jp/"}
+       season:"3月下旬〜12月中旬（2026年は3/20〜12/13・強風時運休多し）", url:"https://www.nasu-ropeway.jp/", verified:"2026-07-18"}
     ]
   }],
   huts:[
@@ -569,7 +571,7 @@ const MOUNTAINS = [
        duration:"—", weekday:"上越線は本数少（1日5〜6本）要時刻確認", weekend:"同左", season:"通年", url:"https://www.jreast.co.jp/", sample:true},
       {mode:"バス", line:"関越交通 水上線 谷川岳ヨッホ行き（旧・谷川岳ロープウェイ行き）", from:"JR水上駅（上毛高原駅始発）",
        duration:"水上駅から約20〜25分", weekday:"水上駅発 例: 8:25 / 9:00 / 10:45 / 13:20", weekend:"平日とほぼ共通ダイヤ",
-       season:"通年（4月中旬〜11月中旬と冬期でダイヤが変わる）", url:"https://kan-etsu.net/pages/20/"},
+       season:"通年（4月中旬〜11月中旬と冬期でダイヤが変わる）", url:"https://kan-etsu.net/pages/20/", verified:"2026-07-18"},
       {mode:"ロープウェイ", line:"谷川岳ヨッホ by 星野リゾート（旧・谷川岳ロープウェイ）", from:"土合口駅→天神平",
        duration:"約15分（最速7分）", weekday:"8:00〜17:00（上り最終16:30）", weekend:"7:00〜17:00（上り最終16:30）",
        season:"4月中旬〜11月中旬（2026年は4/18〜11/15予定・天候により運休あり）", url:"https://tanigawadake-joch.com/", sample:true}
@@ -621,7 +623,7 @@ const MOUNTAINS = [
       {mode:"バス", line:"山梨峡北交通 韮崎瑞牆線（茅ヶ岳みずがき田園バス）", from:"JR韮崎駅",
        duration:"約75分",
        weekday:"韮崎駅発 例: 8:50 / 9:35 / 12:40 / 13:30", weekend:"韮崎駅発 例: 8:50 / 9:35 / 11:25 / 13:30",
-       season:"4月上旬〜11月下旬運行（冬期運休）", url:"http://cus4.kyohoku.jp/routebus/kayagatakemizugakidenen-bus/schedule-mizugakiline/"}
+       season:"4月上旬〜11月下旬運行（冬期運休）", url:"http://cus4.kyohoku.jp/routebus/kayagatakemizugakidenen-bus/schedule-mizugakiline/", verified:"2026-07-18"}
     ]
   }],
   huts:[
@@ -666,7 +668,7 @@ const MOUNTAINS = [
       {mode:"バス", line:"山梨峡北交通 韮崎瑞牆線（茅ヶ岳みずがき田園バス）", from:"JR韮崎駅",
        duration:"約75分",
        weekday:"韮崎駅発 例: 8:50 / 9:35 / 12:40 / 13:30", weekend:"韮崎駅発 例: 8:50 / 9:35 / 11:25 / 13:30（復路 例: 14:25 / 15:25 / 16:25）",
-       season:"4月上旬〜11月下旬運行（冬期運休）", url:"http://cus4.kyohoku.jp/routebus/kayagatakemizugakidenen-bus/schedule-mizugakiline/"}
+       season:"4月上旬〜11月下旬運行（冬期運休）", url:"http://cus4.kyohoku.jp/routebus/kayagatakemizugakidenen-bus/schedule-mizugakiline/", verified:"2026-07-18"}
     ]
   }],
   huts:[
@@ -757,7 +759,7 @@ const MOUNTAINS = [
       {mode:"バス", line:"栄和交通 大菩薩上日川峠線", from:"JR甲斐大和駅",
        duration:"約41分",
        weekday:"甲斐大和駅発 例: 8:10 / 9:50 / 14:50（指定平日のみ運行）", weekend:"甲斐大和駅発 例: 8:10 / 9:20 / 9:50 / 13:50（復路 例: 13:00 / 15:00 / 15:45）",
-       season:"4月中旬〜12月中旬の土日祝運行（4月下旬〜11月に指定平日運行あり）。予約不要", url:"https://eiwa-kotsu.jp/root.html"}
+       season:"4月中旬〜12月中旬の土日祝運行（4月下旬〜11月に指定平日運行あり）。予約不要", url:"https://eiwa-kotsu.jp/root.html", verified:"2026-07-18"}
     ]
   }],
   huts:[
@@ -845,11 +847,11 @@ const MOUNTAINS = [
       {mode:"バス", line:"関越交通バス 鎌田線（沼田駅〜鎌田）", from:"JR沼田駅",
        duration:"約55分（鎌田まで）",
        weekday:"沼田駅発 例: 6:41 / 7:20 / 8:45", weekend:"同左＋沼田駅発 6:20 増発（6/1〜10/25の土日祝のみ運行）（上毛高原駅発 例: 8:15 / 9:37）",
-       season:"通年運行", url:"https://kan-etsu.net/pages/22/"},
+       season:"通年運行", url:"https://kan-etsu.net/pages/22/", verified:"2026-07-18"},
       {mode:"バス", line:"関越交通バス 湯元温泉線（鎌田〜日光白根山ロープウェイ〜湯元温泉）", from:"鎌田（乗り換え）",
        duration:"約20分",
        weekday:"運行なし", weekend:"鎌田発 例: 7:20 / 12:02 / 15:28",
-       season:"6月〜10月下旬の土日祝のみ（2026年は6/1〜10/25）", url:"https://kan-etsu.net/pages/22/"}
+       season:"6月〜10月下旬の土日祝のみ（2026年は6/1〜10/25）", url:"https://kan-etsu.net/pages/22/", verified:"2026-07-18"}
     ]
   },{
     name:"湯元温泉（標高約1,480m）",
@@ -1078,7 +1080,7 @@ const MOUNTAINS = [
       {mode:"ロープウェイ", line:"筑波山ロープウェイ（筑波観光鉄道）つつじヶ丘駅〜女体山駅", from:"つつじヶ丘駅（バス停すぐ）",
        duration:"約6分",
        weekday:"9:20〜17:00 20分間隔（12〜2月は9:20〜16:40）", weekend:"同左（混雑時増発。夜間運行期間は終発20:00）",
-       season:"通年（冬季に定期検査運休あり）", url:"https://mt-tsukuba.com/ropeway-timetable"}
+       season:"通年（冬季に定期検査運休あり）", url:"https://mt-tsukuba.com/ropeway-timetable", verified:"2026-07-18"}
     ]
   }],
   huts:[],

@@ -126,12 +126,12 @@ Done when: filters combine correctly, a pasted `#/m/yari` link opens 槍ヶ岳 d
 Inline SVG favicon of the hanko grade stamp (data-URI, no new files needed), `<meta name="description">`, OG/Twitter tags. Cheap, removes the 404, makes shared links look intentional.
 Done when: the tab shows the stamp and a link pasted into a chat app unfurls with title + description.
 
-**Task 10 · Small display wins (batch into one session). — S**
+**Task 10 · Small display wins (batch into one session). — S — ✅ done 2026-07-27** (hourly table gained a 凍結高度 column — per-hour freezing level now stored in the processed weather, cache key bumped to v2; the 19 `trailhead:null` traverse routes show 「縦走路・周回…」 with a link back to the mountain's access tables instead of silently omitting the section; tabs sync `aria-selected`; Space activates cards and day cells)
 (a) Show 凍結高度 as a column in the hourly table — it's already fetched, only the daily minimum is used today. (b) On route pages where `trailhead:null` (19 traverse routes), render 「縦走路 — アクセスは各起点の登山口欄を参照」 instead of silently omitting the access section. (c) `aria-selected` on tabs; Space activates cards (B11).
 
 ### Phase 4 — content trust (the long game, your pace)
 
-**Task 11 · Add a 最終確認日 (`verified: "YYYY-MM-DD"`) field to the schema. — S code, ongoing content**
+**Task 11 · Add a 最終確認日 (`verified: "YYYY-MM-DD"`) field to the schema. — S code, ongoing content — ✅ done 2026-07-27** (green 「確認 日付」 renders where SAMPLE would; the 13 entries cleared by the ② sweep backfilled with `verified:"2026-07-18"` via checked transform — end state 343 access = 330 sample + 13 verified, 0 both/neither; both validators enforce exactly-one-of sample/verified, date format, and segments-flag pairing; expansion drafts may never claim verified; template comment + CLAUDE.md updated to the new convention)
 HANDOFF §6 suggested it; with 330 unverified entries it's now the honest trust signal. On any access entry (and route segments) that has been verified, record the date; render it as small text (`確認: 2026-07-18`) where the SAMPLE flag would be. Backfill the 13 entries cleared in the ② sweep from WORKLOG dates. Update template + validators (verified and sample are mutually exclusive).
 Done when: verified entries show a date, unverified show SAMPLE, and the validator enforces the rule.
 
@@ -175,8 +175,8 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 | 7 ✅ | Regroup mountain list by area | S | 6 |
 | 8 ✅ | Search + filters + hash links | M | 6 |
 | 9 ✅ | Favicon + meta/OG | S | — |
-| 10 | Small display wins | S | — |
-| 11 | 最終確認日 field | S | — |
+| 10 ✅ | Small display wins | S | — |
+| 11 ✅ | 最終確認日 field | S | — |
 | 12 🔒 | Transit sweeps ×87 mountains | L | 11 helps |
 | 13 🔒 | Grading engine v2 knobs | M | your call |
 | 14 🔒 | Deploy | S–M | 1 |

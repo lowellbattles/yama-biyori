@@ -124,7 +124,7 @@ header{padding:28px 0 10px;border-bottom:2px solid var(--ink)}
 .daycell .warnline{color:var(--shu);font-size:10px}
 
 /* ---------- hourly panel ---------- */
-.hourly{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:14px 16px;margin:8px 0 4px}
+.hourly{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:14px 16px;margin:8px 0 4px;overflow-x:auto}
 .hourly h4{font-family:var(--mincho);font-size:14px;letter-spacing:.08em;margin-bottom:8px}
 .hourly .reasons{margin:0 0 8px}
 .htable{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;background:none}
@@ -161,6 +161,7 @@ td.mono, .mono{font-family:var(--mono);font-size:12px}
 .grade-src{font-size:11px;color:var(--ink-soft)}
 a{color:var(--lake)}
 .sample-flag{font-family:var(--mono);font-size:10px;color:var(--shu);letter-spacing:.08em}
+.verified-flag{font-family:var(--mono);font-size:10px;color:var(--pine);letter-spacing:.08em}
 
 /* ---------- footer ---------- */
 footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-size:11px;color:var(--ink-soft);line-height:1.8}
@@ -188,8 +189,8 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-si
 
   <div class="controls">
     <div class="view-toggle" role="tablist">
-      <button id="tab-date" class="active" role="tab">日付から探す</button>
-      <button id="tab-mtn" role="tab">山から探す</button>
+      <button id="tab-date" class="active" role="tab" aria-selected="true">日付から探す</button>
+      <button id="tab-mtn" role="tab" aria-selected="false">山から探す</button>
     </div>
     <div class="date-row" id="dateRow"></div>
   </div>
@@ -266,14 +267,14 @@ function processOm(data){
         t:ht.slice(11,16),
         temp:H.temperature_2m[s+j], pr:H.precipitation[s+j],
         wind:H.wind_speed_10m[s+j], gust:H.wind_gusts_10m[s+j],
-        code:H.weather_code[s+j]
+        code:H.weather_code[s+j], fl:H.freezing_level_height[s+j]
       }))
     };
   });
 }
 
 /* sessionStorage cache — a reload within 45 min (same calendar day) costs zero API calls. */
-const WX_CACHE_KEY="yb-wx-v1", WX_TTL_MIN=45;
+const WX_CACHE_KEY="yb-wx-v2", WX_TTL_MIN=45;  // v2: hours gained the per-hour freezing level (fl)
 function readWxCache(){
   try{
     const c=JSON.parse(sessionStorage.getItem(WX_CACHE_KEY));
@@ -522,7 +523,7 @@ function renderByDate(){
   main.innerHTML=html;
   main.querySelectorAll(".mcard").forEach(c=>{
     const open=()=>openDetail(c.dataset.id);
-    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter")open();};
+    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}};
   });
 }
 
@@ -548,7 +549,7 @@ function renderMtnList(){
   main.innerHTML=html;
   main.querySelectorAll(".mcard").forEach(c=>{
     const open=()=>openDetail(c.dataset.id);
-    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter")open();};
+    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}};
   });
 }
 
@@ -574,14 +575,15 @@ function hourlyHTML(m,idx){
       +'<td>'+wxIcon(h.code)+'</td>'
       +'<td>'+(h.temp!=null?h.temp.toFixed(0)+'℃':'—')+'</td>'
       +'<td>'+(h.pr!=null?h.pr.toFixed(1):'0.0')+'mm'+(barW>0?'<span class="hbar" style="width:'+barW+'px"></span>':'')+'</td>'
-      +'<td>'+(h.wind!=null?h.wind.toFixed(0):'—')+'（'+(h.gust!=null?h.gust.toFixed(0):'—')+'）m/s</td></tr>';
+      +'<td>'+(h.wind!=null?h.wind.toFixed(0):'—')+'（'+(h.gust!=null?h.gust.toFixed(0):'—')+'）m/s</td>'
+      +'<td>'+(h.fl!=null?Math.round(h.fl)+'m':'—')+'</td></tr>';
   });
   return '<div class="hourly"><h4>'+fmtDate(d.date)+'（'+youbi(d.date)+'）の時間別予報 — 判定 '+gr.g+'</h4>'
     +((gr.warns.length||gr.reasons.length)?'<div class="reasons">'
       +gr.warns.map(w=>'<span class="tag warn">⚠ '+w+'</span>').join("")
       +gr.reasons.map(r=>'<span class="tag">'+r+'</span>').join("")
       +'</div>':'')
-    +'<table class="htable"><tr><th class="hl">時刻</th><th></th><th>気温</th><th>降水</th><th>風速（突風）</th></tr>'+rows+'</table>'
+    +'<table class="htable"><tr><th class="hl">時刻</th><th></th><th>気温</th><th>降水</th><th>風速（突風）</th><th>凍結高度</th></tr>'+rows+'</table>'
     +'<p class="om-note">データ: <a href="'+omSiteUrl(m)+'" target="_blank" rel="noopener">Open-Meteo でこの地点の予報チャートを見る →</a></p></div>';
 }
 
@@ -589,7 +591,8 @@ function hourlyHTML(m,idx){
 function accessTableHTML(t){
   let html='<p class="note"><b>'+t.name+'</b></p><table><tr><th>手段</th><th>路線 / 出発地</th><th>平日</th><th>土日祝</th><th>運行期間</th></tr>';
   t.access.forEach(a=>{
-    html+='<tr><td>'+a.mode+(a.sample?'<br><span class="sample-flag">SAMPLE</span>':'')+'</td>'
+    html+='<tr><td>'+a.mode
+      +(a.sample?'<br><span class="sample-flag">SAMPLE</span>':a.verified?'<br><span class="verified-flag">確認 '+a.verified+'</span>':'')+'</td>'
       +'<td>'+a.line+'<br><span class="mono">'+a.from+(a.duration&&a.duration!=="—"?' · '+a.duration:'')+'</span>'
       +(a.url&&a.url!=="#"?' <a href="'+a.url+'" target="_blank" rel="noopener">公式</a>':'')
       +'</td><td class="mono">'+a.weekday+'</td><td class="mono">'+a.weekend+'</td><td class="mono">'+a.season+'</td></tr>';
@@ -635,7 +638,7 @@ function renderRoute(){
 
   // segment times
   if(r.segments&&r.segments.length){
-    html+='<section class="block"><h3>区間タイム'+(r.sample?' <span class="sample-flag">SAMPLE — 要検証</span>':'')+'</h3>'
+    html+='<section class="block"><h3>区間タイム'+(r.sample?' <span class="sample-flag">SAMPLE — 要検証</span>':r.verified?' <span class="verified-flag">確認 '+r.verified+'</span>':'')+'</h3>'
       +'<table><tr><th>区間</th><th>登り</th><th>下り</th></tr>';
     r.segments.forEach(s=>{
       html+='<tr><td>'+s.from+' → '+s.to+'</td><td class="mono">'+(s.up||'—')+'</td><td class="mono">'+(s.down||'—')+'</td></tr>';
@@ -649,6 +652,10 @@ function renderRoute(){
     const anySample=t.access.some(a=>a.sample);
     html+='<section class="block"><h3>登山口アクセス'+(anySample?' <span class="sample-flag">SAMPLE — 要検証</span>':'')+'</h3>'
       +accessTableHTML(t)+'</section>';
+  }else{
+    // trailhead:null = 縦走・周回など起点が単一でないルート
+    html+='<section class="block"><h3>登山口アクセス</h3>'
+      +'<p class="note">縦走路・周回など起点が複数あるルートです。アクセスは <a href="#/m/'+m.id+'">'+m.name_ja+'のページ</a> の「公共交通アクセス」欄（各登山口）を参照してください。</p></section>';
   }
 
   // map — GSI topo, opens in a new tab (zero dependencies)
@@ -739,7 +746,7 @@ function renderDetail(){
   document.getElementById("backBtn").onclick=()=>{ location.hash=(state.prevView==="mtn")?"#/mtn":"#/d/"+state.dayIndex; };
   main.querySelectorAll(".route-card").forEach(c=>{
     const open=()=>openRoute(+c.dataset.ridx);
-    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter")open();};
+    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}};
   });
   main.querySelectorAll(".daycell").forEach(c=>{
     const toggle=()=>{
@@ -747,7 +754,7 @@ function renderDetail(){
       state.hourIdx=(state.hourIdx===i?null:i);
       renderDetail();
     };
-    c.onclick=toggle; c.onkeydown=e=>{if(e.key==="Enter")toggle();};
+    c.onclick=toggle; c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}};
   });
 }
 
@@ -755,6 +762,8 @@ function render(){
   if(!state.loaded) return;
   document.getElementById("tab-date").classList.toggle("active",state.view==="date");
   document.getElementById("tab-mtn").classList.toggle("active",state.view==="mtn");
+  document.getElementById("tab-date").setAttribute("aria-selected",state.view==="date");
+  document.getElementById("tab-mtn").setAttribute("aria-selected",state.view==="mtn");
   syncFilters();
   setTitle();
   if(state.view==="date") renderByDate();
