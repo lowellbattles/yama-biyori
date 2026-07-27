@@ -295,20 +295,27 @@ async function loadMissing(){
   finalizeWx();
 }
 
+/* Next 7 dates starting today — lets the site render even with no forecast at all. */
+function fallbackDates(){
+  const out=[], base=new Date();
+  for(let i=0;i<7;i++){
+    const dt=new Date(base.getFullYear(),base.getMonth(),base.getDate()+i);
+    out.push(dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0"));
+  }
+  return out;
+}
+
 function finalizeWx(){
   const st=document.getElementById("status");
   const ok=MOUNTAINS.filter(m=>state.wx[m.id]);
-  if(!ok.length){
-    state.error=true;
-    st.className="status error";
-    st.innerHTML="予報の取得に失敗しました（インターネット接続を確認してください）。<button onclick=\"loadMissing()\">再試行</button>";
-    return;
-  }
-  state.dates=state.wx[ok[0].id].map(d=>d.date);
-  saveWxCache();
-  state.loaded=true; state.error=false;
   const fail=MOUNTAINS.length-ok.length;
-  if(fail){
+  if(ok.length){ state.dates=state.wx[ok[0].id].map(d=>d.date); saveWxCache(); }
+  else state.dates=fallbackDates(); // weather fully unavailable — static content still renders
+  state.loaded=true; state.error=!ok.length;
+  if(!ok.length){
+    st.className="status error";
+    st.innerHTML="予報の取得に失敗しました（インターネット接続を確認してください）。グレードは「—」表示ですが、交通・山小屋・ルート情報は閲覧できます。<button onclick=\"loadMissing()\">再試行</button>";
+  }else if(fail){
     st.className="status error";
     st.innerHTML="⚠ "+fail+"山の予報を取得できませんでした（グレードは「—」表示）。<button onclick=\"loadMissing()\">失敗分を再試行</button>";
   }else{
@@ -577,7 +584,7 @@ function renderDetail(){
   }else{
     html+='<p class="note">この山の予報を取得できませんでした。<button class="back" onclick="loadMissing()">再試行</button></p>';
   }
-  html+='<p class="note">日付をクリックすると時間別の予報（降水・風・気温）を表示。凍結高度が稜線（'+m.grading.ridgeline+'m）付近まで下がる日は自動的に注意フラグ。'+(m.grading.snow_note||'')+'</p></section>';
+  html+='<p class="note">'+(days?'日付をクリックすると時間別の予報（降水・風・気温）を表示。':'')+'凍結高度が稜線（'+m.grading.ridgeline+'m）付近まで下がる日は自動的に注意フラグ。'+(m.grading.snow_note||'')+'</p></section>';
 
   // seasonality
   html+='<section class="block"><h3>季節カレンダー</h3><div class="season-bar">';

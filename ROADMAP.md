@@ -94,7 +94,7 @@ The one big technical fix. Design (API behaviour verified by live test):
 - While in there, make formatting null-safe (B3): one `fmt(v, digits)` helper returning `"—"` for null, used by `gradeDay` and all renderers.
 Done when: with DevTools offline-simulating one chunk, the site still renders the other ~80 mountains; a reload within 45 min makes zero API calls; no `.toFixed` runs on a raw API value anywhere.
 
-**Task 3 · Weather-optional rendering. — S (after Task 2)**
+**Task 3 · Weather-optional rendering. — S (after Task 2) — ✅ done 2026-07-27** (total-failure path: fallback 7-day date chips, all views render with 「—」 stamps, status explains static content is still available; verified with all requests blocked — both views + detail pages, zero console errors. Bonus finding: the in-app preview no longer blocks Open-Meteo on file://, so double-click still works fully)
 When a mountain has no weather: show the already-styled grey `NA` stamp (「—」), keep metrics as dashes, and render *all* static content — transit, huts, routes, seasonality — normally. The status line explains 「一部の山の予報が取得できませんでした」 with a retry-failed button. A hiker with a dying connection can still read the bus table.
 Done when: with all requests blocked, both views and every detail page render fully with NA stamps and no console errors.
 
@@ -168,7 +168,7 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 |---|---|---|---|
 | 1 ✅ | Git + GitHub | S | — |
 | 2 ✅ | Batched fault-tolerant cached fetch | M | — |
-| 3 | Weather-optional rendering | S | 2 |
+| 3 ✅ | Weather-optional rendering | S | 2 |
 | 4 | Ridgeline fixes 十勝岳・トムラウシ | S | — |
 | 5 | Data lint sweep | S | — |
 | 6 | `area` field ×110 + validator rule | M | — |
