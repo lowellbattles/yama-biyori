@@ -22,6 +22,27 @@ if (typeof MOUNTAINS === "undefined") {
 }
 WScript.Echo("Parsed OK: " + MOUNTAINS.length + " mountains");
 
+// Canonical area list (\u-escaped because cscript reads this source as ANSI):
+// 北海道 東北 上信越・尾瀬 関東周辺 奥秩父・奥多摩 八ヶ岳・中信高原 北アルプス・御嶽
+// 中央アルプス 南アルプス 富士・伊豆・箱根 北陸・近畿 中国・四国 九州・屋久島
+var AREAS = {};
+var AREA_LIST = [
+  "\u5317\u6d77\u9053", // 北海道
+  "\u6771\u5317", // 東北
+  "\u4e0a\u4fe1\u8d8a\u30fb\u5c3e\u702c", // 上信越・尾瀬
+  "\u95a2\u6771\u5468\u8fba", // 関東周辺
+  "\u5965\u79e9\u7236\u30fb\u5965\u591a\u6469", // 奥秩父・奥多摩
+  "\u516b\u30f6\u5cb3\u30fb\u4e2d\u4fe1\u9ad8\u539f", // 八ヶ岳・中信高原
+  "\u5317\u30a2\u30eb\u30d7\u30b9\u30fb\u5fa1\u5dbd", // 北アルプス・御嶽
+  "\u4e2d\u592e\u30a2\u30eb\u30d7\u30b9", // 中央アルプス
+  "\u5357\u30a2\u30eb\u30d7\u30b9", // 南アルプス
+  "\u5bcc\u58eb\u30fb\u4f0a\u8c46\u30fb\u7bb1\u6839", // 富士・伊豆・箱根
+  "\u5317\u9678\u30fb\u8fd1\u757f", // 北陸・近畿
+  "\u4e2d\u56fd\u30fb\u56db\u56fd", // 中国・四国
+  "\u4e5d\u5dde\u30fb\u5c4b\u4e45\u5cf6" // 九州・屋久島
+];
+for (var ai = 0; ai < AREA_LIST.length; ai++) AREAS[AREA_LIST[ai]] = 1;
+
 var errs = [];
 var seen = {};
 for (var i = 0; i < MOUNTAINS.length; i++) {
@@ -33,6 +54,8 @@ for (var i = 0; i < MOUNTAINS.length; i++) {
   if (!m.name_ja) errs.push(tag + ": missing name_ja");
   if (!m.name_en) errs.push(tag + ": missing name_en");
   if (!m.region) errs.push(tag + ": missing region");
+  if (!m.area) errs.push(tag + ": missing area");
+  else if (!AREAS[m.area]) errs.push(tag + ": area not in the canonical 13 (see AREA_LIST in this validator)");
   if (!m.prefecture) errs.push(tag + ": missing prefecture");
   if (typeof m.elevation !== "number") errs.push(tag + ": bad elevation");
   if (!m.coords || typeof m.coords.lat !== "number" || typeof m.coords.lon !== "number") errs.push(tag + ": bad coords");

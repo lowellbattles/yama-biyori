@@ -108,7 +108,7 @@ Done when: both peaks warn on days when the freezing level approaches their summ
 Remove the 14 meaningless route-level `sample:true` flags (list in review notes: 雨飾山荘コース, 草津白根×2, 白山×3, 荒島岳×2, 祖母山×5, 大浪池周回); add the 10 missing best-month seasonality notes (or drop those months from `best`); add a one-line comment at 幌尻岳's `precip_danger:7` recording whether it's intentional. Update the template comment if any rule changes.
 Done when: validator passes and a fresh stats pass shows 0 segment-less sample flags and 0 best-months-without-notes.
 
-**Task 6 · Add a coarse `area` field to all 110 mountains (fixes B5's data side). — M**
+**Task 6 · Add a coarse `area` field to all 110 mountains (fixes B5's data side). — M — ✅ done 2026-07-27** (13 areas: 北海道9・東北14・上信越・尾瀬15・関東周辺9・奥秩父・奥多摩9・八ヶ岳・中信高原5・北アルプス・御嶽18・中央アルプス3・南アルプス10・富士・伊豆・箱根4・北陸・近畿5・中国・四国3・九州・屋久島6。All 70 region strings mapped mechanically with count verification; template comment documents the list; both validators enforce membership — note their AREA_LIST uses \u escapes because cscript reads script source as ANSI, not UTF-8)
 Keep `region` exactly as-is (it's good display text); add `area:` with ~12 fixed values, e.g.: 北海道 / 東北 / 上信越・尾瀬 / 関東周辺 / 奥秩父・大菩薩 / 八ヶ岳・中信 / 北アルプス / 中央アルプス / 南アルプス / 富士・伊豆・箱根 / 北陸・近畿 / 中国・四国・九州. Mechanical mapping from the 71 region strings; add `area` to the template comment and to `validate_mountains.js` (required, from the fixed list — the validator is what stops fragmentation happening again).
 Done when: validator enforces `area`, every mountain has one, and the area list is written in the template comment.
 
@@ -171,7 +171,7 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 | 3 ✅ | Weather-optional rendering | S | 2 |
 | 4 ✅ | Ridgeline fixes 十勝岳・トムラウシ | S | — |
 | 5 ✅ | Data lint sweep | S | — |
-| 6 | `area` field ×110 + validator rule | M | — |
+| 6 ✅ | `area` field ×110 + validator rule | M | — |
 | 7 | Regroup mountain list by area | S | 6 |
 | 8 | Search + filters + hash links | M | 6 |
 | 9 | Favicon + meta/OG | S | — |

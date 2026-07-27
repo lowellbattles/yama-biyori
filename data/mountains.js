@@ -9,7 +9,10 @@
    {
      id: "unique-ascii-id",
      name_ja: "山名",  name_en: "Mt. ...",
-     region: "山域",  prefecture: "県",
+     region: "山域",  area: "エリア",  prefecture: "県",
+     //   area は固定13区分から選ぶ（一覧のグルーピング・絞り込み用。validate_mountains.js / validate_single.js が検証）:
+     //   北海道 / 東北 / 上信越・尾瀬 / 関東周辺 / 奥秩父・奥多摩 / 八ヶ岳・中信高原 / 北アルプス・御嶽 /
+     //   中央アルプス / 南アルプス / 富士・伊豆・箱根 / 北陸・近畿 / 中国・四国 / 九州・屋久島
      elevation: 0,              // summit elevation (m)
      hyakumeizan: false,        // 日本百名山?
      coords: {lat: 0, lon: 0},  // summit / upper-ridge coordinates
@@ -58,7 +61,7 @@
    ============================================================ */
 const MOUNTAINS = [
 {
-  id:"tsubakuro", name_ja:"燕岳", name_en:"Mt. Tsubakuro", region:"北アルプス", prefecture:"長野県",
+  id:"tsubakuro", name_ja:"燕岳", name_en:"Mt. Tsubakuro", region:"北アルプス", area:"北アルプス・御嶽", prefecture:"長野県",
   elevation:2763, hyakumeizan:false,
   coords:{lat:36.4083, lon:137.7128}, forecast_elevation:2700,
   grading:{
@@ -101,7 +104,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"karamatsu", name_ja:"唐松岳", name_en:"Mt. Karamatsu", region:"北アルプス", prefecture:"長野県・富山県",
+  id:"karamatsu", name_ja:"唐松岳", name_en:"Mt. Karamatsu", region:"北アルプス", area:"北アルプス・御嶽", prefecture:"長野県・富山県",
   elevation:2696, hyakumeizan:false,
   coords:{lat:36.6872, lon:137.7547}, forecast_elevation:2600,
   grading:{
@@ -147,7 +150,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"shirouma", name_ja:"白馬岳", name_en:"Mt. Shirouma", region:"北アルプス", prefecture:"長野県・富山県",
+  id:"shirouma", name_ja:"白馬岳", name_en:"Mt. Shirouma", region:"北アルプス", area:"北アルプス・御嶽", prefecture:"長野県・富山県",
   elevation:2932, hyakumeizan:true,
   coords:{lat:36.7585, lon:137.7586}, forecast_elevation:2900,
   grading:{
@@ -189,7 +192,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"jonen", name_ja:"常念岳", name_en:"Mt. Jonen", region:"北アルプス", prefecture:"長野県",
+  id:"jonen", name_ja:"常念岳", name_en:"Mt. Jonen", region:"北アルプス", area:"北アルプス・御嶽", prefecture:"長野県",
   elevation:2857, hyakumeizan:true,
   coords:{lat:36.3256, lon:137.7275}, forecast_elevation:2800,
   grading:{
@@ -236,7 +239,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"norikura", name_ja:"乗鞍岳（剣ヶ峰）", name_en:"Mt. Norikura", region:"北アルプス", prefecture:"長野県・岐阜県",
+  id:"norikura", name_ja:"乗鞍岳（剣ヶ峰）", name_en:"Mt. Norikura", region:"北アルプス", area:"北アルプス・御嶽", prefecture:"長野県・岐阜県",
   elevation:3026, hyakumeizan:true,
   coords:{lat:36.1064, lon:137.5536}, forecast_elevation:3000,
   grading:{
@@ -275,7 +278,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kisokoma", name_ja:"木曽駒ヶ岳", name_en:"Mt. Kiso-Komagatake", region:"中央アルプス", prefecture:"長野県",
+  id:"kisokoma", name_ja:"木曽駒ヶ岳", name_en:"Mt. Kiso-Komagatake", region:"中央アルプス", area:"中央アルプス", prefecture:"長野県",
   elevation:2956, hyakumeizan:true,
   coords:{lat:35.7894, lon:137.8044}, forecast_elevation:2800,
   grading:{
@@ -316,7 +319,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"akadake", name_ja:"赤岳", name_en:"Mt. Akadake", region:"八ヶ岳", prefecture:"長野県・山梨県",
+  id:"akadake", name_ja:"赤岳", name_en:"Mt. Akadake", region:"八ヶ岳", area:"八ヶ岳・中信高原", prefecture:"長野県・山梨県",
   elevation:2899, hyakumeizan:true,
   coords:{lat:35.9708, lon:138.3700}, forecast_elevation:2800,
   grading:{
@@ -360,7 +363,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tateshina", name_ja:"蓼科山", name_en:"Mt. Tateshina", region:"八ヶ岳", prefecture:"長野県",
+  id:"tateshina", name_ja:"蓼科山", name_en:"Mt. Tateshina", region:"八ヶ岳", area:"八ヶ岳・中信高原", prefecture:"長野県",
   elevation:2531, hyakumeizan:true,
   coords:{lat:36.1031, lon:138.2950}, forecast_elevation:2500,
   grading:{
@@ -412,7 +415,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kitayoko", name_ja:"北横岳", name_en:"Mt. Kitayokodake", region:"八ヶ岳", prefecture:"長野県",
+  id:"kitayoko", name_ja:"北横岳", name_en:"Mt. Kitayokodake", region:"八ヶ岳", area:"八ヶ岳・中信高原", prefecture:"長野県",
   elevation:2480, hyakumeizan:false,
   coords:{lat:36.0917, lon:138.3181}, forecast_elevation:2400,
   grading:{
@@ -456,7 +459,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"nasu", name_ja:"那須岳（茶臼岳）", name_en:"Mt. Nasu (Chausu)", region:"那須連山", prefecture:"栃木県",
+  id:"nasu", name_ja:"那須岳（茶臼岳）", name_en:"Mt. Nasu (Chausu)", region:"那須連山", area:"関東周辺", prefecture:"栃木県",
   elevation:1915, hyakumeizan:true,
   coords:{lat:37.1247, lon:139.9636}, forecast_elevation:1800,
   grading:{
@@ -502,7 +505,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kuju", name_ja:"久住山（くじゅう連山）", name_en:"Mt. Kuju", region:"くじゅう連山", prefecture:"大分県",
+  id:"kuju", name_ja:"久住山（くじゅう連山）", name_en:"Mt. Kuju", region:"くじゅう連山", area:"九州・屋久島", prefecture:"大分県",
   elevation:1787, hyakumeizan:true,
   coords:{lat:33.0858, lon:131.2483}, forecast_elevation:1600,
   grading:{
@@ -549,7 +552,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tanigawa", name_ja:"谷川岳", name_en:"Mt. Tanigawa", region:"上越国境", prefecture:"群馬県・新潟県",
+  id:"tanigawa", name_ja:"谷川岳", name_en:"Mt. Tanigawa", region:"上越国境", area:"上信越・尾瀬", prefecture:"群馬県・新潟県",
   elevation:1977, hyakumeizan:true,
   coords:{lat:36.8378, lon:138.9303}, forecast_elevation:1900,
   grading:{
@@ -594,7 +597,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kinpu", name_ja:"金峰山", name_en:"Mt. Kinpu", region:"奥秩父", prefecture:"山梨県・長野県",
+  id:"kinpu", name_ja:"金峰山", name_en:"Mt. Kinpu", region:"奥秩父", area:"奥秩父・奥多摩", prefecture:"山梨県・長野県",
   elevation:2599, hyakumeizan:true,
   coords:{lat:35.8714, lon:138.6258}, forecast_elevation:2500,
   grading:{
@@ -647,7 +650,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"mizugaki", name_ja:"瑞牆山", name_en:"Mt. Mizugaki", region:"奥秩父", prefecture:"山梨県",
+  id:"mizugaki", name_ja:"瑞牆山", name_en:"Mt. Mizugaki", region:"奥秩父", area:"奥秩父・奥多摩", prefecture:"山梨県",
   elevation:2230, hyakumeizan:true,
   coords:{lat:35.8939, lon:138.5925}, forecast_elevation:2200,
   grading:{
@@ -687,7 +690,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kumotori", name_ja:"雲取山", name_en:"Mt. Kumotori", region:"奥秩父", prefecture:"東京都・埼玉県・山梨県",
+  id:"kumotori", name_ja:"雲取山", name_en:"Mt. Kumotori", region:"奥秩父", area:"奥秩父・奥多摩", prefecture:"東京都・埼玉県・山梨県",
   elevation:2017, hyakumeizan:true,
   coords:{lat:35.8556, lon:138.9436}, forecast_elevation:2000,
   grading:{
@@ -738,7 +741,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"daibosatsu", name_ja:"大菩薩嶺", name_en:"Mt. Daibosatsu", region:"奥秩父", prefecture:"山梨県",
+  id:"daibosatsu", name_ja:"大菩薩嶺", name_en:"Mt. Daibosatsu", region:"奥秩父", area:"奥秩父・奥多摩", prefecture:"山梨県",
   elevation:2057, hyakumeizan:true,
   coords:{lat:35.7486, lon:138.8444}, forecast_elevation:2000,
   grading:{
@@ -781,7 +784,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"shibutsu", name_ja:"至仏山", name_en:"Mt. Shibutsu", region:"尾瀬", prefecture:"群馬県",
+  id:"shibutsu", name_ja:"至仏山", name_en:"Mt. Shibutsu", region:"尾瀬", area:"上信越・尾瀬", prefecture:"群馬県",
   elevation:2228, hyakumeizan:true,
   coords:{lat:36.9036, lon:139.1731}, forecast_elevation:2200,
   grading:{
@@ -826,7 +829,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"nikkoshirane", name_ja:"日光白根山", name_en:"Mt. Nikko-Shirane", region:"日光連山", prefecture:"栃木県・群馬県",
+  id:"nikkoshirane", name_ja:"日光白根山", name_en:"Mt. Nikko-Shirane", region:"日光連山", area:"関東周辺", prefecture:"栃木県・群馬県",
   elevation:2578, hyakumeizan:true,
   coords:{lat:36.7986, lon:139.3758}, forecast_elevation:2500,
   grading:{
@@ -877,7 +880,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"nantai", name_ja:"男体山", name_en:"Mt. Nantai", region:"日光連山", prefecture:"栃木県",
+  id:"nantai", name_ja:"男体山", name_en:"Mt. Nantai", region:"日光連山", area:"関東周辺", prefecture:"栃木県",
   elevation:2486, hyakumeizan:true,
   coords:{lat:36.7650, lon:139.4911}, forecast_elevation:2400,
   grading:{
@@ -912,7 +915,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"akagi", name_ja:"赤城山（黒檜山）", name_en:"Mt. Akagi (Kurobi)", region:"上毛三山", prefecture:"群馬県",
+  id:"akagi", name_ja:"赤城山（黒檜山）", name_en:"Mt. Akagi (Kurobi)", region:"上毛三山", area:"関東周辺", prefecture:"群馬県",
   elevation:1828, hyakumeizan:true,
   coords:{lat:36.5606, lon:139.1933}, forecast_elevation:1800,
   grading:{
@@ -950,7 +953,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tonodake", name_ja:"塔ノ岳", name_en:"Mt. Tonodake", region:"丹沢", prefecture:"神奈川県",
+  id:"tonodake", name_ja:"塔ノ岳", name_en:"Mt. Tonodake", region:"丹沢", area:"関東周辺", prefecture:"神奈川県",
   elevation:1491, hyakumeizan:false,
   coords:{lat:35.4542, lon:139.1610}, forecast_elevation:1500,
   grading:{
@@ -1000,7 +1003,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"oyama", name_ja:"大山（丹沢）", name_en:"Mt. Oyama", region:"丹沢", prefecture:"神奈川県",
+  id:"oyama", name_ja:"大山（丹沢）", name_en:"Mt. Oyama", region:"丹沢", area:"関東周辺", prefecture:"神奈川県",
   elevation:1252, hyakumeizan:false,
   coords:{lat:35.4408, lon:139.2311}, forecast_elevation:1250,
   grading:{
@@ -1043,7 +1046,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tsukuba", name_ja:"筑波山", name_en:"Mt. Tsukuba", region:"筑波山地", prefecture:"茨城県",
+  id:"tsukuba", name_ja:"筑波山", name_en:"Mt. Tsukuba", region:"筑波山地", area:"関東周辺", prefecture:"茨城県",
   elevation:877, hyakumeizan:true,
   coords:{lat:36.2253, lon:140.1061}, forecast_elevation:870,
   grading:{
@@ -1097,7 +1100,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"rishiri", name_ja:"利尻山（利尻岳）", name_en:"Mt. Rishiri (Rishiri-dake)", region:"利尻島", prefecture:"北海道",
+  id:"rishiri", name_ja:"利尻山（利尻岳）", name_en:"Mt. Rishiri (Rishiri-dake)", region:"利尻島", area:"北海道", prefecture:"北海道",
   elevation:1721, hyakumeizan:true,
   coords:{lat:45.1804, lon:141.2414}, forecast_elevation:1700,
   grading:{
@@ -1166,7 +1169,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"rausu", name_ja:"羅臼岳", name_en:"Mt. Rausu", region:"知床", prefecture:"北海道",
+  id:"rausu", name_ja:"羅臼岳", name_en:"Mt. Rausu", region:"知床", area:"北海道", prefecture:"北海道",
   elevation:1661, hyakumeizan:true,
   coords:{lat:44.0758, lon:145.1222}, forecast_elevation:1400,
   grading:{
@@ -1234,7 +1237,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"shari", name_ja:"斜里岳", name_en:"Mt. Shari", region:"斜里岳道立自然公園", prefecture:"北海道",
+  id:"shari", name_ja:"斜里岳", name_en:"Mt. Shari", region:"斜里岳道立自然公園", area:"北海道", prefecture:"北海道",
   elevation:1547, hyakumeizan:true,
   coords:{lat:43.7656, lon:144.7177}, forecast_elevation:1500,
   grading:{
@@ -1280,7 +1283,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"meakan", name_ja:"阿寒岳（雌阿寒岳）", name_en:"Mt. Meakan (Meakandake)", region:"阿寒", prefecture:"北海道",
+  id:"meakan", name_ja:"阿寒岳（雌阿寒岳）", name_en:"Mt. Meakan (Meakandake)", region:"阿寒", area:"北海道", prefecture:"北海道",
   elevation:1499, hyakumeizan:true,
   coords:{lat:43.3864, lon:144.0086}, forecast_elevation:1450,
   grading:{
@@ -1353,7 +1356,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"asahidake", name_ja:"旭岳", name_en:"Mt. Asahidake", region:"大雪山系", prefecture:"北海道",
+  id:"asahidake", name_ja:"旭岳", name_en:"Mt. Asahidake", region:"大雪山系", area:"北海道", prefecture:"北海道",
   elevation:2291, hyakumeizan:true,
   coords:{lat:43.6636, lon:142.8541}, forecast_elevation:1600,
   grading:{
@@ -1415,7 +1418,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tomuraushi", name_ja:"トムラウシ山", name_en:"Mt. Tomuraushi", region:"大雪山系", prefecture:"北海道",
+  id:"tomuraushi", name_ja:"トムラウシ山", name_en:"Mt. Tomuraushi", region:"大雪山系", area:"北海道", prefecture:"北海道",
   elevation:2141, hyakumeizan:true,
   coords:{lat:43.5271, lon:142.8486}, forecast_elevation:2100,
   grading:{
@@ -1480,7 +1483,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tokachi", name_ja:"十勝岳", name_en:"Mt. Tokachi", region:"十勝岳連峰", prefecture:"北海道",
+  id:"tokachi", name_ja:"十勝岳", name_en:"Mt. Tokachi", region:"十勝岳連峰", area:"北海道", prefecture:"北海道",
   elevation:2077, hyakumeizan:true,
   coords:{lat:43.4178, lon:142.6863}, forecast_elevation:2000,
   grading:{
@@ -1568,7 +1571,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"poroshiri", name_ja:"幌尻岳", name_en:"Mt. Poroshiri", region:"日高山脈", prefecture:"北海道",
+  id:"poroshiri", name_ja:"幌尻岳", name_en:"Mt. Poroshiri", region:"日高山脈", area:"北海道", prefecture:"北海道",
   elevation:2052, hyakumeizan:true,
   coords:{lat:42.7194, lon:142.6828}, forecast_elevation:1900,
   grading:{
@@ -1625,7 +1628,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"yotei", name_ja:"羊蹄山（後方羊蹄山）", name_en:"Mt. Yotei (Ezo-Fuji)", region:"後方羊蹄", prefecture:"北海道",
+  id:"yotei", name_ja:"羊蹄山（後方羊蹄山）", name_en:"Mt. Yotei (Ezo-Fuji)", region:"後方羊蹄", area:"北海道", prefecture:"北海道",
   elevation:1898, hyakumeizan:true,
   coords:{lat:42.8270, lon:140.8068}, forecast_elevation:1700,
   grading:{
@@ -1703,7 +1706,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"iwaki", name_ja:"岩木山", name_en:"Mt. Iwaki", region:"津軽", prefecture:"青森県",
+  id:"iwaki", name_ja:"岩木山", name_en:"Mt. Iwaki", region:"津軽", area:"東北", prefecture:"青森県",
   elevation:1624, hyakumeizan:true,
   coords:{lat:40.6610, lon:140.3005}, forecast_elevation:1500,
   grading:{
@@ -1780,7 +1783,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hakkoda", name_ja:"八甲田山（大岳）", name_en:"Mt. Hakkoda (Odake)", region:"八甲田", prefecture:"青森県",
+  id:"hakkoda", name_ja:"八甲田山（大岳）", name_en:"Mt. Hakkoda (Odake)", region:"八甲田", area:"東北", prefecture:"青森県",
   elevation:1584, hyakumeizan:true,
   coords:{lat:40.658907, lon:140.877248}, forecast_elevation:1450,
   grading:{
@@ -1869,7 +1872,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hachimantai", name_ja:"八幡平", name_en:"Mt. Hachimantai", region:"八幡平", prefecture:"岩手県・秋田県",
+  id:"hachimantai", name_ja:"八幡平", name_en:"Mt. Hachimantai", region:"八幡平", area:"東北", prefecture:"岩手県・秋田県",
   elevation:1613, hyakumeizan:true,
   coords:{lat:39.9576, lon:140.8541}, forecast_elevation:1600,
   grading:{
@@ -1944,7 +1947,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"iwate", name_ja:"岩手山", name_en:"Mt. Iwate", region:"奥羽山脈", prefecture:"岩手県",
+  id:"iwate", name_ja:"岩手山", name_en:"Mt. Iwate", region:"奥羽山脈", area:"東北", prefecture:"岩手県",
   elevation:2038, hyakumeizan:true,
   coords:{lat:39.8526, lon:141.0011}, forecast_elevation:1900,
   grading:{
@@ -2005,7 +2008,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hayachine", name_ja:"早池峰山", name_en:"Mt. Hayachine", region:"北上山地", prefecture:"岩手県",
+  id:"hayachine", name_ja:"早池峰山", name_en:"Mt. Hayachine", region:"北上山地", area:"東北", prefecture:"岩手県",
   elevation:1917, hyakumeizan:true,
   coords:{lat:39.5584, lon:141.4889}, forecast_elevation:1900,
   grading:{
@@ -2087,7 +2090,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"chokai", name_ja:"鳥海山", name_en:"Mt. Chokai", region:"鳥海山系", prefecture:"山形県・秋田県",
+  id:"chokai", name_ja:"鳥海山", name_en:"Mt. Chokai", region:"鳥海山系", area:"東北", prefecture:"山形県・秋田県",
   elevation:2236, hyakumeizan:true,
   coords:{lat:39.0993, lon:140.0488}, forecast_elevation:2100,
   grading:{
@@ -2179,7 +2182,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"gassan", name_ja:"月山", name_en:"Mt. Gassan", region:"出羽三山", prefecture:"山形県",
+  id:"gassan", name_ja:"月山", name_en:"Mt. Gassan", region:"出羽三山", area:"東北", prefecture:"山形県",
   elevation:1984, hyakumeizan:true,
   coords:{lat:38.549136, lon:140.026971}, forecast_elevation:1900,
   grading:{
@@ -2240,7 +2243,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"oasahi", name_ja:"朝日岳（大朝日岳）", name_en:"Mt. Oasahi", region:"朝日連峰", prefecture:"山形県・新潟県",
+  id:"oasahi", name_ja:"朝日岳（大朝日岳）", name_en:"Mt. Oasahi", region:"朝日連峰", area:"東北", prefecture:"山形県・新潟県",
   elevation:1870, hyakumeizan:true,
   coords:{lat:38.2606, lon:139.9223}, forecast_elevation:1800,
   grading:{
@@ -2315,7 +2318,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"zao", name_ja:"蔵王山（熊野岳）", name_en:"Mt. Zao (Kumano-dake)", region:"蔵王連峰", prefecture:"山形県・宮城県",
+  id:"zao", name_ja:"蔵王山（熊野岳）", name_en:"Mt. Zao (Kumano-dake)", region:"蔵王連峰", area:"東北", prefecture:"山形県・宮城県",
   elevation:1841, hyakumeizan:true,
   coords:{lat:38.1440, lon:140.4398}, forecast_elevation:1700,
   grading:{
@@ -2396,7 +2399,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"iide", name_ja:"飯豊山", name_en:"Mt. Iide", region:"飯豊連峰", prefecture:"山形県・新潟県・福島県",
+  id:"iide", name_ja:"飯豊山", name_en:"Mt. Iide", region:"飯豊連峰", area:"東北", prefecture:"山形県・新潟県・福島県",
   elevation:2105, hyakumeizan:true,
   coords:{lat:37.854831, lon:139.70711}, forecast_elevation:2100,
   grading:{
@@ -2453,7 +2456,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"nishiazuma", name_ja:"西吾妻山", name_en:"Mt. Nishi-Azuma", region:"吾妻連峰", prefecture:"山形県・福島県",
+  id:"nishiazuma", name_ja:"西吾妻山", name_en:"Mt. Nishi-Azuma", region:"吾妻連峰", area:"東北", prefecture:"山形県・福島県",
   elevation:2035, hyakumeizan:true,
   coords:{lat:37.73814, lon:140.1408}, forecast_elevation:1900,
   grading:{
@@ -2510,7 +2513,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"adatara", name_ja:"安達太良山", name_en:"Mt. Adatara", region:"安達太良連峰", prefecture:"福島県",
+  id:"adatara", name_ja:"安達太良山", name_en:"Mt. Adatara", region:"安達太良連峰", area:"東北", prefecture:"福島県",
   elevation:1700, hyakumeizan:true,
   coords:{lat:37.6211, lon:140.2879}, forecast_elevation:1650,
   grading:{
@@ -2571,7 +2574,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"bandai", name_ja:"磐梯山", name_en:"Mt. Bandai", region:"会津", prefecture:"福島県",
+  id:"bandai", name_ja:"磐梯山", name_en:"Mt. Bandai", region:"会津", area:"東北", prefecture:"福島県",
   elevation:1816, hyakumeizan:true,
   coords:{lat:37.6011, lon:140.0722}, forecast_elevation:1700,
   grading:{
@@ -2629,7 +2632,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"aizukoma", name_ja:"会津駒ヶ岳", name_en:"Mt. Aizu-Komagatake", region:"会津", prefecture:"福島県",
+  id:"aizukoma", name_ja:"会津駒ヶ岳", name_en:"Mt. Aizu-Komagatake", region:"会津", area:"東北", prefecture:"福島県",
   elevation:2133, hyakumeizan:true,
   coords:{lat:37.0476, lon:139.3538}, forecast_elevation:2080,
   grading:{
@@ -2676,7 +2679,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"echigokoma", name_ja:"越後駒ヶ岳", name_en:"Mt. Echigo-Koma (Uonuma-Koma)", region:"越後三山", prefecture:"新潟県",
+  id:"echigokoma", name_ja:"越後駒ヶ岳", name_en:"Mt. Echigo-Koma (Uonuma-Koma)", region:"越後三山", area:"上信越・尾瀬", prefecture:"新潟県",
   elevation:2003, hyakumeizan:true,
   coords:{lat:37.1236, lon:139.0752}, forecast_elevation:1900,
   grading:{
@@ -2721,7 +2724,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hiragatake", name_ja:"平ヶ岳", name_en:"Mt. Hiragatake", region:"越後三山・奥只見", prefecture:"新潟県・群馬県",
+  id:"hiragatake", name_ja:"平ヶ岳", name_en:"Mt. Hiragatake", region:"越後三山・奥只見", area:"上信越・尾瀬", prefecture:"新潟県・群馬県",
   elevation:2141, hyakumeizan:true,
   coords:{lat:37.0019, lon:139.1708}, forecast_elevation:2100,
   grading:{
@@ -2769,7 +2772,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"makihata", name_ja:"巻機山", name_en:"Mt. Makihata", region:"越後三山", prefecture:"新潟県・群馬県",
+  id:"makihata", name_ja:"巻機山", name_en:"Mt. Makihata", region:"越後三山", area:"上信越・尾瀬", prefecture:"新潟県・群馬県",
   elevation:1967, hyakumeizan:true,
   coords:{lat:36.9786, lon:138.9644}, forecast_elevation:1900,
   grading:{
@@ -2816,7 +2819,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hiuchigatake", name_ja:"燧ヶ岳", name_en:"Mt. Hiuchigatake", region:"尾瀬", prefecture:"福島県",
+  id:"hiuchigatake", name_ja:"燧ヶ岳", name_en:"Mt. Hiuchigatake", region:"尾瀬", area:"上信越・尾瀬", prefecture:"福島県",
   elevation:2356, hyakumeizan:true,
   coords:{lat:36.9530, lon:139.2872}, forecast_elevation:2300,
   grading:{
@@ -2876,7 +2879,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"amakazari", name_ja:"雨飾山", name_en:"Mt. Amakazari", region:"頸城山塊", prefecture:"長野県・新潟県",
+  id:"amakazari", name_ja:"雨飾山", name_en:"Mt. Amakazari", region:"頸城山塊", area:"上信越・尾瀬", prefecture:"長野県・新潟県",
   elevation:1963, hyakumeizan:true,
   coords:{lat:36.9021, lon:137.9626}, forecast_elevation:1900,
   grading:{
@@ -2929,7 +2932,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"naeba", name_ja:"苗場山", name_en:"Mt. Naeba", region:"上越国境", prefecture:"新潟県・長野県",
+  id:"naeba", name_ja:"苗場山", name_en:"Mt. Naeba", region:"上越国境", area:"上信越・尾瀬", prefecture:"新潟県・長野県",
   elevation:2145, hyakumeizan:true,
   coords:{lat:36.8459, lon:138.6903}, forecast_elevation:2100,
   grading:{
@@ -2973,7 +2976,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"myoko", name_ja:"妙高山", name_en:"Mt. Myoko", region:"頸城山塊", prefecture:"新潟県",
+  id:"myoko", name_ja:"妙高山", name_en:"Mt. Myoko", region:"頸城山塊", area:"上信越・尾瀬", prefecture:"新潟県",
   elevation:2454, hyakumeizan:true,
   coords:{lat:36.8914, lon:138.1136}, forecast_elevation:2300,
   grading:{
@@ -3023,7 +3026,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hiuchiyama", name_ja:"火打山", name_en:"Mt. Hiuchi", region:"頸城山塊", prefecture:"新潟県",
+  id:"hiuchiyama", name_ja:"火打山", name_en:"Mt. Hiuchi", region:"頸城山塊", area:"上信越・尾瀬", prefecture:"新潟県",
   elevation:2462, hyakumeizan:true,
   coords:{lat:36.9228, lon:138.0681}, forecast_elevation:2400,
   grading:{
@@ -3063,7 +3066,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"takatsuma", name_ja:"高妻山", name_en:"Mt. Takatsuma", region:"戸隠連峰", prefecture:"長野県・新潟県",
+  id:"takatsuma", name_ja:"高妻山", name_en:"Mt. Takatsuma", region:"戸隠連峰", area:"上信越・尾瀬", prefecture:"長野県・新潟県",
   elevation:2353, hyakumeizan:true,
   coords:{lat:36.8000, lon:138.0519}, forecast_elevation:2200,
   grading:{
@@ -3115,7 +3118,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"sukai", name_ja:"皇海山", name_en:"Mt. Sukai", region:"足尾山地", prefecture:"栃木県・群馬県",
+  id:"sukai", name_ja:"皇海山", name_en:"Mt. Sukai", region:"足尾山地", area:"関東周辺", prefecture:"栃木県・群馬県",
   elevation:2144, hyakumeizan:true,
   coords:{lat:36.6898, lon:139.3371}, forecast_elevation:2100,
   grading:{
@@ -3156,7 +3159,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hotakayama", name_ja:"武尊山（上州武尊）", name_en:"Mt. Hotaka (Joshu-Hotaka)", region:"上州武尊", prefecture:"群馬県",
+  id:"hotakayama", name_ja:"武尊山（上州武尊）", name_en:"Mt. Hotaka (Joshu-Hotaka)", region:"上州武尊", area:"上信越・尾瀬", prefecture:"群馬県",
   elevation:2158, hyakumeizan:true,
   coords:{lat:36.8053, lon:139.1325}, forecast_elevation:2100,
   grading:{
@@ -3227,7 +3230,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kusatsushirane", name_ja:"草津白根山（本白根山）", name_en:"Mt. Kusatsu-Shirane (Motoshirane)", region:"草津白根", prefecture:"群馬県",
+  id:"kusatsushirane", name_ja:"草津白根山（本白根山）", name_en:"Mt. Kusatsu-Shirane (Motoshirane)", region:"草津白根", area:"上信越・尾瀬", prefecture:"群馬県",
   elevation:2171, hyakumeizan:true,
   coords:{lat:36.6183, lon:138.5278}, forecast_elevation:2100,
   grading:{
@@ -3274,7 +3277,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"azumaya", name_ja:"四阿山", name_en:"Mt. Azumaya", region:"上信越高原（菅平・浅間山系）", prefecture:"長野県・群馬県",
+  id:"azumaya", name_ja:"四阿山", name_en:"Mt. Azumaya", region:"上信越高原（菅平・浅間山系）", area:"上信越・尾瀬", prefecture:"長野県・群馬県",
   elevation:2354, hyakumeizan:true,
   coords:{lat:36.5417, lon:138.4131}, forecast_elevation:2300,
   grading:{
@@ -3328,7 +3331,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"asama", name_ja:"浅間山", name_en:"Mt. Asama", region:"浅間連峰", prefecture:"長野県・群馬県",
+  id:"asama", name_ja:"浅間山", name_en:"Mt. Asama", region:"浅間連峰", area:"上信越・尾瀬", prefecture:"長野県・群馬県",
   elevation:2568, hyakumeizan:true,
   coords:{lat:36.4064, lon:138.5231}, forecast_elevation:2500,
   grading:{
@@ -3401,7 +3404,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"ryokami", name_ja:"両神山", name_en:"Mt. Ryokami", region:"奥秩父", prefecture:"埼玉県",
+  id:"ryokami", name_ja:"両神山", name_en:"Mt. Ryokami", region:"奥秩父", area:"奥秩父・奥多摩", prefecture:"埼玉県",
   elevation:1723, hyakumeizan:true,
   coords:{lat:36.0234, lon:138.8413}, forecast_elevation:1700,
   grading:{
@@ -3451,7 +3454,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"goryu", name_ja:"五竜岳", name_en:"Mt. Goryu", region:"後立山連峰", prefecture:"長野県・富山県",
+  id:"goryu", name_ja:"五竜岳", name_en:"Mt. Goryu", region:"後立山連峰", area:"北アルプス・御嶽", prefecture:"長野県・富山県",
   elevation:2814, hyakumeizan:true,
   coords:{lat:36.658407, lon:137.752691}, forecast_elevation:2750,
   grading:{
@@ -3497,7 +3500,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kashimayari", name_ja:"鹿島槍ヶ岳", name_en:"Mt. Kashimayari", region:"後立山連峰", prefecture:"長野県・富山県",
+  id:"kashimayari", name_ja:"鹿島槍ヶ岳", name_en:"Mt. Kashimayari", region:"後立山連峰", area:"北アルプス・御嶽", prefecture:"長野県・富山県",
   elevation:2889, hyakumeizan:true,
   coords:{lat:36.6245, lon:137.7469}, forecast_elevation:2850,
   grading:{
@@ -3560,7 +3563,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tsurugi", name_ja:"剱岳", name_en:"Mt. Tsurugi", region:"立山連峰", prefecture:"富山県",
+  id:"tsurugi", name_ja:"剱岳", name_en:"Mt. Tsurugi", region:"立山連峰", area:"北アルプス・御嶽", prefecture:"富山県",
   elevation:2999, hyakumeizan:true,
   coords:{lat:36.6234, lon:137.6172}, forecast_elevation:2900,
   grading:{
@@ -3633,7 +3636,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tateyama", name_ja:"立山（大汝山）", name_en:"Mt. Tateyama (Onanjiyama)", region:"立山連峰", prefecture:"富山県",
+  id:"tateyama", name_ja:"立山（大汝山）", name_en:"Mt. Tateyama (Onanjiyama)", region:"立山連峰", area:"北アルプス・御嶽", prefecture:"富山県",
   elevation:3015, hyakumeizan:true,
   coords:{lat:36.575959, lon:137.619808}, forecast_elevation:3000,
   grading:{
@@ -3691,7 +3694,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"yakushi", name_ja:"薬師岳", name_en:"Mt. Yakushidake", region:"立山連峰", prefecture:"富山県",
+  id:"yakushi", name_ja:"薬師岳", name_en:"Mt. Yakushidake", region:"立山連峰", area:"北アルプス・御嶽", prefecture:"富山県",
   elevation:2926, hyakumeizan:true,
   coords:{lat:36.4689, lon:137.5447}, forecast_elevation:2900,
   grading:{
@@ -3744,7 +3747,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kurobegoro", name_ja:"黒部五郎岳", name_en:"Mt. Kurobegoro", region:"黒部源流域（北アルプス）", prefecture:"富山県・岐阜県",
+  id:"kurobegoro", name_ja:"黒部五郎岳", name_en:"Mt. Kurobegoro", region:"黒部源流域（北アルプス）", area:"北アルプス・御嶽", prefecture:"富山県・岐阜県",
   elevation:2840, hyakumeizan:true,
   coords:{lat:36.3925, lon:137.5400}, forecast_elevation:2800,
   grading:{
@@ -3809,7 +3812,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"suisho", name_ja:"水晶岳（黒岳）", name_en:"Mt. Suisho (Kurodake)", region:"黒部源流域（北アルプス）", prefecture:"富山県",
+  id:"suisho", name_ja:"水晶岳（黒岳）", name_en:"Mt. Suisho (Kurodake)", region:"黒部源流域（北アルプス）", area:"北アルプス・御嶽", prefecture:"富山県",
   elevation:2986, hyakumeizan:true,
   coords:{lat:36.4264, lon:137.6028}, forecast_elevation:2900,
   grading:{
@@ -3867,7 +3870,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"washiba", name_ja:"鷲羽岳", name_en:"Mt. Washiba", region:"北アルプス（裏銀座・黒部源流域）", prefecture:"長野県・富山県",
+  id:"washiba", name_ja:"鷲羽岳", name_en:"Mt. Washiba", region:"北アルプス（裏銀座・黒部源流域）", area:"北アルプス・御嶽", prefecture:"長野県・富山県",
   elevation:2924, hyakumeizan:true,
   coords:{lat:36.402996, lon:137.60525}, forecast_elevation:2900,
   grading:{
@@ -3929,7 +3932,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"yari", name_ja:"槍ヶ岳", name_en:"Mt. Yari", region:"北アルプス南部", prefecture:"長野県・岐阜県",
+  id:"yari", name_ja:"槍ヶ岳", name_en:"Mt. Yari", region:"北アルプス南部", area:"北アルプス・御嶽", prefecture:"長野県・岐阜県",
   elevation:3180, hyakumeizan:true,
   coords:{lat:36.3420, lon:137.6478}, forecast_elevation:3100,
   grading:{
@@ -3999,7 +4002,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"okuhotaka", name_ja:"穂高岳（奥穂高岳）", name_en:"Mt. Hotaka (Okuhotaka)", region:"北アルプス南部（穂高連峰）", prefecture:"長野県・岐阜県",
+  id:"okuhotaka", name_ja:"穂高岳（奥穂高岳）", name_en:"Mt. Hotaka (Okuhotaka)", region:"北アルプス南部（穂高連峰）", area:"北アルプス・御嶽", prefecture:"長野県・岐阜県",
   elevation:3190, hyakumeizan:true,
   coords:{lat:36.2892, lon:137.6481}, forecast_elevation:3100,
   grading:{
@@ -4053,7 +4056,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kasa", name_ja:"笠ヶ岳", name_en:"Mt. Kasagatake", region:"北アルプス南部", prefecture:"岐阜県",
+  id:"kasa", name_ja:"笠ヶ岳", name_en:"Mt. Kasagatake", region:"北アルプス南部", area:"北アルプス・御嶽", prefecture:"岐阜県",
   elevation:2897, hyakumeizan:true,
   coords:{lat:36.31556, lon:137.55028}, forecast_elevation:2800,
   grading:{
@@ -4113,7 +4116,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"yake", name_ja:"焼岳", name_en:"Mt. Yakedake", region:"北アルプス南部", prefecture:"長野県・岐阜県",
+  id:"yake", name_ja:"焼岳", name_en:"Mt. Yakedake", region:"北アルプス南部", area:"北アルプス・御嶽", prefecture:"長野県・岐阜県",
   elevation:2455, hyakumeizan:true,
   coords:{lat:36.2264, lon:137.5883}, forecast_elevation:2400,
   grading:{
@@ -4191,7 +4194,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"ontake", name_ja:"御嶽山", name_en:"Mt. Ontake", region:"御嶽山系", prefecture:"長野県・岐阜県",
+  id:"ontake", name_ja:"御嶽山", name_en:"Mt. Ontake", region:"御嶽山系", area:"北アルプス・御嶽", prefecture:"長野県・岐阜県",
   elevation:3067, hyakumeizan:true,
   coords:{lat:35.8928, lon:137.4806}, forecast_elevation:3000,
   grading:{
@@ -4253,7 +4256,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"utsukushigahara", name_ja:"美ヶ原（王ヶ頭）", name_en:"Mt. Utsukushigahara (Ogato)", region:"美ヶ原・霧ヶ峰", prefecture:"長野県",
+  id:"utsukushigahara", name_ja:"美ヶ原（王ヶ頭）", name_en:"Mt. Utsukushigahara (Ogato)", region:"美ヶ原・霧ヶ峰", area:"八ヶ岳・中信高原", prefecture:"長野県",
   elevation:2034, hyakumeizan:true,
   coords:{lat:36.225796, lon:138.107445}, forecast_elevation:2000,
   grading:{
@@ -4301,7 +4304,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kirigamine", name_ja:"霧ヶ峰（車山）", name_en:"Mt. Kirigamine (Kurumayama)", region:"美ヶ原・霧ヶ峰", prefecture:"長野県",
+  id:"kirigamine", name_ja:"霧ヶ峰（車山）", name_en:"Mt. Kirigamine (Kurumayama)", region:"美ヶ原・霧ヶ峰", area:"八ヶ岳・中信高原", prefecture:"長野県",
   elevation:1925, hyakumeizan:true,
   coords:{lat:36.1028, lon:138.1967}, forecast_elevation:1900,
   grading:{
@@ -4373,7 +4376,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kobushi", name_ja:"甲武信ヶ岳", name_en:"Mt. Kobushigatake", region:"奥秩父", prefecture:"長野県・山梨県・埼玉県",
+  id:"kobushi", name_ja:"甲武信ヶ岳", name_en:"Mt. Kobushigatake", region:"奥秩父", area:"奥秩父・奥多摩", prefecture:"長野県・山梨県・埼玉県",
   elevation:2475, hyakumeizan:true,
   coords:{lat:35.9091, lon:138.7289}, forecast_elevation:2400,
   grading:{
@@ -4446,7 +4449,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"fuji", name_ja:"富士山", name_en:"Mt. Fuji", region:"富士山", prefecture:"山梨県・静岡県",
+  id:"fuji", name_ja:"富士山", name_en:"Mt. Fuji", region:"富士山", area:"富士・伊豆・箱根", prefecture:"山梨県・静岡県",
   elevation:3776, hyakumeizan:true,
   coords:{lat:35.3606, lon:138.7274}, forecast_elevation:3700,
   grading:{
@@ -4546,7 +4549,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tanzawa", name_ja:"丹沢山", name_en:"Mt. Tanzawa", region:"丹沢", prefecture:"神奈川県",
+  id:"tanzawa", name_ja:"丹沢山", name_en:"Mt. Tanzawa", region:"丹沢", area:"関東周辺", prefecture:"神奈川県",
   elevation:1567, hyakumeizan:true,
   coords:{lat:35.474293, lon:139.16268}, forecast_elevation:1560,
   grading:{
@@ -4613,7 +4616,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"amagi", name_ja:"天城山（万三郎岳）", name_en:"Mt. Amagi (Banzaburodake)", region:"伊豆", prefecture:"静岡県",
+  id:"amagi", name_ja:"天城山（万三郎岳）", name_en:"Mt. Amagi (Banzaburodake)", region:"伊豆", area:"富士・伊豆・箱根", prefecture:"静岡県",
   elevation:1406, hyakumeizan:true,
   coords:{lat:34.8628, lon:139.0018}, forecast_elevation:1300,
   grading:{
@@ -4665,7 +4668,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"utsugi", name_ja:"空木岳", name_en:"Mt. Utsugi", region:"中央アルプス", prefecture:"長野県",
+  id:"utsugi", name_ja:"空木岳", name_en:"Mt. Utsugi", region:"中央アルプス", area:"中央アルプス", prefecture:"長野県",
   elevation:2864, hyakumeizan:true,
   coords:{lat:35.7189, lon:137.8172}, forecast_elevation:2800,
   grading:{
@@ -4730,7 +4733,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"ena", name_ja:"恵那山", name_en:"Mt. Ena", region:"中央アルプス", prefecture:"長野県・岐阜県",
+  id:"ena", name_ja:"恵那山", name_en:"Mt. Ena", region:"中央アルプス", area:"中央アルプス", prefecture:"長野県・岐阜県",
   elevation:2191, hyakumeizan:true,
   coords:{lat:35.4431, lon:137.5979}, forecast_elevation:2150,
   grading:{
@@ -4813,7 +4816,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kaikoma", name_ja:"甲斐駒ヶ岳", name_en:"Mt. Kaikoma", region:"南アルプス北部", prefecture:"山梨県・長野県",
+  id:"kaikoma", name_ja:"甲斐駒ヶ岳", name_en:"Mt. Kaikoma", region:"南アルプス北部", area:"南アルプス", prefecture:"山梨県・長野県",
   elevation:2967, hyakumeizan:true,
   coords:{lat:35.7579, lon:138.2367}, forecast_elevation:2900,
   grading:{
@@ -4882,7 +4885,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"senjo", name_ja:"仙丈ヶ岳", name_en:"Mt. Senjogatake", region:"南アルプス北部", prefecture:"長野県・山梨県",
+  id:"senjo", name_ja:"仙丈ヶ岳", name_en:"Mt. Senjogatake", region:"南アルプス北部", area:"南アルプス", prefecture:"長野県・山梨県",
   elevation:3033, hyakumeizan:true,
   coords:{lat:35.7201, lon:138.1836}, forecast_elevation:3000,
   grading:{
@@ -4923,7 +4926,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hoo", name_ja:"鳳凰山（観音岳）", name_en:"Mt. Hoo (Kannondake)", region:"南アルプス北部", prefecture:"山梨県",
+  id:"hoo", name_ja:"鳳凰山（観音岳）", name_en:"Mt. Hoo (Kannondake)", region:"南アルプス北部", area:"南アルプス", prefecture:"山梨県",
   elevation:2841, hyakumeizan:true,
   coords:{lat:35.70173, lon:138.304594}, forecast_elevation:2800,
   grading:{
@@ -4978,7 +4981,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kitadake", name_ja:"北岳", name_en:"Mt. Kitadake", region:"南アルプス北部（白峰三山）", prefecture:"山梨県",
+  id:"kitadake", name_ja:"北岳", name_en:"Mt. Kitadake", region:"南アルプス北部（白峰三山）", area:"南アルプス", prefecture:"山梨県",
   elevation:3193, hyakumeizan:true,
   coords:{lat:35.6746, lon:138.2388}, forecast_elevation:3100,
   grading:{
@@ -5050,7 +5053,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"ainodake", name_ja:"間ノ岳", name_en:"Mt. Ainodake", region:"南アルプス北部", prefecture:"山梨県・静岡県",
+  id:"ainodake", name_ja:"間ノ岳", name_en:"Mt. Ainodake", region:"南アルプス北部", area:"南アルプス", prefecture:"山梨県・静岡県",
   elevation:3190, hyakumeizan:true,
   coords:{lat:35.6461, lon:138.2283}, forecast_elevation:3100,
   grading:{
@@ -5105,7 +5108,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"shiomi", name_ja:"塩見岳", name_en:"Mt. Shiomi", region:"南アルプス南部", prefecture:"長野県・静岡県",
+  id:"shiomi", name_ja:"塩見岳", name_en:"Mt. Shiomi", region:"南アルプス南部", area:"南アルプス", prefecture:"長野県・静岡県",
   elevation:3052, hyakumeizan:true,
   coords:{lat:35.5738, lon:138.1830}, forecast_elevation:3000,
   grading:{
@@ -5145,7 +5148,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"warusawa", name_ja:"悪沢岳（荒川東岳）", name_en:"Mt. Warusawa (Arakawa-Higashidake)", region:"南アルプス南部", prefecture:"静岡県",
+  id:"warusawa", name_ja:"悪沢岳（荒川東岳）", name_en:"Mt. Warusawa (Arakawa-Higashidake)", region:"南アルプス南部", area:"南アルプス", prefecture:"静岡県",
   elevation:3141, hyakumeizan:true,
   coords:{lat:35.5006, lon:138.1822}, forecast_elevation:3050,
   grading:{
@@ -5206,7 +5209,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"akaishi", name_ja:"赤石岳", name_en:"Mt. Akaishi", region:"南アルプス南部", prefecture:"静岡県・長野県",
+  id:"akaishi", name_ja:"赤石岳", name_en:"Mt. Akaishi", region:"南アルプス南部", area:"南アルプス", prefecture:"静岡県・長野県",
   elevation:3121, hyakumeizan:true,
   coords:{lat:35.4613, lon:138.1575}, forecast_elevation:3050,
   grading:{
@@ -5256,7 +5259,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hijiri", name_ja:"聖岳", name_en:"Mt. Hijiri", region:"南アルプス南部", prefecture:"長野県・静岡県",
+  id:"hijiri", name_ja:"聖岳", name_en:"Mt. Hijiri", region:"南アルプス南部", area:"南アルプス", prefecture:"長野県・静岡県",
   elevation:3013, hyakumeizan:true,
   coords:{lat:35.4227, lon:138.1404}, forecast_elevation:2950,
   grading:{
@@ -5317,7 +5320,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tekari", name_ja:"光岳", name_en:"Mt. Tekari", region:"南アルプス南部", prefecture:"長野県・静岡県",
+  id:"tekari", name_ja:"光岳", name_en:"Mt. Tekari", region:"南アルプス南部", area:"南アルプス", prefecture:"長野県・静岡県",
   elevation:2591, hyakumeizan:true,
   coords:{lat:35.3382, lon:138.0838}, forecast_elevation:2550,
   grading:{
@@ -5371,7 +5374,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"hakusan", name_ja:"白山（御前峰）", name_en:"Mt. Hakusan (Gozengamine)", region:"両白山地", prefecture:"石川県・岐阜県",
+  id:"hakusan", name_ja:"白山（御前峰）", name_en:"Mt. Hakusan (Gozengamine)", region:"両白山地", area:"北陸・近畿", prefecture:"石川県・岐阜県",
   elevation:2702, hyakumeizan:true,
   coords:{lat:36.1548, lon:136.7715}, forecast_elevation:2700,
   grading:{
@@ -5445,7 +5448,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"arashima", name_ja:"荒島岳", name_en:"Mt. Arashima", region:"両白山地", prefecture:"福井県",
+  id:"arashima", name_ja:"荒島岳", name_en:"Mt. Arashima", region:"両白山地", area:"北陸・近畿", prefecture:"福井県",
   elevation:1523, hyakumeizan:true,
   coords:{lat:35.9343, lon:136.6013}, forecast_elevation:1500,
   grading:{
@@ -5508,7 +5511,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"ibuki", name_ja:"伊吹山", name_en:"Mt. Ibuki", region:"伊吹山地", prefecture:"滋賀県",
+  id:"ibuki", name_ja:"伊吹山", name_en:"Mt. Ibuki", region:"伊吹山地", area:"北陸・近畿", prefecture:"滋賀県",
   elevation:1377, hyakumeizan:true,
   coords:{lat:35.4181, lon:136.4239}, forecast_elevation:1350,
   grading:{
@@ -5565,7 +5568,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"odaigahara", name_ja:"大台ヶ原山", name_en:"Mt. Odaigahara", region:"台高山脈", prefecture:"奈良県・三重県",
+  id:"odaigahara", name_ja:"大台ヶ原山", name_en:"Mt. Odaigahara", region:"台高山脈", area:"北陸・近畿", prefecture:"奈良県・三重県",
   elevation:1695, hyakumeizan:true,
   coords:{lat:34.1850, lon:136.1091}, forecast_elevation:1650,
   grading:{
@@ -5624,7 +5627,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"omine", name_ja:"大峰山（八経ヶ岳）", name_en:"Mt. Omine (Hakkyogatake)", region:"大峰山脈", prefecture:"奈良県",
+  id:"omine", name_ja:"大峰山（八経ヶ岳）", name_en:"Mt. Omine (Hakkyogatake)", region:"大峰山脈", area:"北陸・近畿", prefecture:"奈良県",
   elevation:1915, hyakumeizan:true,
   coords:{lat:34.1736, lon:135.9072}, forecast_elevation:1900,
   grading:{
@@ -5687,7 +5690,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"daisen", name_ja:"大山（伯耆大山）", name_en:"Mt. Daisen (Hoki-Daisen)", region:"中国山地・大山", prefecture:"鳥取県",
+  id:"daisen", name_ja:"大山（伯耆大山）", name_en:"Mt. Daisen (Hoki-Daisen)", region:"中国山地・大山", area:"中国・四国", prefecture:"鳥取県",
   elevation:1729, hyakumeizan:true,
   coords:{lat:35.3712, lon:133.5432}, forecast_elevation:1700,
   grading:{
@@ -5747,7 +5750,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"tsurugisan", name_ja:"剣山", name_en:"Mt. Tsurugi", region:"四国山地", prefecture:"徳島県",
+  id:"tsurugisan", name_ja:"剣山", name_en:"Mt. Tsurugi", region:"四国山地", area:"中国・四国", prefecture:"徳島県",
   elevation:1955, hyakumeizan:true,
   coords:{lat:33.8536, lon:134.0943}, forecast_elevation:1900,
   grading:{
@@ -5811,7 +5814,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"ishizuchi", name_ja:"石鎚山", name_en:"Mt. Ishizuchi", region:"四国山地", prefecture:"愛媛県",
+  id:"ishizuchi", name_ja:"石鎚山", name_en:"Mt. Ishizuchi", region:"四国山地", area:"中国・四国", prefecture:"愛媛県",
   elevation:1982, hyakumeizan:true,
   coords:{lat:33.76777, lon:133.115086}, forecast_elevation:1950,
   grading:{
@@ -5875,7 +5878,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"sobo", name_ja:"祖母山", name_en:"Mt. Sobo", region:"祖母・傾・大崩山系", prefecture:"大分県・宮崎県",
+  id:"sobo", name_ja:"祖母山", name_en:"Mt. Sobo", region:"祖母・傾・大崩山系", area:"九州・屋久島", prefecture:"大分県・宮崎県",
   elevation:1756, hyakumeizan:true,
   coords:{lat:32.8281, lon:131.3471}, forecast_elevation:1700,
   grading:{
@@ -5949,7 +5952,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"aso", name_ja:"阿蘇山（高岳）", name_en:"Mt. Aso (Takadake)", region:"阿蘇", prefecture:"熊本県",
+  id:"aso", name_ja:"阿蘇山（高岳）", name_en:"Mt. Aso (Takadake)", region:"阿蘇", area:"九州・屋久島", prefecture:"熊本県",
   elevation:1592, hyakumeizan:true,
   coords:{lat:32.8842, lon:131.1039}, forecast_elevation:1500,
   grading:{
@@ -6016,7 +6019,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kirishima", name_ja:"霧島山（韓国岳）", name_en:"Mt. Karakuni (Kirishima)", region:"霧島", prefecture:"鹿児島県・宮崎県",
+  id:"kirishima", name_ja:"霧島山（韓国岳）", name_en:"Mt. Karakuni (Kirishima)", region:"霧島", area:"九州・屋久島", prefecture:"鹿児島県・宮崎県",
   elevation:1700, hyakumeizan:true,
   coords:{lat:31.9342, lon:130.8617}, forecast_elevation:1600,
   grading:{
@@ -6094,7 +6097,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kaimon", name_ja:"開聞岳", name_en:"Mt. Kaimon", region:"薩摩半島", prefecture:"鹿児島県",
+  id:"kaimon", name_ja:"開聞岳", name_en:"Mt. Kaimon", region:"薩摩半島", area:"九州・屋久島", prefecture:"鹿児島県",
   elevation:924, hyakumeizan:true,
   coords:{lat:31.1802, lon:130.5283}, forecast_elevation:900,
   grading:{
@@ -6151,7 +6154,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"miyanoura", name_ja:"宮之浦岳", name_en:"Mt. Miyanoura", region:"屋久島", prefecture:"鹿児島県（屋久島）",
+  id:"miyanoura", name_ja:"宮之浦岳", name_en:"Mt. Miyanoura", region:"屋久島", area:"九州・屋久島", prefecture:"鹿児島県（屋久島）",
   elevation:1936, hyakumeizan:true,
   coords:{lat:30.3361, lon:130.5041}, forecast_elevation:1900,
   grading:{
@@ -6227,7 +6230,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kayagatake", name_ja:"茅ヶ岳", name_en:"Mt. Kayagatake", region:"奥秩父前衛", prefecture:"山梨県",
+  id:"kayagatake", name_ja:"茅ヶ岳", name_en:"Mt. Kayagatake", region:"奥秩父前衛", area:"奥秩父・奥多摩", prefecture:"山梨県",
   elevation:1704, hyakumeizan:false,
   coords:{lat:35.7950, lon:138.5138}, forecast_elevation:1700,
   grading:{
@@ -6286,7 +6289,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kentoku", name_ja:"乾徳山", name_en:"Mt. Kentoku", region:"奥秩父", prefecture:"山梨県",
+  id:"kentoku", name_ja:"乾徳山", name_en:"Mt. Kentoku", region:"奥秩父", area:"奥秩父・奥多摩", prefecture:"山梨県",
   elevation:2031, hyakumeizan:false,
   coords:{lat:35.8227, lon:138.7149}, forecast_elevation:1900,
   grading:{
@@ -6339,7 +6342,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"mitsutoge", name_ja:"三ツ峠山", name_en:"Mt. Mitsutoge", region:"御坂山地", prefecture:"山梨県",
+  id:"mitsutoge", name_ja:"三ツ峠山", name_en:"Mt. Mitsutoge", region:"御坂山地", area:"富士・伊豆・箱根", prefecture:"山梨県",
   elevation:1785, hyakumeizan:false,
   coords:{lat:35.5492, lon:138.8092}, forecast_elevation:1700,
   grading:{
@@ -6410,7 +6413,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"kintoki", name_ja:"金時山", name_en:"Mt. Kintoki", region:"箱根", prefecture:"神奈川県・静岡県",
+  id:"kintoki", name_ja:"金時山", name_en:"Mt. Kintoki", region:"箱根", area:"富士・伊豆・箱根", prefecture:"神奈川県・静岡県",
   elevation:1212, hyakumeizan:false,
   coords:{lat:35.2897, lon:139.0049}, forecast_elevation:1150,
   grading:{
@@ -6502,7 +6505,7 @@ const MOUNTAINS = [
   }
 },
 {
-  id:"otake", name_ja:"大岳山", name_en:"Mt. Otake", region:"奥多摩", prefecture:"東京都",
+  id:"otake", name_ja:"大岳山", name_en:"Mt. Otake", region:"奥多摩", area:"奥秩父・奥多摩", prefecture:"東京都",
   elevation:1266, hyakumeizan:false,
   coords:{lat:35.7652, lon:139.1304}, forecast_elevation:1250,
   grading:{
