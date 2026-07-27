@@ -1419,7 +1419,7 @@ const MOUNTAINS = [
   elevation:2141, hyakumeizan:true,
   coords:{lat:43.5271, lon:142.8486}, forecast_elevation:2100,
   grading:{
-    ridgeline:1700,
+    ridgeline:2100,
     wind_caution:7, wind_danger:12,
     precip_caution:3, precip_danger:8,
     snow_months:[9,10,11,12,1,2,3,4,5,6],
@@ -1484,7 +1484,7 @@ const MOUNTAINS = [
   elevation:2077, hyakumeizan:true,
   coords:{lat:43.4178, lon:142.6863}, forecast_elevation:2000,
   grading:{
-    ridgeline:1300,
+    ridgeline:2000,
     wind_caution:8, wind_danger:13,
     precip_caution:3, precip_danger:10,
     snow_months:[9,10,11,12,1,2,3,4,5,6],

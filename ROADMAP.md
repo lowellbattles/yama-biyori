@@ -100,7 +100,7 @@ Done when: with all requests blocked, both views and every detail page render fu
 
 ### Phase 2 — data hygiene (one focused session with the validator)
 
-**Task 4 · Back up, then fix the two ridgeline outliers (B4). — S**
+**Task 4 · Back up, then fix the two ridgeline outliers (B4). — S — ✅ done 2026-07-27** (十勝岳 1300→2000, トムラウシ 1700→2100 — both = forecast_elevation per the site-wide convention; snow_note prose untouched; validator passes; verified via gradeDay: a frost-at-2,200m October day now grades B with the 凍結・残雪 warning instead of a clean A)
 Your judgment call as the hiker, but the convention says: 十勝岳 `ridgeline` 1300 → ~2000 (upper route), トムラウシ 1700 → ~2050, keeping each `snow_note`'s treeline *text* (it's good prose — only the number was anchored wrong). Re-run the validator; eyeball both mountains' 7-day strips.
 Done when: both peaks warn on days when the freezing level approaches their summits, and the validator passes.
 
@@ -169,7 +169,7 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 | 1 ✅ | Git + GitHub | S | — |
 | 2 ✅ | Batched fault-tolerant cached fetch | M | — |
 | 3 ✅ | Weather-optional rendering | S | 2 |
-| 4 | Ridgeline fixes 十勝岳・トムラウシ | S | — |
+| 4 ✅ | Ridgeline fixes 十勝岳・トムラウシ | S | — |
 | 5 | Data lint sweep | S | — |
 | 6 | `area` field ×110 + validator rule | M | — |
 | 7 | Regroup mountain list by area | S | 6 |
