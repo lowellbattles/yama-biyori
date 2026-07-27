@@ -104,7 +104,7 @@ Done when: with all requests blocked, both views and every detail page render fu
 Your judgment call as the hiker, but the convention says: 十勝岳 `ridgeline` 1300 → ~2000 (upper route), トムラウシ 1700 → ~2050, keeping each `snow_note`'s treeline *text* (it's good prose — only the number was anchored wrong). Re-run the validator; eyeball both mountains' 7-day strips.
 Done when: both peaks warn on days when the freezing level approaches their summits, and the validator passes.
 
-**Task 5 · Sweep the small lint (B9). — S**
+**Task 5 · Sweep the small lint (B9). — S — ✅ done 2026-07-27** (14 dead route flags removed; 12 missing best-month notes written for 10 mountains, each matched to neighboring notes' tone; both validators now reject `sample:true` without segments so it can't recur; 幌尻岳 precip 2/7 confirmed intentional — its own snow_note documents the deliberate lower thresholds for the ford route, no change needed)
 Remove the 14 meaningless route-level `sample:true` flags (list in review notes: 雨飾山荘コース, 草津白根×2, 白山×3, 荒島岳×2, 祖母山×5, 大浪池周回); add the 10 missing best-month seasonality notes (or drop those months from `best`); add a one-line comment at 幌尻岳's `precip_danger:7` recording whether it's intentional. Update the template comment if any rule changes.
 Done when: validator passes and a fresh stats pass shows 0 segment-less sample flags and 0 best-months-without-notes.
 
@@ -170,7 +170,7 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 | 2 ✅ | Batched fault-tolerant cached fetch | M | — |
 | 3 ✅ | Weather-optional rendering | S | 2 |
 | 4 ✅ | Ridgeline fixes 十勝岳・トムラウシ | S | — |
-| 5 | Data lint sweep | S | — |
+| 5 ✅ | Data lint sweep | S | — |
 | 6 | `area` field ×110 + validator rule | M | — |
 | 7 | Regroup mountain list by area | S | 6 |
 | 8 | Search + filters + hash links | M | 6 |

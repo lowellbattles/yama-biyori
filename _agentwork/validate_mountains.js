@@ -51,6 +51,7 @@ for (var i = 0; i < MOUNTAINS.length; i++) {
         if (rt.grade.official === true && !rt.grade.src) errs.push(tag + " route " + r + ": official without src");
       }
       if (typeof rt.trailhead === "number" && (!m.trailheads || rt.trailhead >= m.trailheads.length)) errs.push(tag + " route " + r + ": trailhead index out of range");
+      if (rt.sample === true && (!rt.segments || !rt.segments.length)) errs.push(tag + " route " + r + ": sample:true without segments (flag renders nowhere)");
     }
   }
   if (m.trailheads) {

@@ -48,6 +48,7 @@ if (m.routes) {
     }
     if (typeof rt.trailhead === "number" && (!m.trailheads || rt.trailhead >= m.trailheads.length)) errs.push(tag + " route " + r + ": trailhead index out of range");
     if (rt.segments && rt.sample !== true) errs.push(tag + " route " + r + ": segments without sample:true");
+    if (rt.sample === true && (!rt.segments || !rt.segments.length)) errs.push(tag + " route " + r + ": sample:true without segments (flag renders nowhere)");
   }
 }
 if (m.trailheads) {
