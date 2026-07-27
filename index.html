@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>山日和 YAMABIYORI — Hiking Planner Prototype</title>
+<meta name="description" content="日本の山の登山計画サイト — 日付から山を選ぶ、山から日を選ぶ。風・雨・凍結高度から理由つきで算出する独自の登山指数と、登山口までの公共交通・山小屋・ルート・季節情報。日本百名山100座を含む110山を収録。">
+<meta property="og:title" content="山日和 YAMABIYORI — Japan Hiking Planner">
+<meta property="og:description" content="風・雨・凍結高度から理由つきで算出する独自の登山指数。公共交通アクセス・山小屋・ルート・季節情報つき。日本百名山100座を含む110山。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg transform='rotate(-6 32 32)'%3E%3Ccircle cx='32' cy='32' r='27' fill='%23F1F3EC' stroke='%23C2452F' stroke-width='5'/%3E%3Ctext x='32' y='43' font-size='30' text-anchor='middle' fill='%23C2452F' font-family='serif' font-weight='700'%3E%E5%B1%B1%3C/text%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -57,6 +63,16 @@ header{padding:28px 0 10px;border-bottom:2px solid var(--ink)}
 .date-chip.active{border-color:var(--shu);box-shadow:0 0 0 1px var(--shu);font-weight:600}
 .date-chip.sat small{color:var(--lake)} .date-chip.sun small{color:var(--shu)}
 
+/* ---------- search & filters ---------- */
+.filters{margin:12px 0 2px}
+.filters input{font-family:var(--gothic);font-size:13px;padding:7px 12px;border:1.5px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);width:min(100%,280px)}
+.filters input:focus{outline:2px solid var(--lake);outline-offset:1px}
+.f-chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 4px;scrollbar-width:thin}
+.f-chip{flex:0 0 auto;font-family:var(--mono);font-size:11px;padding:5px 10px;border:1.5px solid var(--line);background:var(--card);border-radius:4px;cursor:pointer;color:var(--ink)}
+.f-chip.active{background:var(--pine);border-color:var(--pine);color:#fff}
+.f-chip.ga.active{background:var(--grade-a);border-color:var(--grade-a);color:#fff}
+.fcount{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin:8px 0 0}
+
 /* ---------- status / loading ---------- */
 .status{font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding:18px 2px}
 .status.error{color:var(--shu)}
@@ -90,6 +106,7 @@ header{padding:28px 0 10px;border-bottom:2px solid var(--ink)}
 .mlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
 .mlist .mcard{grid-template-columns:1fr;gap:6px}
 .region-head{font-family:var(--mincho);font-size:16px;letter-spacing:.1em;border-left:4px solid var(--pine);padding-left:10px;margin:24px 0 2px}
+.region-head .area-count{font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:0}
 
 /* ---------- detail view ---------- */
 .detail{margin-top:14px}
@@ -177,6 +194,11 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-si
     <div class="date-row" id="dateRow"></div>
   </div>
 
+  <div class="filters" id="filters">
+    <input id="q" type="search" placeholder="山名・山域・県名で検索" aria-label="山を検索">
+    <div class="f-chips" id="fchips"></div>
+  </div>
+
   <div id="status" class="status">Open-Meteo から予報を取得中…</div>
   <main id="main"></main>
 
@@ -193,7 +215,8 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-si
 /* ============================================================
    WEATHER — Open-Meteo fetch + custom grading engine
    ============================================================ */
-const state = { view:"date", dayIndex:0, selected:null, hourIdx:null, routeIdx:0, wx:{}, dates:[], loaded:false, error:false };
+const state = { view:"date", dayIndex:0, selected:null, hourIdx:null, routeIdx:0, wx:{}, dates:[], loaded:false, error:false, fetching:false,
+                prevView:"date", q:"", fArea:null, fHyaku:false, fGradeA:false };
 
 /* One batched Open-Meteo URL for a LIST of mountains — comma-separated
    coordinates; the API answers with an array of results in the same order. */
@@ -321,7 +344,7 @@ function finalizeWx(){
   }else{
     st.className="status"; st.textContent="";
   }
-  buildDateChips(); render();
+  applyHash();  // honors a pasted #/m/<id> link on first load; re-renders in place afterwards
 }
 
 function loadAll(){
@@ -360,6 +383,85 @@ const main = document.getElementById("main");
 const fmtDate = s => { const dt=new Date(s+"T00:00:00"); return (dt.getMonth()+1)+"/"+dt.getDate(); };
 const youbi = s => "日月火水木金土"[new Date(s+"T00:00:00").getDay()];
 
+/* Display order for the 13 areas (north→south) — must match the canonical list
+   in data/mountains.js's template comment and _agentwork/validate_mountains.js. */
+const AREA_ORDER=["北海道","東北","上信越・尾瀬","関東周辺","奥秩父・奥多摩","八ヶ岳・中信高原","北アルプス・御嶽","中央アルプス","南アルプス","富士・伊豆・箱根","北陸・近畿","中国・四国","九州・屋久島"];
+
+/* Mountains matching the current search text + area / 百名山 filters. */
+function filteredMountains(){
+  let list=MOUNTAINS;
+  const q=state.q;
+  if(q){
+    const ql=q.toLowerCase();
+    list=list.filter(m=>m.name_ja.indexOf(q)>=0 || m.name_en.toLowerCase().indexOf(ql)>=0
+      || m.id.indexOf(ql)>=0 || m.region.indexOf(q)>=0 || m.prefecture.indexOf(q)>=0);
+  }
+  if(state.fArea) list=list.filter(m=>m.area===state.fArea);
+  if(state.fHyaku) list=list.filter(m=>m.hyakumeizan);
+  return list;
+}
+
+/* Filter bar is built ONCE (rebuilding it on render would break IME input focus). */
+function buildFilterChips(){
+  const box=document.getElementById("fchips");
+  const mk=(label,cls)=>{const b=document.createElement("button");b.className="f-chip"+(cls?" "+cls:"");b.textContent=label;box.appendChild(b);return b;};
+  const hy=mk("百名山"); hy.id="chip-hy";
+  hy.onclick=()=>{state.fHyaku=!state.fHyaku; render();};
+  const ga=mk("A判定のみ","ga"); ga.id="chip-ga";
+  ga.onclick=()=>{state.fGradeA=!state.fGradeA; render();};
+  AREA_ORDER.forEach(a=>{
+    const b=mk(a); b.dataset.area=a;
+    b.onclick=()=>{state.fArea=(state.fArea===a?null:a); render();};
+  });
+  const q=document.getElementById("q");
+  let composing=false;   // don't filter mid-IME-composition (kana would flash empty results)
+  q.addEventListener("compositionstart",()=>composing=true);
+  q.addEventListener("compositionend",()=>{composing=false; state.q=q.value.trim(); render();});
+  q.addEventListener("input",()=>{ if(!composing){ state.q=q.value.trim(); render(); } });
+}
+
+function syncFilters(){
+  const onList=state.view==="date"||state.view==="mtn";
+  document.getElementById("filters").style.display=onList?"":"none";
+  const ga=document.getElementById("chip-ga");
+  ga.style.display=state.view==="date"?"":"none";
+  ga.classList.toggle("active",state.fGradeA);
+  document.getElementById("chip-hy").classList.toggle("active",state.fHyaku);
+  document.querySelectorAll("#fchips .f-chip[data-area]").forEach(b=>b.classList.toggle("active",state.fArea===b.dataset.area));
+}
+
+/* Hash routing: #/d/<day> | #/mtn | #/m/<id> | #/m/<id>/r/<n>.
+   Links survive reload, and browser Back/Forward navigate the views. */
+function applyHash(){
+  const old=state.view;
+  const parts=location.hash.replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(parts[0]==="m"&&parts[1]){
+    const m=MOUNTAINS.find(x=>x.id===parts[1]);
+    if(!m){ location.replace("#/d/"+state.dayIndex); return; }
+    state.selected=m.id;
+    if(parts[2]==="r"&&m.routes[+parts[3]]){ state.view="route"; state.routeIdx=+parts[3]; }
+    else{ state.view="detail"; if(old!=="detail"&&old!=="route") state.hourIdx=state.dayIndex; }
+    if(old==="date"||old==="mtn") state.prevView=old;
+  }else if(parts[0]==="mtn"){ state.view="mtn"; state.prevView="mtn"; }
+  else{
+    state.view="date"; state.prevView="date";
+    if(parts[0]==="d"){ const i=parseInt(parts[1],10); if(i>=0&&i<state.dates.length) state.dayIndex=i; }
+  }
+  const wasList=old==="date"||old==="mtn", isList=state.view==="date"||state.view==="mtn";
+  if(old!==state.view&&!(wasList&&isList)) window.scrollTo({top:0});
+  buildDateChips(); render();
+}
+
+function setTitle(){
+  let t="日付から探す — 山日和 YAMABIYORI";
+  if(state.view==="mtn") t="山から探す — 山日和 YAMABIYORI";
+  else if(state.view==="detail"||state.view==="route"){
+    const m=MOUNTAINS.find(x=>x.id===state.selected);
+    if(m) t=(state.view==="route"&&m.routes[state.routeIdx] ? m.routes[state.routeIdx].name+"（"+m.name_ja+"）" : m.name_ja+"（"+m.prefecture+"・"+m.elevation+"m）")+" — 山日和";
+  }
+  document.title=t;
+}
+
 function buildDateChips(){
   const row=document.getElementById("dateRow"); row.innerHTML="";
   state.dates.forEach((d,i)=>{
@@ -367,7 +469,10 @@ function buildDateChips(){
     const w=new Date(d+"T00:00:00").getDay();
     b.className="date-chip"+(i===state.dayIndex?" active":"")+(w===6?" sat":w===0?" sun":"");
     b.innerHTML=fmtDate(d)+"<small>"+youbi(d)+(i===0?"・今日":"")+"</small>";
-    b.onclick=()=>{state.dayIndex=i; if(state.view==="detail") state.hourIdx=i; buildDateChips(); render();};
+    b.onclick=()=>{
+      if(state.view==="date"){ location.replace("#/d/"+i); }  // replace: day browsing shouldn't pile up history
+      else { state.dayIndex=i; if(state.view==="detail") state.hourIdx=i; buildDateChips(); render(); }
+    };
     row.appendChild(b);
   });
 }
@@ -381,21 +486,21 @@ function stampHTML(g){ // g=null → grey 「—」 stamp (weather unavailable)
   return '<div class="stamp '+(g?g.toLowerCase():'na')+'"><span class="g">'+(g||'—')+'</span><span class="lbl">YAMABIYORI</span></div>';
 }
 
-function openDetail(id){
-  state.selected=id; state.view="detail"; state.hourIdx=state.dayIndex;
-  render(); window.scrollTo({top:0});
-}
+function openDetail(id){ location.hash="#/m/"+id; }
 
 function renderByDate(){
   const dateStr=state.dates[state.dayIndex];
-  const ranked=MOUNTAINS.map(m=>{
+  let ranked=filteredMountains().map(m=>{
     const wd=state.wx[m.id];
     const d=wd?wd[state.dayIndex]:null;
     const gr=d?gradeDay(m,d):{g:null,reasons:[],warns:[]};
     return {m,d,gr,score:d?["A","B","C"].indexOf(gr.g)*100+(d.wind||0):9999};
   }).sort((a,b)=>a.score-b.score);
+  if(state.fGradeA) ranked=ranked.filter(x=>x.gr.g==="A");
 
-  let html='<div class="cards">';
+  let html=ranked.length<MOUNTAINS.length?'<p class="fcount">'+ranked.length+' / '+MOUNTAINS.length+'山</p>':'';
+  if(!ranked.length){ main.innerHTML=html+'<p class="status">条件に合う山が見つかりません。</p>'; return; }
+  html+='<div class="cards">';
   ranked.forEach(({m,d,gr})=>{
     const season=seasonNoteFor(m,dateStr);
     html+='<article class="mcard" tabindex="0" data-id="'+m.id+'">'
@@ -422,13 +527,15 @@ function renderByDate(){
 }
 
 function renderMtnList(){
-  // group cards by region, in order of first appearance in the data file
-  const regions=[];
-  MOUNTAINS.forEach(m=>{ if(!regions.includes(m.region)) regions.push(m.region); });
-  let html='';
-  regions.forEach(rg=>{
-    html+='<h3 class="region-head">'+rg+'</h3><div class="mlist">';
-    MOUNTAINS.filter(m=>m.region===rg).forEach(m=>{
+  // group cards by the coarse area (fixed 13, north→south); region stays as the card's sub-label
+  const list=filteredMountains();
+  let html=list.length<MOUNTAINS.length?'<p class="fcount">'+list.length+' / '+MOUNTAINS.length+'山</p>':'';
+  if(!list.length){ main.innerHTML=html+'<p class="status">条件に合う山が見つかりません。</p>'; return; }
+  AREA_ORDER.forEach(area=>{
+    const group=list.filter(m=>m.area===area);
+    if(!group.length) return;
+    html+='<h3 class="region-head">'+area+' <span class="area-count">（'+group.length+'）</span></h3><div class="mlist">';
+    group.forEach(m=>{
       const wd=state.wx[m.id]; const gr=wd?gradeDay(m,wd[state.dayIndex]):{g:null,reasons:[],warns:[]};
       html+='<article class="mcard" tabindex="0" data-id="'+m.id+'">'
         +'<div class="mhead"><span class="ja">'+m.name_ja+'</span>'+stampHTML(gr.g)+'</div>'
@@ -509,10 +616,7 @@ function gradeChipsHTML(r){
   return html+'</div>';
 }
 
-function openRoute(i){
-  state.routeIdx=i; state.view="route";
-  render(); window.scrollTo({top:0});
-}
+function openRoute(i){ location.hash="#/m/"+state.selected+"/r/"+i; }
 
 function renderRoute(){
   const m=MOUNTAINS.find(x=>x.id===state.selected);
@@ -554,7 +658,7 @@ function renderRoute(){
 
   html+='</div>';
   main.innerHTML=html;
-  document.getElementById("backBtn").onclick=()=>{state.view="detail"; render();};
+  document.getElementById("backBtn").onclick=()=>{ location.hash="#/m/"+m.id; };
 }
 
 function renderDetail(){
@@ -632,7 +736,7 @@ function renderDetail(){
   html+='</section></div>';
 
   main.innerHTML=html;
-  document.getElementById("backBtn").onclick=()=>{state.view=state.prevView||"date"; state.hourIdx=null; render();};
+  document.getElementById("backBtn").onclick=()=>{ location.hash=(state.prevView==="mtn")?"#/mtn":"#/d/"+state.dayIndex; };
   main.querySelectorAll(".route-card").forEach(c=>{
     const open=()=>openRoute(+c.dataset.ridx);
     c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter")open();};
@@ -651,14 +755,18 @@ function render(){
   if(!state.loaded) return;
   document.getElementById("tab-date").classList.toggle("active",state.view==="date");
   document.getElementById("tab-mtn").classList.toggle("active",state.view==="mtn");
+  syncFilters();
+  setTitle();
   if(state.view==="date") renderByDate();
   else if(state.view==="mtn") renderMtnList();
   else if(state.view==="route") renderRoute();
   else renderDetail();
 }
 
-document.getElementById("tab-date").onclick=()=>{state.view="date"; state.prevView="date"; render();};
-document.getElementById("tab-mtn").onclick=()=>{state.view="mtn"; state.prevView="mtn"; render();};
+document.getElementById("tab-date").onclick=()=>{ location.hash="#/d/"+state.dayIndex; };
+document.getElementById("tab-mtn").onclick=()=>{ location.hash="#/mtn"; };
+window.addEventListener("hashchange",applyHash);
+buildFilterChips();
 loadAll();
 </script>
 </body>

@@ -114,15 +114,15 @@ Done when: validator enforces `area`, every mountain has one, and the area list 
 
 ### Phase 3 — UX that scales to 110+ mountains
 
-**Task 7 · Regroup the 山から探す view by `area`. — S (after Task 6)**
+**Task 7 · Regroup the 山から探す view by `area`. — S (after Task 6) — ✅ done 2026-07-27** (13 headings in north→south order with per-area counts, region stays as each card's sub-label; the optional jump-nav was skipped deliberately — Task 8's area filter chips serve that purpose without duplicate UI)
 Area heading → region shown as a small sub-label on each card. 71 headings become ~12. Optional: a sticky one-line area jump-nav.
 Done when: the mountain list is scannable and every area groups correctly.
 
-**Task 8 · Search, filters, and shareable links. — M**
+**Task 8 · Search, filters, and shareable links. — M — ✅ done 2026-07-27** (search box matches 山名/name_en/id/山域/県名 with IME-composition handling; 13 area chips + 百名山 + A判定のみ toggles, combinable, with N/110 count and empty-state message; hash routes `#/d/<day>` `#/mtn` `#/m/<id>` `#/m/<id>/r/<n>` — pasted links open directly even before weather loads, Back/Forward navigate views, invalid ids fall back to the date view, `document.title` tracks every view; filter bar is built once so typing never loses focus)
 The by-date view is now a 110-card scroll. Add above the list: a text search (matches name_ja / name_en), area chips (from Task 6), a 百名山-only toggle, and on the date view a 「Aのみ」 filter. Plus hash routing so state survives refresh and links work: `#/d/2` (date view day 2), `#/m/tsubakuro`, `#/m/tsubakuro/r/0` — set `document.title` per view. This is also the groundwork for the future multi-page site.
 Done when: filters combine correctly, a pasted `#/m/yari` link opens 槍ヶ岳 directly, and Back/Forward navigate views.
 
-**Task 9 · Page identity: favicon + meta + OG tags. — S**
+**Task 9 · Page identity: favicon + meta + OG tags. — S — ✅ done 2026-07-27** (inline SVG hanko-stamp favicon as data URI — vermillion circle + 山, rotated −6° like the grade stamps; meta description, og:title/description/type, twitter:card. og:image and og:url/canonical deliberately deferred to deploy, Task 14)
 Inline SVG favicon of the hanko grade stamp (data-URI, no new files needed), `<meta name="description">`, OG/Twitter tags. Cheap, removes the 404, makes shared links look intentional.
 Done when: the tab shows the stamp and a link pasted into a chat app unfurls with title + description.
 
@@ -172,9 +172,9 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 | 4 ✅ | Ridgeline fixes 十勝岳・トムラウシ | S | — |
 | 5 ✅ | Data lint sweep | S | — |
 | 6 ✅ | `area` field ×110 + validator rule | M | — |
-| 7 | Regroup mountain list by area | S | 6 |
-| 8 | Search + filters + hash links | M | 6 |
-| 9 | Favicon + meta/OG | S | — |
+| 7 ✅ | Regroup mountain list by area | S | 6 |
+| 8 ✅ | Search + filters + hash links | M | 6 |
+| 9 ✅ | Favicon + meta/OG | S | — |
 | 10 | Small display wins | S | — |
 | 11 | 最終確認日 field | S | — |
 | 12 🔒 | Transit sweeps ×87 mountains | L | 11 helps |
