@@ -1,0 +1,976 @@
+{
+  "summary": "百名山拡張 最終弾: 北陸・近畿・中四国・九州13座で100座完成 (sonnet, lean)",
+  "agentCount": 26,
+  "logs": [
+    "最終弾: 北陸・近畿・中四国・九州13座の作成を開始（research → 単独verify、全sonnet・修正は本セッション）— 完成で百名山100/100",
+    "完了: 4/13 座が一発検証済み（残りは本セッションで修正）"
+  ],
+  "result": [
+    {
+      "id": "hakusan",
+      "status": "issues",
+      "meta": {
+        "id": "hakusan",
+        "name_ja": "白山（御前峰）",
+        "elevation": 2702,
+        "n_trailheads": 2,
+        "n_routes": 3,
+        "n_huts": 4,
+        "validator_ok": true,
+        "main_sources": [
+          "石川県 白山登山ピーク時の交通規制（令和8年）PDF https://www.pref.ishikawa.lg.jp/hakusan/tozaninf/documents/r8_koutuukisei.pdf",
+          "石川県 白山の施設・登山道の状況について https://www.pref.ishikawa.lg.jp/hakusan/tozaninf/attention.html",
+          "一般財団法人 白山観光協会（白山ベストガイド）アクセス・山小屋案内・登山コースPDF https://hakusan-guide.or.jp/",
+          "一般財団法人 白山観光協会 白山室堂 https://hakusan-guide.or.jp/hakusan_stay/murodou/",
+          "白山市地域振興公社（南竜山荘） https://city-hakusan.com/hakusan/naryusanso/",
+          "北陸鉄道 2026年白山登山バス運行案内 https://www.hokutetsu.co.jp/news/news-11388/",
+          "岐阜県高山土木事務所 県道白山公園線の通行止め解除の見通しについて（令和8年5月27日）PDF https://www.pref.gifu.lg.jp/uploaded/attachment/500867.pdf",
+          "白川村役場 平瀬道登山口・大白川園地の通行情報 https://www.vill.shirakawa.lg.jp/2475.htm",
+          "環境省中部環境局 白山大白川線歩道（平瀬道）の通行止めについて https://chubu.env.go.jp/topics_00085.html",
+          "長野県 10県2山域の日本百名山ルート一覧表（岐阜県 山のグレーディング掲載）PDF https://www.pref.nagano.lg.jp/kankoki/sangyo/kanko/documents/hyakumeizangradingroutelist.pdf",
+          "気象庁 白山の火山活動の状況 https://www.data.jma.go.jp/vois/data/report/activity_info/313.html"
+        ]
+      },
+      "issues": [
+        {
+          "where": "trailheads[0].access[0] (北陸鉄道 白山登山バス, season)",
+          "problem": "season表記が「2026年は7/4〜10/13の設定運行日のみ運行」となっているが、北陸鉄道公式ニュース（https://www.hokutetsu.co.jp/news/news-11388/）で確認した2026年運行日カレンダーでは登山便の最終運行日は10/12（月・祝）で、10/13の設定日はない。",
+          "fix_hint": "終了日を「7/4〜10/12」に修正するか、根拠となる正確な運行日範囲を公式カレンダーで再確認して記載する。"
+        },
+        {
+          "where": "huts[2] 南竜山荘.reservation",
+          "problem": "「南竜山荘予約センター（8:00〜17:00）」と記載されているが、公式サイト（https://city-hakusan.com/hakusan/naryusanso/）では受付時間は「9:00〜17:00（13:00〜14:00は受付不可）」となっており、開始時刻と休憩時間の記載が食い違う。",
+          "fix_hint": "reservationを「電話予約（南竜山荘予約センター、9:00〜17:00、13:00〜14:00を除く）」に修正。"
+        },
+        {
+          "where": "trailheads[0].access[1]/[2] のweekday/weekend内の具体時刻（例: 松任便5:30発、市ノ瀬発11:00/15:30、シャトルバス運行時間帯5:00〜15:30・9:30〜16:30等）",
+          "problem": "㈱マップ松任便とシャトルバスの具体時刻・運行時間帯は、今回map.ishikawa.jpや県の運行カレンダーPDFを直接取得して裏取りできておらず、一次情報での確認が未完了。石川県公式ページ（peak2.html）はマイカー規制の存在のみ記載し、時刻表は外部リンク送客だった。",
+          "fix_hint": "map.ishikawa.jp および石川県白山登山交通対策協議会の運行カレンダーPDFを直接取得し、具体時刻・運行時間帯を裏取りしてから確定させること。"
+        }
+      ]
+    },
+    {
+      "id": "arashima",
+      "status": "issues",
+      "meta": {
+        "id": "arashima",
+        "name_ja": "荒島岳",
+        "elevation": 1523,
+        "n_trailheads": 2,
+        "n_routes": 3,
+        "n_huts": 0,
+        "validator_ok": true,
+        "main_sources": [
+          "https://www.city.ono.fukui.jp/kanko/kanko-joho/guide/arashimadake.html",
+          "https://www.city.ono.fukui.jp/kurashi/douro-kotsu/tetsudou/jikokuhyoR40312.html",
+          "https://www.ono-kankou.jp/spot/%E8%8D%92%E5%B3%B6%E5%B2%B3/",
+          "https://www.gsi.go.jp/kihonjohochousa/kihonjohochousa41139.html"
+        ]
+      },
+      "issues": [
+        {
+          "where": "trailheads[0].access[2] (勝原コース 車アクセス) と trailheads[1].access[0] (中出コース 車アクセス)",
+          "problem": "「大野ICから約40分前後」「大野ICから約9km・約15分」という具体的な所要時間・距離が、参照先の公式ページ（大野市観光サイト arashimadake.html）には掲載されていない。公式ページが実際に案内しているのは福井ICと東海北陸自動車道『白鳥IC』経由の所要時間（勝原: 福井IC約1時間10分／白鳥IC約50分、中出: 福井IC約1時間／白鳥IC約1時間）であり、ファイル中の『大野IC』ルートの数値は出典が確認できない（作成者の推測または誤情報の可能性）。",
+          "fix_hint": "公式ページに合わせて『中部縦貫自動車道 大野IC』表記を『北陸自動車道 福井IC／東海北陸自動車道 白鳥IC』に修正するか、大野ICの数値の出典を別途確認できるまで具体的な所要時間の記載を外す。"
+        },
+        {
+          "where": "trailheads[0].access[0]（JR越美北線 時刻表）",
+          "problem": "福井駅発の実際の掲載時刻は9:22, 12:48, 14:54, 16:48, 18:21, 19:04, 20:30, 21:48（WebFetchで確認）であり、ファイルに書かれた17:51・19:22発は越前大野駅発の時刻として記載されているが、これらの時刻が本当に同一列車の連続区間なのか、対応関係（福井駅発→越前大野駅発→勝原駅着の同一便）が公式時刻表ページから明確に裏付けられていない。誤って別々の時間帯の便を接続表記している可能性がある。",
+          "fix_hint": "公式時刻表PDF/HTMLを直接目視し、各行（同一列車）ごとに福井駅発→越前大野駅発→勝原駅着が一致する組み合わせのみ「例:」として残す。"
+        }
+      ]
+    },
+    {
+      "id": "ibuki",
+      "status": "issues",
+      "meta": {
+        "id": "ibuki",
+        "name_ja": "伊吹山",
+        "elevation": 1377,
+        "n_trailheads": 2,
+        "n_routes": 3,
+        "n_huts": 4,
+        "validator_ok": true,
+        "main_sources": [
+          "https://www.city.maibara.lg.jp/mtibuki/about_tozan/index.html (米原市公式・伊吹山登山道の入山規制)",
+          "https://www.city.maibara.lg.jp/mtibuki/question/20666.html (米原市公式・登山道再開について)",
+          "https://www.city.maibara.lg.jp/mtibuki/access/20604.html (米原市公式・伊吹登山口アクセス)",
+          "https://www.city.maibara.lg.jp/mtibuki/about_tozan/20644.html (米原市公式・ドライブウェイ利用登山)",
+          "https://www.city.maibara.lg.jp/mtibuki/about_tozan/20608.html (米原市公式・山頂山小屋一覧)",
+          "https://www.ibukiyama-driveway.jp/guide/ (伊吹山ドライブウェイ公式・営業案内)",
+          "https://www.ibukiyama-driveway.jp/faq/trail-hiking/ (伊吹山ドライブウェイ公式・登山道FAQ)",
+          "https://www.ibukiyama-driveway.jp/sky-terrace/ (伊吹山ドライブウェイ公式・スカイテラス)",
+          "https://www.ohmitetudo.co.jp/bus/timetable/ および関連公式ページ (近江鉄道グループ・湖国バス公式)",
+          "https://taizankan.her.jp/ (対山館公式)",
+          "https://www.shousenkan.com/ (松仙館公式)"
+        ]
+      },
+      "issues": [
+        {
+          "where": "trailheads[0] (伊吹山ドライブウェイ 山頂駐車場) の access",
+          "problem": "山頂駐車場へは近江鉄道グループが運行する公式の季節運行バス「伊吹山登山バス」（JR米原駅⇄スカイテラス伊吹山、2026年は7/18〜8/31毎日・9月土日祝運行、往路8:30米原駅発、公式ページ https://www.ohmitetudo.co.jp/bus/icoico/event/ibukiyamatozanbus2026/ で確認済み）が存在するが、ファイルには自動車アクセスしか記載されておらず、この公式バスがaccess配列に含まれていない。表登山道が全面通行禁止の現状、車を持たない登山者にとって唯一の公共交通手段であり、公式情報源で確認できる内容であるため、抜けはデータ完全性の欠陥。",
+          "fix_hint": "trailheads[0].access に mode:\"バス\", line:\"伊吹山登山バス（近江鉄道グループ）\", from:\"JR米原駅\" のエントリを追加し、sample:true を付けて運行期間・往復時刻・料金（1日乗車券4,000円等）を記載する。"
+        }
+      ]
+    },
+    {
+      "id": "odaigahara",
+      "status": "issues",
+      "meta": {
+        "id": "odaigahara",
+        "name_ja": "大台ヶ原山",
+        "elevation": 1695,
+        "n_trailheads": 2,
+        "n_routes": 3,
+        "n_huts": 2,
+        "validator_ok": true,
+        "main_sources": [
+          "https://www.narakotsu.co.jp/temporary/spring_oodaigahara/ (奈良交通 大台ヶ原直行バス そらかぜ 公式)",
+          "https://www.pref.nara.lg.jp/n094/2977.html (奈良県 大台ヶ原ビジターセンター公式・冬期通行止め情報)",
+          "https://kinki.env.go.jp/nature/odaigahara/west_odai/ (環境省 近畿地方環境事務所 西大台利用調整地区)",
+          "https://www.vill.kamikitayama.nara.jp/kanko/tanoshimu_tsuri_tozann/tozann/132.html (上北山村公式 登山コース情報)",
+          "https://www.cocoro-toujikan.com/ (心・湯治館 公式サイト)",
+          "https://www.momonokigoya.jp/ (桃の木山の家 公式サイト)",
+          "https://www.odaitown.jp/soshiki/yakuba/7/2/2/2481.html (大台町公式 大杉谷登山道情報)",
+          "https://spearl-kotsu.com/mountain-climbining-bus/ (エス・パール交通 大杉峡谷登山バス公式)"
+        ]
+      },
+      "issues": [
+        {
+          "where": "huts[1] 桃の木山の家 (line 38) tel:\"090-6398-8901\"",
+          "problem": "この電話番号は大杉峡谷登山バス（エス・パール交通）の予約専用ダイヤルであり、桃の木山の家の公式サイト（https://www.momonokigoya.jp/）に記載されている宿泊予約専用電話番号は 0597-32-2052。バスの予約番号を小屋の電話番号として誤って転記している。",
+          "fix_hint": "tel を \"0597-32-2052\" に修正する。"
+        },
+        {
+          "where": "trailheads[1].access[0] 大杉峡谷登山バス season（line 32）／huts[1].open（line 38）",
+          "problem": "season/openに『2026年は4/20〜11/23』と記載されているが、エス・パール交通公式サイトの2026年度運行期間は三期制（第一期 4/25〜5/30、第二期 6/6〜9/12、第三期 9/19〜11/21）で、開始日・終了日とも一致しない（4/20開始でも11/23終了でもない）。またweekend欄の『例: 10:30発・登山口着12:00』は通常期の値だが、GW限定期間は9:50発・11:00着など期によって異なり、単一の「例」として一般化するのは不正確。season欄は三期の実際の期間で書き直す必要がある。",
+          "fix_hint": "season を『2026年度は3期制で運行：第一期4/25〜5/30、第二期6/6〜9/12、第三期9/19〜11/21（各期で曜日・運休日が異なる。詳細は公式サイト参照）』のように修正し、huts[1].openの『4/20〜11/23』も同様に修正する。"
+        }
+      ]
+    },
+    {
+      "id": "omine",
+      "status": "issues",
+      "meta": {
+        "id": "omine",
+        "name_ja": "大峰山（八経ヶ岳）",
+        "elevation": 1915,
+        "n_trailheads": 1,
+        "n_routes": 3,
+        "n_huts": 1,
+        "validator_ok": true,
+        "main_sources": [
+          "天川村公式サイト 弥山・八経ヶ岳 https://www.vill.tenkawa.nara.jp/tourism/spot/5189/",
+          "天川村公式サイト 弥山小屋の営業について https://www.vill.tenkawa.nara.jp/tourism/news/6087/",
+          "奈良県観光公式サイト あをによし なら旅ネット 弥山・八経ヶ岳 http://yamatoji.nara-kankou.or.jp/02nature/01mountain/04south_area/hakkyogatake/",
+          "奈良県公式ホームページ 令和7年度冬季通行止め https://www.pref.nara.jp/secure/329584/happyou.pdf",
+          "奈良交通公式 https://www.narakotsu.co.jp/",
+          "千石タクシー公式 料金案内 https://www.sengokutaxi.jp/charge",
+          "環境省 近畿地方環境事務所 オオヤマレンゲ保護柵 https://kinki.env.go.jp/blog/page_00050.html"
+        ]
+      },
+      "issues": [
+        {
+          "where": "trailheads[0].access[2] (車, url:\"https://www.pref.nara.jp/secure/329584/happyou.pdf\")",
+          "problem": "このURLは pref.nara.jp ドメイン全体が pref.nara.lg.jp に301リダイレクトされており、実際には奈良県公式トップページに飛ぶだけでPDFには到達しない。リンク切れ。検索で見つかる現行の告知ページは https://www.pref.nara.jp/60739.htm（これも同様に pref.nara.lg.jp トップへリダイレクトされる＝ドメイン移行済みで旧URLはすべて無効）。国道309号冬期通行止めの令和7年度（2025年12月〜2026年4月）の具体日時「2025年12月3日15時〜2026年4月3日15時」も、検索で確認できたのは令和6年度（2024年12月3日〜2025年4月3日）の実績のみで、令和7年度分の正式発表は未確認。",
+          "fix_hint": "pref.nara.jp配下の新しい告知ページURL（例: 現行の道路情報ページ、または上北山村・天川村の告知PDF）を探して差し替える。令和7年度の具体日時は「例年12月上旬〜4月上旬」等の一般化表現に留め、断定日時は公式発表を確認できるまで削除するか、season文言を「令和6年度実績: 2024年12月3日15時〜2025年4月3日15時（例年同時期に規制）」のように出典年を明記する。"
+        },
+        {
+          "where": "trailheads[0].access[1] (タクシー, duration:\"約1時間10分・約15,450円\")",
+          "problem": "千石タクシーの公式料金ページ(sengokutaxi.jp/charge)には下市口駅からの目的地別運賃が複数掲載されているが、行者還トンネル西口向けの運賃・所要時間は同ページに記載がなく確認できなかった（掲載されているのは世尊寺・下市温泉・洞川温泉・みたらい渓谷・十津川温泉・大台ケ原などで、行者還トンネル西口は含まれない）。15,450円という具体金額の出典が不明。",
+          "fix_hint": "千石タクシーに電話確認するか、同ページに行者還トンネル西口向け運賃が別途記載されていないか再確認する。確認できない場合は具体金額を削除し「要問合せ（下市口駅から約1時間10分程度、要事前予約）」のように具体額を書かない表現に変更する。"
+        },
+        {
+          "where": "trailheads[0].access[0] (バス, weekday/weekend の具体時刻)",
+          "problem": "奈良交通公式サイト(narakotsu.co.jp)のトップページおよび公式時刻表検索(navi.narakotsu.co.jp)を直接確認したが、下市口駅〜天川川合線の具体時刻表データはページ内に見つからなかった（検索機能を使わないと表示されない仕様）。記載されている8:20/9:20/10:20/12:20/13:20/14:20/16:20/17:20等の時刻は民間乗換案内サイトの断片情報と一致する部分はあるが、公式一次情報での直接確認ができていない。",
+          "fix_hint": "navi.narakotsu.co.jp の時刻表検索で「下市口駅」→「天川川合」を実際に検索して一次情報で時刻を裏取りする。確認できるまではsample:trueを維持しつつ、可能なら公式PDF時刻表（天川村サイトに掲載の020401_nara_kotsu_timetable.pdf等）も参照する。"
+        }
+      ]
+    },
+    {
+      "id": "daisen",
+      "status": "verified",
+      "meta": {
+        "id": "daisen",
+        "name_ja": "大山（伯耆大山）",
+        "elevation": 1729,
+        "n_trailheads": 2,
+        "n_routes": 2,
+        "n_huts": 3,
+        "validator_ok": true,
+        "main_sources": [
+          "https://www.env.go.jp/nature/nationalparks/list/daisen-oki/course/01/",
+          "https://tourismdaisen.com/climb/9/",
+          "https://tourismdaisen.com/climb/natsuyama/",
+          "https://tourismdaisen.com/climb/utopia/",
+          "https://tourismdaisen.com/about_daisen/access/",
+          "https://www.pref.tottori.lg.jp/175622.htm",
+          "https://www.pref.tottori.lg.jp/175468.htm",
+          "https://www.pref.tottori.lg.jp/127936.htm",
+          "https://www.nihonkotsu.jp/bus_local/yonago/index.html",
+          "https://www.nihonkotsu.jp/bus_local/yonago/pdf/time/daisen_nobori20240901.pdf",
+          "https://www.nihonkotsu.jp/bus_local/yonago/pdf/time/daisen_kudari20240901.pdf",
+          "https://www.masumizu.net/lift.html",
+          "https://www.masumizu.net/access.html",
+          "https://daisen-museum.jp/tradition/e639/"
+        ]
+      },
+      "issues": []
+    },
+    {
+      "id": "tsurugisan",
+      "status": "verified",
+      "meta": {
+        "id": "tsurugisan",
+        "name_ja": "剣山",
+        "elevation": 1955,
+        "n_trailheads": 1,
+        "n_routes": 3,
+        "n_huts": 2,
+        "validator_ok": true,
+        "main_sources": [
+          "剣山観光登山リフト株式会社 公式サイト https://turugirift.com/guide.html （運行期間・時刻・料金・道路状況）",
+          "つるぎ町 公式サイト「令和8年度 剣山登山バス運行」 https://www.town.tokushima-tsurugi.lg.jp/docs/2343466.html （PDF時刻表・運行日カレンダー）",
+          "三好市 公式サイト「R8年度かずら橋・剣山運行日早見表」 https://www.miyoshi.i-tokushima.jp/docs/860375.html （東祖谷スクールバス時刻表PDF）",
+          "剣山頂上ヒュッテ 公式サイト https://tsurugisan-hutte.com/",
+          "美馬市 公式観光サイト（一の森ヒュッテ） https://www.city.mima.lg.jp/kanko/map/list/4042.html",
+          "にし阿波～剣山・吉野川観光圏 公式サイト「剣山の主要な登山コース」PDF https://nishi-awa.jp/nishi-awa/wp-content/uploads/2023/05/剣山の主要な登山コース.pdf",
+          "10県2山域の日本百名山ルート一覧表（信州県公表PDF）で剣山系の行が存在しないことを確認 → grade.official:false",
+          "国土地理院基準点成果等閲覧サービス由来の座標（三角点「剣山」33°51'13.00\"N 134°05'39.40\"E）"
+        ]
+      },
+      "issues": []
+    },
+    {
+      "id": "ishizuchi",
+      "status": "issues",
+      "meta": {
+        "id": "ishizuchi",
+        "name_ja": "石鎚山",
+        "elevation": 1982,
+        "n_trailheads": 2,
+        "n_routes": 4,
+        "n_huts": 3,
+        "validator_ok": true,
+        "main_sources": [
+          "https://www.gsi.go.jp/KOKUJYOHO/MOUNTAIN/1003zan20260331.csv (国土地理院 標高/座標)",
+          "https://www.pref.nagano.lg.jp/kankoki/sangyo/kanko/documents/hyakumeizangradingroutelist.pdf (石鎚山系 山のグレーディング No.191-194)",
+          "https://www.ishizuchi.com/rw-2 (石鎚登山ロープウェイ 運行時間)",
+          "https://www.setouchibus.co.jp/rosen/pdf/time/13_nishinokawa.pdf (せとうちバス 西之川線 時刻表)",
+          "https://www.pref.ehime.jp/page/1209.html (愛媛県庁 石鎚スカイライン運行情報)",
+          "https://sanso.ishizuchisan.jp/reserve (石鎚神社頂上山荘)",
+          "https://ishizuchikanko.com/ishizuchi_hotel/ (国民宿舎石鎚)",
+          "https://ishizuchikanko.com/shiraishilodge/ (土小屋白石ロッジ)"
+        ]
+      },
+      "issues": [
+        {
+          "where": "trailheads[0].access[1] (石鎚登山ロープウェイ) season フィールド",
+          "problem": "「例年4月上旬に定期点検で数日全便運休あり」と記載されているが、公式サイト（https://www.ishizuchi.com/rw-2）を確認すると実際の運休期間は「令和8年4月6日（月）～4月24日（金）」で約19日間（約3週間）に及ぶ。「数日」という表現は運休期間を大幅に過小評価しており誤り。",
+          "fix_hint": "season文言を「例年4月上旬〜中旬に定期点検で約3週間、全便運休あり（2026年は4/6〜4/24）」等に修正する。"
+        }
+      ]
+    },
+    {
+      "id": "sobo",
+      "status": "issues",
+      "meta": {
+        "id": "sobo",
+        "name_ja": "祖母山",
+        "elevation": 1756,
+        "n_trailheads": 3,
+        "n_routes": 5,
+        "n_huts": 1,
+        "validator_ok": true,
+        "main_sources": [
+          "https://www.pref.nagano.lg.jp/kankoki/sangyo/kanko/documents/hyakumeizangradingroutelist.pdf",
+          "https://www.town-takachiho.jp/",
+          "https://sobokatamuki-br-council.org/",
+          "https://www.taketa-businfo.jp/unesco/index.html",
+          "https://www.bungo-ohno.jp/docs/2020092900017/",
+          "https://www.visit-oita.jp/",
+          "https://www.shinwa-koutsu.com/"
+        ]
+      },
+      "issues": [
+        {
+          "where": "trailheads[1] (神原登山口).access[0].duration",
+          "problem": "sobo.jsは「約35分」と記載しているが、リンク先の公式サイト（カモシカ号タケタ運行情報 taketa-businfo.jp/unesco）を実読すると『豊後竹田駅～祖母山神原登山口は約30分』と明記されている。5分の食い違い。",
+          "fix_hint": "公式サイトの記載に合わせ「約30分」に修正するか、根拠を再確認する。"
+        },
+        {
+          "where": "trailheads[2] (尾平登山口).access[0]（長谷川線コミュニティバス）",
+          "problem": "urlに指定されたhttps://www.bungo-ohno.jp/docs/2020092900017/ を実際に開いて確認したところ、掲載されている路線は三重町・清川緒方・朝地・大野・犬飼の各地域のみで、長谷川線・尾平鉱山方面のダイヤは同ページに見当たらなかった。緒方駅発11:25/13:30/16:20、尾平鉱山着12:38という具体的な時刻・上滑迫止まりの区間情報が、指定urlでは裏取りできない。",
+          "fix_hint": "豊後大野市の該当時刻表ページ（長谷川線）の正しいURLを特定し直し、記載時刻を実際のPDF/時刻表で再確認する。確認できなければ具体時刻の記載を外すかsample:trueのまま概算表現に留める。"
+        },
+        {
+          "where": "huts[0]（祖母山九合目避難小屋）.url",
+          "problem": "urlに指定されたhttps://sobokatamuki-br-council.org/ は「祖母・傾・大崩ユネスコエコパーク推進協議会」の公式サイトだが、実際にページ内容を確認したところ祖母山九合目避難小屋についての記載は見当たらなかった。バイオトイレ設置・増水時使用不可等の具体的な小屋情報の出典として、このurlは内容的に裏付けにならない。",
+          "fix_hint": "避難小屋の情報を実際に掲載している公式ページ（大分県・宮崎県の登山道管理者、あるいは緒方町・高千穂町等の観光課ページ等）を探して差し替えるか、出典が見つからない場合は記述を一般的な内容に留めてurlを空にする。"
+        }
+      ]
+    },
+    {
+      "id": "aso",
+      "status": "verified",
+      "meta": {
+        "id": "aso",
+        "name_ja": "阿蘇山（高岳）",
+        "elevation": 1592,
+        "n_trailheads": 2,
+        "n_routes": 3,
+        "n_huts": 0,
+        "validator_ok": true,
+        "main_sources": [
+          "気象庁 阿蘇山の火山活動解説 https://www.jma.go.jp/jma/press/2606/21a/20260621_asosan.html",
+          "気象庁 阿蘇山の火山活動の状況（2026年7月17日発表） https://www.data.jma.go.jp/vois/data/report/activity_info/503.html",
+          "産交バス 阿蘇登山線（阿蘇駅⇔阿蘇山上ターミナル） https://www.sankobus.jp/bus/asosen/",
+          "産交バス 阿蘇登山線 時刻表PDF（2026年5月11日改正） https://www.sankobus.jp/busportal/wp-content/uploads/tt-asotozansen-20260511.pdf",
+          "九州地方環境局 阿蘇中岳火口見学の閉鎖と砂千里ヶ浜の通行について（2026年6月12日更新） https://kyushu.env.go.jp/topics_00254.html",
+          "阿蘇市ホームページ 阿蘇高岳・中岳新ルート https://www.city.aso.kumamoto.jp/tourism/spot/mt_aso_newroot/",
+          "阿蘇市ホームページ 阿蘇山登山 https://www.city.aso.kumamoto.jp/tourism/event_tourist/mountain-climbing/",
+          "阿蘇山上ビジターセンター 登山情報 https://aso-visitorcenter.com/climbing-information/",
+          "阿蘇市観光協会 高岳 https://www.asocity-kanko.jp/spot/takadake/"
+        ]
+      },
+      "issues": []
+    },
+    {
+      "id": "kirishima",
+      "status": "issues",
+      "meta": {
+        "id": "kirishima",
+        "name_ja": "霧島山（韓国岳）",
+        "elevation": 1700,
+        "n_trailheads": 2,
+        "n_routes": 3,
+        "n_huts": 1,
+        "validator_ok": true,
+        "main_sources": [
+          "気象庁 火山登山者向け情報ページ https://www.jma.go.jp/bosai/volcano/",
+          "気象庁 霧島山（新燃岳）噴火警戒レベル引上げ発表 https://www.jma.go.jp/jma/press/2503/30a/20250330_shinmoedake.html",
+          "宮崎県 霧島山の火山活動に関する情報提供 https://www.pref.miyazaki.lg.jp/kiki-kikikanri/bosai/saigai/kirisima.html",
+          "霧島市公式 霧島山（新燃岳）の火山活動に関する情報 https://www.city-kirishima.jp/anshin/iouyama/20171011shinmoedake.html",
+          "えびの市公式 えびの高原登山道等の規制状況について（令和7年10月17日更新） https://www.city.ebino.lg.jp/soshiki/kankoshoko/3/5234.html",
+          "霧島市公式 大浪池登山道についてのお知らせ https://www.city-kirishima.jp/kanko/oonamiiketozando.html",
+          "霧島市公式 大浪池登山道マップPDF https://www.city-kirishima.jp/kanko/documents/oonamiiketozando0906.pdf",
+          "環境省 霧島錦江湾国立公園 韓国岳・大浪池登山コース https://www.env.go.jp/nature/nationalparks/list/kirishima-kinkowan/course/01/",
+          "霧島市公式 霧島連山周遊バス案内 https://www.city-kirishima.jp/kirikan/kanko/bus/renzan.html",
+          "霧島市公式 霧島連山周遊バス時刻表PDF https://www.city-kirishima.jp/kirikan/kanko/shizen/documents/mtkirishimaexcursionbustimetable.pdf",
+          "霧島市公式 きりしまバス旅（バス発着時刻表・路線マップ、2026年4月1日現在）PDF https://www.city-kirishima.jp/kirikan/kanko/leisure/documents/bustabijapanese.pdf",
+          "霧島市公式 霧島神宮アクセスバス案内 https://www.city-kirishima.jp/kirikan/kanko/bus/kirishimajingubus.html",
+          "えびの市公式 鹿児島空港からえびの市までの公共交通機関案内 https://www.city.ebino.lg.jp/soshiki/kikaku/17/4892.html",
+          "国土地理院国土基本図に基づく韓国岳の座標・標高（ja.wikipedia.org経由で確認、出典は国土地理院）"
+        ]
+      },
+      "issues": [
+        {
+          "where": "grading.snow_note / routes[0].note / seasonality.notes[7] — 新燃岳・韓国岳周辺の噴火警戒レベル記載",
+          "problem": "ファイルは「2026年7月現在、新燃岳は噴火警戒レベル2、硫黄山・御鉢・大幡池はレベル1」と断定しているが、気象庁の噴火警戒レベルページはJS描画でWebFetch不可、代替の静的URLも軒並み404で、2026年7月24日時点の現況として独立検証できなかった。活火山の警戒レベル・入山可否は安全に直結する必須確認事項であり、未確認のまま合格にはできない。",
+          "fix_hint": "気象庁 噴火警戒レベル一覧（https://www.jma.go.jp/bosai/volcano/）をブラウザで直接開き最新レベルを確認するか、霧島市・えびの市の防災ページで現況を再確認してから記述を更新する。"
+        }
+      ]
+    },
+    {
+      "id": "kaimon",
+      "status": "issues",
+      "meta": {
+        "id": "kaimon",
+        "name_ja": "開聞岳",
+        "elevation": 924,
+        "n_trailheads": 1,
+        "n_routes": 1,
+        "n_huts": 0,
+        "validator_ok": true,
+        "main_sources": [
+          "https://www.ibusuki.or.jp/tourism/play/kaimonpark/climbing (いぶすき観光ネット／指宿市観光協会 公式・登山道の合目別コースタイム、持ち物、トイレなし等)",
+          "https://www.city.ibusuki.lg.jp/kosodate/park/kaimon/14609.html (指宿市公式・かいもん山麓ふれあい公園の駐車場80台・施設情報)",
+          "https://www.ibusuki.or.jp/tourism/play/kaimonpark/ (いぶすき観光ネット公式・公園概要、JR開聞駅から徒歩20分)",
+          "https://www.jrkyushu-timetable.jp/cgi-bin/sp/sp-tt_dep.cgi/2893200/ (JR九州公式駅別時刻表・開聞駅発車時刻)",
+          "https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php (国土地理院公式標高API・山頂924m/登山口約123mの標高確認)",
+          "https://www.data.jma.go.jp/vois/data/filing/level/keikailevel.html (気象庁公式・噴火警戒レベル運用火山一覧に開聞岳が含まれないことを確認)"
+        ]
+      },
+      "issues": [
+        {
+          "where": "grading/routes note: 「活火山だが2026年7月時点で気象庁の噴火警戒レベル運用対象外（同庁公表の運用火山リストに含まれず）」",
+          "problem": "この安全性に関わる記述をJMA公式サイト(www.jma.go.jp / www.data.jma.go.jp)で直接確認しようと複数URLを試みたが、いずれも404またはJS読み込みエラーで一次資料に到達できなかった。一方、ja.wikipediaの開聞岳記事の要約では『活火山ランクC』かつ『気象庁の噴火警戒レベル対象火山』との記述が出ており、ファイルの主張と矛盾する可能性がある（ただしこの要約は小型モデルによる自動要約でありinfobox上の異なる分類(活火山ランク vs 噴火警戒レベル運用)を混同している可能性もある）。日本の活火山のうち噴火警戒レベルが運用されているのは約50火山のみで、開聞岳は活動が低調なため対象外というのが一般的理解と一致するが、公的一次資料での確証が取れなかった。",
+          "fix_hint": "気象庁の火山活動解説資料または『噴火警戒レベルの運用が行われている火山」の公式一覧ページ（気象庁トップ→防災情報→噴火警報・予報→火山名一覧）を直接ブラウザで開いて開聞岳の記載有無を確認してから確定する。"
+        },
+        {
+          "where": "trailheads[0].access[2] (車アクセス) の note「利用時は記帳が必要」",
+          "problem": "指宿市公式ページ(city.ibusuki.lg.jp)を実際にWebFetchで確認したが、駐車場80台という数字は一致したものの、来園時の『記帳が必要』という記述はページ本文からは確認できなかった。",
+          "fix_hint": "指宿市公式ページの該当箇所を目視確認するか、公園管理棟(0993-32-5566)に照会して裏取りするか、確認できなければ記述を削除する。"
+        }
+      ]
+    },
+    {
+      "id": "miyanoura",
+      "status": "verified",
+      "meta": {
+        "id": "miyanoura",
+        "name_ja": "宮之浦岳",
+        "elevation": 1936,
+        "n_trailheads": 2,
+        "n_routes": 2,
+        "n_huts": 2,
+        "validator_ok": true,
+        "main_sources": [
+          "世界自然遺産屋久島山岳部環境保全協力金 公式サイト（屋久島山岳部保全利用協議会） http://yakushima-tozan.com/kyouryokukin/ と /bus/ — 保全協力金1,000/2,000円、荒川登山バス時刻表・マイカー規制",
+          "屋久島観光協会 公式バス時刻表PDF（種子島・屋久島交通、2026年3月1日改正） https://yakukan.jp/wp-content/uploads/2026/02/ilovepdf_merged.pdf — 合庁前⇒紀元杉、宮之浦港⇒屋久杉自然館の時刻",
+          "環境省 屋久島世界遺産センター 登山ルートページ https://www.env.go.jp/park/yakushima/ywhcc/route/4-2.html, /4-3.html, /tozan/huts.html — ルート距離・体力度・避難小屋収容人数",
+          "屋久島町公式サイト（宮之浦岳ページ） https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/yama/856.html — 標高1,936m、淀川登山口からの往復所要時間9〜10時間",
+          "10県2山域「日本百名山ルート一覧表」（長野県公式PDF） https://www.pref.nagano.lg.jp/kankoki/sangyo/kanko/documents/hyakumeizangradingroutelist.pdf — 屋久島/宮之浦岳の掲載なしを確認、routes は official:false と判断"
+        ]
+      },
+      "issues": []
+    }
+  ],
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Research"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "research:hakusan",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a1106e548400e4630",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851208985,
+      "queuedAt": 1784851204112,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "hakusan",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「白山」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n-…",
+      "lastProgressAt": 1784851873767,
+      "tokens": 155420,
+      "toolCalls": 55,
+      "durationMs": 664782,
+      "resultPreview": "{\"id\":\"hakusan\",\"name_ja\":\"白山（御前峰）\",\"elevation\":2702,\"n_trailheads\":2,\"n_routes\":3,\"n_huts\":4,\"validator_ok\":true,\"main_sources\":[\"石川県 白山登山ピーク時の交通規制（令和8年）PDF https://www.pref.ishikawa.lg.jp/hakusan/tozaninf/documents/r8_koutuukisei.pdf\",\"石川県 白山の施設・登山道の状況について https://www.pref.ishikawa.lg.jp/hakusan/tozaninf/attention.html\",\"一般財団法人 白山観光協会（白山ベストガイド）アクセス・山小屋案内・登山コースPDF https://hakusan-guide.or.jp/\",\"一…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "research:arashima",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a531141f78ff42bfa",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851208317,
+      "queuedAt": 1784851204112,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "arashima",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「荒島岳」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n…",
+      "lastProgressAt": 1784851788478,
+      "tokens": 97202,
+      "toolCalls": 55,
+      "durationMs": 580161,
+      "resultPreview": "{\"id\":\"arashima\",\"name_ja\":\"荒島岳\",\"elevation\":1523,\"n_trailheads\":2,\"n_routes\":3,\"n_huts\":0,\"validator_ok\":true,\"main_sources\":[\"https://www.city.ono.fukui.jp/kanko/kanko-joho/guide/arashimadake.html\",\"https://www.city.ono.fukui.jp/kurashi/douro-kotsu/tetsudou/jikokuhyoR40312.html\",\"https://www.ono-kankou.jp/spot/%E8%8D%92%E5%B3%B6%E5%B2%B3/\",\"https://www.gsi.go.jp/kihonjohochousa/kihonjohochousa41…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "research:ibuki",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "ab9e6d4b94f2306b7",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851207769,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "ibuki",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「伊吹山」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n…",
+      "lastProgressAt": 1784851601858,
+      "tokens": 79287,
+      "toolCalls": 33,
+      "durationMs": 394089,
+      "resultPreview": "{\"id\":\"ibuki\",\"name_ja\":\"伊吹山\",\"elevation\":1377,\"n_trailheads\":2,\"n_routes\":3,\"n_huts\":4,\"validator_ok\":true,\"main_sources\":[\"https://www.city.maibara.lg.jp/mtibuki/about_tozan/index.html (米原市公式・伊吹山登山道の入山規制)\",\"https://www.city.maibara.lg.jp/mtibuki/question/20666.html (米原市公式・登山道再開について)\",\"https://www.city.maibara.lg.jp/mtibuki/access/20604.html (米原市公式・伊吹登山口アクセス)\",\"https://www.city.maibara.lg.jp/mtib…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "research:odaigahara",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a7bf096c152e19d94",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851206439,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "odaigahara",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「大台ヶ原山」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）…",
+      "lastProgressAt": 1784851480660,
+      "tokens": 72237,
+      "toolCalls": 30,
+      "durationMs": 274221,
+      "resultPreview": "{\"id\":\"odaigahara\",\"name_ja\":\"大台ヶ原山\",\"elevation\":1695,\"n_trailheads\":2,\"n_routes\":3,\"n_huts\":2,\"validator_ok\":true,\"main_sources\":[\"https://www.narakotsu.co.jp/temporary/spring_oodaigahara/ (奈良交通 大台ヶ原直行バス そらかぜ 公式)\",\"https://www.pref.nara.lg.jp/n094/2977.html (奈良県 大台ヶ原ビジターセンター公式・冬期通行止め情報)\",\"https://kinki.env.go.jp/nature/odaigahara/west_odai/ (環境省 近畿地方環境事務所 西大台利用調整地区)\",\"https://www.vill.kamikitayam…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "research:omine",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "ab8390e1e66ce1a68",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851207335,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "omine",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「大峰山（八経ヶ岳）」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイ…",
+      "lastProgressAt": 1784851590179,
+      "tokens": 83837,
+      "toolCalls": 35,
+      "durationMs": 382844,
+      "resultPreview": "{\"id\":\"omine\",\"name_ja\":\"大峰山（八経ヶ岳）\",\"elevation\":1915,\"n_trailheads\":1,\"n_routes\":3,\"n_huts\":1,\"validator_ok\":true,\"main_sources\":[\"天川村公式サイト 弥山・八経ヶ岳 https://www.vill.tenkawa.nara.jp/tourism/spot/5189/\",\"天川村公式サイト 弥山小屋の営業について https://www.vill.tenkawa.nara.jp/tourism/news/6087/\",\"奈良県観光公式サイト あをによし なら旅ネット 弥山・八経ヶ岳 http://yamatoji.nara-kankou.or.jp/02nature/01mountain/04south_area/hakkyogatake/\",\"奈良県公式ホーム…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "research:daisen",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "ac79642e8b8d50b75",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851209761,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "daisen",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「大山（伯耆大山）」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト…",
+      "lastProgressAt": 1784851745278,
+      "tokens": 123912,
+      "toolCalls": 48,
+      "durationMs": 535517,
+      "resultPreview": "{\"id\":\"daisen\",\"name_ja\":\"大山（伯耆大山）\",\"elevation\":1729,\"n_trailheads\":2,\"n_routes\":2,\"n_huts\":3,\"validator_ok\":true,\"main_sources\":[\"https://www.env.go.jp/nature/nationalparks/list/daisen-oki/course/01/\",\"https://tourismdaisen.com/climb/9/\",\"https://tourismdaisen.com/climb/natsuyama/\",\"https://tourismdaisen.com/climb/utopia/\",\"https://tourismdaisen.com/about_daisen/access/\",\"https://www.pref.tottori…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "research:tsurugisan",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a2c839ffb30308ba5",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851208719,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "tsurugisan",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「剣山」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n-…",
+      "lastProgressAt": 1784851576728,
+      "tokens": 105804,
+      "toolCalls": 34,
+      "durationMs": 368009,
+      "resultPreview": "{\"id\":\"tsurugisan\",\"name_ja\":\"剣山\",\"elevation\":1955,\"n_trailheads\":1,\"n_routes\":3,\"n_huts\":2,\"validator_ok\":true,\"main_sources\":[\"剣山観光登山リフト株式会社 公式サイト https://turugirift.com/guide.html （運行期間・時刻・料金・道路状況）\",\"つるぎ町 公式サイト「令和8年度 剣山登山バス運行」 https://www.town.tokushima-tsurugi.lg.jp/docs/2343466.html （PDF時刻表・運行日カレンダー）\",\"三好市 公式サイト「R8年度かずら橋・剣山運行日早見表」 https://www.miyoshi.i-tokushima.jp/docs/860375.html （東祖谷スクールバス…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "research:ishizuchi",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a4bfeeaa3caa05ecd",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851206867,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "ishizuchi",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「石鎚山」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n…",
+      "lastProgressAt": 1784851724254,
+      "tokens": 123425,
+      "toolCalls": 42,
+      "durationMs": 517387,
+      "resultPreview": "{\"id\":\"ishizuchi\",\"name_ja\":\"石鎚山\",\"elevation\":1982,\"n_trailheads\":2,\"n_routes\":4,\"n_huts\":3,\"validator_ok\":true,\"main_sources\":[\"https://www.gsi.go.jp/KOKUJYOHO/MOUNTAIN/1003zan20260331.csv (国土地理院 標高/座標)\",\"https://www.pref.nagano.lg.jp/kankoki/sangyo/kanko/documents/hyakumeizangradingroutelist.pdf (石鎚山系 山のグレーディング No.191-194)\",\"https://www.ishizuchi.com/rw-2 (石鎚登山ロープウェイ 運行時間)\",\"https://www.setouchi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "research:sobo",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "adbc0d0962a01ef5f",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851209412,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "sobo",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「祖母山」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n…",
+      "lastProgressAt": 1784851790522,
+      "tokens": 141684,
+      "toolCalls": 52,
+      "durationMs": 581110,
+      "resultPreview": "{\"id\":\"sobo\",\"name_ja\":\"祖母山\",\"elevation\":1756,\"n_trailheads\":3,\"n_routes\":5,\"n_huts\":1,\"validator_ok\":true,\"main_sources\":[\"https://www.pref.nagano.lg.jp/kankoki/sangyo/kanko/documents/hyakumeizangradingroutelist.pdf\",\"https://www.town-takachiho.jp/\",\"https://sobokatamuki-br-council.org/\",\"https://www.taketa-businfo.jp/unesco/index.html\",\"https://www.bungo-ohno.jp/docs/2020092900017/\",\"https://www…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "research:aso",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "ab1d642291736ef89",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851206078,
+      "queuedAt": 1784851204113,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "aso",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「阿蘇山（高岳）」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含…",
+      "lastProgressAt": 1784851492158,
+      "tokens": 77518,
+      "toolCalls": 31,
+      "durationMs": 286080,
+      "resultPreview": "{\"id\":\"aso\",\"name_ja\":\"阿蘇山（高岳）\",\"elevation\":1592,\"n_trailheads\":2,\"n_routes\":3,\"n_huts\":0,\"validator_ok\":true,\"main_sources\":[\"気象庁 阿蘇山の火山活動解説 https://www.jma.go.jp/jma/press/2606/21a/20260621_asosan.html\",\"気象庁 阿蘇山の火山活動の状況（2026年7月17日発表） https://www.data.jma.go.jp/vois/data/report/activity_info/503.html\",\"産交バス 阿蘇登山線（阿蘇駅⇔阿蘇山上ターミナル） https://www.sankobus.jp/bus/asosen/\",\"産交バス 阿蘇登山線 時刻表PDF（2026年5月11日改正）…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "research:kirishima",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a5c00fbc03f83b968",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851485014,
+      "queuedAt": 1784851204114,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "kirishima",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「霧島山（韓国岳）」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト…",
+      "lastProgressAt": 1784851970485,
+      "tokens": 105793,
+      "toolCalls": 50,
+      "durationMs": 485471,
+      "resultPreview": "{\"id\":\"kirishima\",\"name_ja\":\"霧島山（韓国岳）\",\"elevation\":1700,\"n_trailheads\":2,\"n_routes\":3,\"n_huts\":1,\"validator_ok\":true,\"main_sources\":[\"気象庁 火山登山者向け情報ページ https://www.jma.go.jp/bosai/volcano/\",\"気象庁 霧島山（新燃岳）噴火警戒レベル引上げ発表 https://www.jma.go.jp/jma/press/2503/30a/20250330_shinmoedake.html\",\"宮崎県 霧島山の火山活動に関する情報提供 https://www.pref.miyazaki.lg.jp/kiki-kikikanri/bosai/saigai/kirisima.html\",\"霧島市公式 霧島山（新燃岳）の火山活動…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "research:kaimon",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "ab9d17352674c2952",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851497803,
+      "queuedAt": 1784851204114,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "kaimon",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「開聞岳」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n…",
+      "lastProgressAt": 1784851912221,
+      "tokens": 86950,
+      "toolCalls": 36,
+      "durationMs": 414418,
+      "resultPreview": "{\"id\":\"kaimon\",\"name_ja\":\"開聞岳\",\"elevation\":924,\"n_trailheads\":1,\"n_routes\":1,\"n_huts\":0,\"validator_ok\":true,\"main_sources\":[\"https://www.ibusuki.or.jp/tourism/play/kaimonpark/climbing (いぶすき観光ネット／指宿市観光協会 公式・登山道の合目別コースタイム、持ち物、トイレなし等)\",\"https://www.city.ibusuki.lg.jp/kosodate/park/kaimon/14609.html (指宿市公式・かいもん山麓ふれあい公園の駐車場80台・施設情報)\",\"https://www.ibusuki.or.jp/tourism/play/kaimonpark/ (いぶすき観光ネット公式・公園概要…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 13,
+      "label": "research:miyanoura",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a544aca5481b5785e",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851579601,
+      "queuedAt": 1784851204114,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "miyanoura",
+      "promptPreview": "あなたは登山サイト「山日和」のデータ作成担当です。日本百名山「宮之浦岳」の完全なデータオブジェクト（1山＝1 JSオブジェクト）を作成してください。\n\n【最初にやること】\n1. Read で C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\data\\mountains.js の先頭105行を読む（スキーマのテンプレートと燕岳のフル実例）。さらに459行目から45行（那須岳のコンパクトな実例）も読む。テンプレートにあるフィールドだけを使い、新しいフィールドを発明しない。\n2. 情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。…",
+      "lastProgressAt": 1784851907590,
+      "tokens": 129408,
+      "toolCalls": 37,
+      "durationMs": 327989,
+      "resultPreview": "{\"id\":\"miyanoura\",\"name_ja\":\"宮之浦岳\",\"elevation\":1936,\"n_trailheads\":2,\"n_routes\":2,\"n_huts\":2,\"validator_ok\":true,\"main_sources\":[\"世界自然遺産屋久島山岳部環境保全協力金 公式サイト（屋久島山岳部保全利用協議会） http://yakushima-tozan.com/kyouryokukin/ と /bus/ — 保全協力金1,000/2,000円、荒川登山バス時刻表・マイカー規制\",\"屋久島観光協会 公式バス時刻表PDF（種子島・屋久島交通、2026年3月1日改正） https://yakukan.jp/wp-content/uploads/2026/02/ilovepdf_merged.pdf — 合庁前⇒紀元杉、宮之浦港⇒屋久杉自然館の時刻\",\"環境省 屋久…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 14,
+      "label": "verify:odaigahara",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a7b977efabc438eed",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851593311,
+      "queuedAt": 1784851483023,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「大台ヶ原山」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\odaigahara.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情…",
+      "lastProgressAt": 1784851657441,
+      "tokens": 46862,
+      "toolCalls": 11,
+      "durationMs": 64130,
+      "resultPreview": "{\"pass\":false,\"issues\":[{\"where\":\"huts[1] 桃の木山の家 (line 38) tel:\\\"090-6398-8901\\\"\",\"problem\":\"この電話番号は大杉峡谷登山バス（エス・パール交通）の予約専用ダイヤルであり、桃の木山の家の公式サイト（https://www.momonokigoya.jp/）に記載されている宿泊予約専用電話番号は 0597-32-2052。バスの予約番号を小屋の電話番号として誤って転記している。\",\"fix_hint\":\"tel を \\\"0597-32-2052\\\" に修正する。\"},{\"where\":\"trailheads[1].access[0] 大杉峡谷登山バス season（line 32）／huts[1].open（line 38）\",\"problem\":\"season/openに『2026年は4/20〜11/…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 15,
+      "label": "verify:aso",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a39e6921594571f84",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851605279,
+      "queuedAt": 1784851493609,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「阿蘇山（高岳）」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\aso.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書く。…",
+      "lastProgressAt": 1784851704136,
+      "tokens": 54081,
+      "toolCalls": 19,
+      "durationMs": 98857,
+      "resultPreview": "{\"pass\":true,\"issues\":[]}"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 16,
+      "label": "verify:tsurugisan",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a4e5977c4a83d61ec",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851660874,
+      "queuedAt": 1784851578106,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「剣山」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\tsurugisan.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書…",
+      "lastProgressAt": 1784851748228,
+      "tokens": 52069,
+      "toolCalls": 15,
+      "durationMs": 87353,
+      "resultPreview": "{\"pass\":true,\"issues\":[{\"where\":\"trailheads[0].access[2]（三好市営バス／東祖谷スクールバス）の weekday/weekend 例: 時刻（久保発10:20/13:18）\",\"problem\":\"三好市の該当ページ本文には具体的な時刻が記載されておらず、詳細はPDF「R8年度かずら橋・剣山運行日早見表」に格納されている。今回そのPDFは未取得のため、この2件の具体時刻そのものは今回の検証では未確認（他の運行系統では貞光駅発バスのPDF実読により7:50→9:24着、13:20→13:45着が完全一致することは確認済み）。\",\"fix_hint\":\"余裕があれば三好市サイトのPDF早見表もダウンロードして久保発時刻を照合すると万全（必須ではない）。\"},{\"where\":\"trailheads[0].access[3]（マイカー）url…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 17,
+      "label": "verify:omine",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a8d37304ec30c1043",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851707074,
+      "queuedAt": 1784851591904,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「大峰山（八経ヶ岳）」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\omine.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報…",
+      "lastProgressAt": 1784851790075,
+      "tokens": 50123,
+      "toolCalls": 15,
+      "durationMs": 83001,
+      "resultPreview": "{\"issues\":[{\"where\":\"trailheads[0].access[2] (車, url:\\\"https://www.pref.nara.jp/secure/329584/happyou.pdf\\\")\",\"problem\":\"このURLは pref.nara.jp ドメイン全体が pref.nara.lg.jp に301リダイレクトされており、実際には奈良県公式トップページに飛ぶだけでPDFには到達しない。リンク切れ。検索で見つかる現行の告知ページは https://www.pref.nara.jp/60739.htm（これも同様に pref.nara.lg.jp トップへリダイレクトされる＝ドメイン移行済みで旧URLはすべて無効）。国道309号冬期通行止めの令和7年度（2025年12月〜2026年4月）の具体日時「2025年12月3日15時〜2026年4月3日15時」も、…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 18,
+      "label": "verify:ibuki",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a4a6c498909755d1d",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851727939,
+      "queuedAt": 1784851603344,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「伊吹山」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\ibuki.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書く。\n-…",
+      "lastProgressAt": 1784851824551,
+      "tokens": 54369,
+      "toolCalls": 17,
+      "durationMs": 96612,
+      "resultPreview": "{\"pass\":false,\"issues\":[{\"where\":\"trailheads[0] (伊吹山ドライブウェイ 山頂駐車場) の access\",\"problem\":\"山頂駐車場へは近江鉄道グループが運行する公式の季節運行バス「伊吹山登山バス」（JR米原駅⇄スカイテラス伊吹山、2026年は7/18〜8/31毎日・9月土日祝運行、往路8:30米原駅発、公式ページ https://www.ohmitetudo.co.jp/bus/icoico/event/ibukiyamatozanbus2026/ で確認済み）が存在するが、ファイルには自動車アクセスしか記載されておらず、この公式バスがaccess配列に含まれていない。表登山道が全面通行禁止の現状、車を持たない登山者にとって唯一の公共交通手段であり、公式情報源で確認できる内容であるため、抜けはデータ完全性の欠陥。\",\"fix_hint…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 19,
+      "label": "verify:ishizuchi",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a3be8516621afa84f",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851748996,
+      "queuedAt": 1784851726201,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「石鎚山」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\ishizuchi.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書…",
+      "lastProgressAt": 1784851857001,
+      "tokens": 86381,
+      "toolCalls": 19,
+      "durationMs": 108005,
+      "resultPreview": "{\"pass\":false,\"issues\":[{\"where\":\"trailheads[0].access[1] (石鎚登山ロープウェイ) season フィールド\",\"problem\":\"「例年4月上旬に定期点検で数日全便運休あり」と記載されているが、公式サイト（https://www.ishizuchi.com/rw-2）を確認すると実際の運休期間は「令和8年4月6日（月）～4月24日（金）」で約19日間（約3週間）に及ぶ。「数日」という表現は運休期間を大幅に過小評価しており誤り。\",\"fix_hint\":\"season文言を「例年4月上旬〜中旬に定期点検で約3週間、全便運休あり（2026年は4/6〜4/24）」等に修正する。\"}]}"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 20,
+      "label": "verify:daisen",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a60430ce3044697b4",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851752975,
+      "queuedAt": 1784851747440,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「大山（伯耆大山）」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\daisen.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報…",
+      "lastProgressAt": 1784851865152,
+      "tokens": 58797,
+      "toolCalls": 19,
+      "durationMs": 112177,
+      "resultPreview": "{\"issues\":[{\"where\":\"trailheads[1].access[0] (天空リフト)\",\"problem\":\"リフトは公式サイトによると火曜定休（GW・夏休み・紅葉シーズン除く）だが、daisen.jsのweekday/weekend欄には運行時間帯（9:00〜17:00）のみで定休日の記載がない。sample:trueなので致命的ではないが、要検証点として追記が望ましい。\",\"fix_hint\":\"season欄またはnote的な位置に「火曜定休（GW・夏休み・紅葉期は除く）」を追記するか、seasonフィールドに反映する。\"}],\"pass\":true}"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 21,
+      "label": "verify:arashima",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "abf74c2e09da460b2",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851792072,
+      "queuedAt": 1784851790526,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「荒島岳」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\arashima.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書く…",
+      "lastProgressAt": 1784851848803,
+      "tokens": 45927,
+      "toolCalls": 10,
+      "durationMs": 56730,
+      "resultPreview": "{\"issues\":[{\"where\":\"trailheads[0].access[2] (勝原コース 車アクセス) と trailheads[1].access[0] (中出コース 車アクセス)\",\"problem\":\"「大野ICから約40分前後」「大野ICから約9km・約15分」という具体的な所要時間・距離が、参照先の公式ページ（大野市観光サイト arashimadake.html）には掲載されていない。公式ページが実際に案内しているのは福井ICと東海北陸自動車道『白鳥IC』経由の所要時間（勝原: 福井IC約1時間10分／白鳥IC約50分、中出: 福井IC約1時間／白鳥IC約1時間）であり、ファイル中の『大野IC』ルートの数値は出典が確認できない（作成者の推測または誤情報の可能性）。\",\"fix_hint\":\"公式ページに合わせて『中部縦貫自動車道 大野IC』表記を『北陸自動車道 福井…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 22,
+      "label": "verify:sobo",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "af6bec20c8be9346b",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851793377,
+      "queuedAt": 1784851791941,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「祖母山」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\sobo.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書く。\n- …",
+      "lastProgressAt": 1784851880268,
+      "tokens": 76008,
+      "toolCalls": 13,
+      "durationMs": 86891,
+      "resultPreview": "{\"issues\":[{\"where\":\"trailheads[1] (神原登山口).access[0].duration\",\"problem\":\"sobo.jsは「約35分」と記載しているが、リンク先の公式サイト（カモシカ号タケタ運行情報 taketa-businfo.jp/unesco）を実読すると『豊後竹田駅～祖母山神原登山口は約30分』と明記されている。5分の食い違い。\",\"fix_hint\":\"公式サイトの記載に合わせ「約30分」に修正するか、根拠を再確認する。\"},{\"where\":\"trailheads[2] (尾平登山口).access[0]（長谷川線コミュニティバス）\",\"problem\":\"urlに指定されたhttps://www.bungo-ohno.jp/docs/2020092900017/ を実際に開いて確認したところ、掲載されている路線は三重町・清川緒方・朝地…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 23,
+      "label": "verify:hakusan",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ac99590781ca11e5e",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851877048,
+      "queuedAt": 1784851875360,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「白山」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\hakusan.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書く。\n…",
+      "lastProgressAt": 1784851969271,
+      "tokens": 76985,
+      "toolCalls": 15,
+      "durationMs": 92222,
+      "resultPreview": "{\"pass\":false,\"issues\":[{\"where\":\"trailheads[0].access[0] (北陸鉄道 白山登山バス, season)\",\"problem\":\"season表記が「2026年は7/4〜10/13の設定運行日のみ運行」となっているが、北陸鉄道公式ニュース（https://www.hokutetsu.co.jp/news/news-11388/）で確認した2026年運行日カレンダーでは登山便の最終運行日は10/12（月・祝）で、10/13の設定日はない。\",\"fix_hint\":\"終了日を「7/4〜10/12」に修正するか、根拠となる正確な運行日範囲を公式カレンダーで再確認して記載する。\"},{\"where\":\"huts[2] 南竜山荘.reservation\",\"problem\":\"「南竜山荘予約センター（8:00〜17:00）」と記載されているが、公…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 24,
+      "label": "verify:miyanoura",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "abc20af63bfa919c2",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851910966,
+      "queuedAt": 1784851909024,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「宮之浦岳」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\miyanoura.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で…",
+      "lastProgressAt": 1784852019238,
+      "tokens": 67689,
+      "toolCalls": 19,
+      "durationMs": 108272,
+      "resultPreview": "{\"pass\":true,\"issues\":[{\"where\":\"trailheads[1].access[0] url (荒川登山バス, http://yakushima-tozan.com/bus/)\",\"problem\":\"HTTP専用サイトで、TLS証明書がドメインと一致しない(さくらのレンタルサーバ共有証明書)ため https でアクセスすると証明書エラーになる。データ自体(屋久杉自然館5:00/5:20/5:40/14:00→荒川登山口5:35/5:55/6:15/14:35)は屋久島町公式サイト(yakukan.jp)掲載の2026年3月1日改正時刻表PDFと完全一致し正確だったが、リンク先サイトの技術的信頼性はやや低い。\",\"fix_hint\":\"可能なら屋久島山岳部保全利用協議会や屋久島レクリエーションの森保護管理協議会の公式ページ、または https://yakukan…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 25,
+      "label": "verify:kaimon",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "affa6bc788af193d4",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851916408,
+      "queuedAt": 1784851913980,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「開聞岳」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\kaimon.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現行情報で書く。\n…",
+      "lastProgressAt": 1784852049513,
+      "tokens": 50232,
+      "toolCalls": 26,
+      "durationMs": 133105,
+      "resultPreview": "{\"issues\":[{\"where\":\"grading/routes note: 「活火山だが2026年7月時点で気象庁の噴火警戒レベル運用対象外（同庁公表の運用火山リストに含まれず）」\",\"problem\":\"この安全性に関わる記述をJMA公式サイト(www.jma.go.jp / www.data.jma.go.jp)で直接確認しようと複数URLを試みたが、いずれも404またはJS読み込みエラーで一次資料に到達できなかった。一方、ja.wikipediaの開聞岳記事の要約では『活火山ランクC』かつ『気象庁の噴火警戒レベル対象火山』との記述が出ており、ファイルの主張と矛盾する可能性がある（ただしこの要約は小型モデルによる自動要約でありinfobox上の異なる分類(活火山ランク vs 噴火警戒レベル運用)を混同している可能性もある）。日本の活火山のうち噴火警戒レベルが運用されているのは約…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 26,
+      "label": "verify:kirishima",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a5c8f121214f5dacc",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1784851973275,
+      "queuedAt": 1784851971891,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "あなたは独立検証担当です。別の担当者が作成した「霧島山（韓国岳）」のデータファイル C:\\Users\\lowel\\Desktop\\Projects\\yama-biyori\\_agentwork\\expansion\\kirishima.js を、作成者を信用せずゼロから検証してください。\n\n情報源のルール（厳守）:\n- 使ってよいもの: 運行会社・索道会社の公式サイト、自治体・観光協会の公式ページ、山小屋・宿の公式サイト、環境省・国立公園・気象庁・国土地理院・都道府県などの公的資料（屋久島の保全利用協議会・霧島えびのエコミュージアムセンター等の公的運営サイト含む）。\n- 使ってはいけないもの: Yamap、ヤマレコ、てんきとくらす、NAVITIME等の乗換検索サイト（白ラベル含む）、個人ブログ、まとめサイト。開くのも禁止。\n- 今日は2026年7月24日。運行情報・営業情報は2026年度の現…",
+      "lastProgressAt": 1784852081054,
+      "tokens": 51627,
+      "toolCalls": 18,
+      "durationMs": 107779,
+      "resultPreview": "{\"pass\":false,\"issues\":[{\"where\":\"grading.snow_note / routes[0].note / seasonality.notes[7] — 新燃岳・韓国岳周辺の噴火警戒レベル記載\",\"problem\":\"ファイルは「2026年7月現在、新燃岳は噴火警戒レベル2、硫黄山・御鉢・大幡池はレベル1」と断定しているが、気象庁の噴火警戒レベルページはJS描画でWebFetch不可、代替の静的URLも軒並み404で、2026年7月24日時点の現況として独立検証できなかった。活火山の警戒レベル・入山可否は安全に直結する必須確認事項であり、未確認のまま合格にはできない。\",\"fix_hint\":\"気象庁 噴火警戒レベル一覧（https://www.jma.go.jp/bosai/volcano/）をブラウザで直接開き最新レベルを確認するか、霧島市・えびの市の…"
+    }
+  ],
+  "totalTokens": 2153627,
+  "totalToolCalls": 754
+}

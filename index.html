@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>山日和 YAMABIYORI — Hiking Planner Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1F3EC;
+  --paper-deep:#E7EAE0;
+  --card:#FBFCF8;
+  --ink:#26302A;
+  --ink-soft:#5B6660;
+  --contour:#CFC9B4;
+  --line:#DDD9C8;
+  --pine:#2E4B38;
+  --lake:#3E6B8C;
+  --shu:#C2452F;
+  --grade-a:#2E7D4F;
+  --grade-b:#C08A2D;
+  --grade-c:#C2452F;
+  --mono:'IBM Plex Mono',monospace;
+  --gothic:'Zen Kaku Gothic New',sans-serif;
+  --mincho:'Shippori Mincho',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--gothic);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  background-image:repeating-radial-gradient(circle at 8% -20%, transparent 0 119px, rgba(139,125,90,.07) 119px 120px),
+                   repeating-radial-gradient(circle at 105% 130%, transparent 0 139px, rgba(139,125,90,.06) 139px 140px);
+}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 64px}
+
+/* ---------- header ---------- */
+header{padding:28px 0 10px;border-bottom:2px solid var(--ink)}
+.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.brand h1{font-family:var(--mincho);font-weight:800;font-size:clamp(30px,6vw,44px);letter-spacing:.12em}
+.brand .romaji{font-family:var(--mono);font-size:12px;letter-spacing:.32em;color:var(--ink-soft);text-transform:uppercase}
+.tagline{margin-top:4px;font-size:13px;color:var(--ink-soft)}
+.proto-chip{display:inline-block;margin-left:10px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;border:1px solid var(--shu);color:var(--shu);padding:1px 7px;border-radius:2px;vertical-align:middle}
+
+/* ---------- controls ---------- */
+.controls{position:sticky;top:0;z-index:20;background:linear-gradient(var(--paper) 88%,transparent);padding:14px 0 10px}
+.view-toggle{display:inline-flex;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden;margin-bottom:12px}
+.view-toggle button{font-family:var(--gothic);font-weight:700;font-size:13px;padding:7px 18px;background:transparent;border:none;cursor:pointer;color:var(--ink)}
+.view-toggle button.active{background:var(--ink);color:var(--paper)}
+.date-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.date-chip{flex:0 0 auto;font-family:var(--mono);font-size:12px;padding:7px 12px;border:1.5px solid var(--line);background:var(--card);border-radius:4px;cursor:pointer;color:var(--ink);text-align:center;line-height:1.35}
+.date-chip small{display:block;font-size:10px;color:var(--ink-soft)}
+.date-chip.active{border-color:var(--shu);box-shadow:0 0 0 1px var(--shu);font-weight:600}
+.date-chip.sat small{color:var(--lake)} .date-chip.sun small{color:var(--shu)}
+
+/* ---------- status / loading ---------- */
+.status{font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding:18px 2px}
+.status.error{color:var(--shu)}
+.status button{font-family:var(--mono);font-size:12px;margin-left:10px;padding:3px 10px;border:1px solid var(--shu);background:none;color:var(--shu);border-radius:3px;cursor:pointer}
+
+/* ---------- mountain cards (by-date view) ---------- */
+.cards{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+.mcard{display:grid;grid-template-columns:74px 1fr;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px 18px;cursor:pointer;transition:border-color .15s, transform .15s}
+.mcard:hover{border-color:var(--pine);transform:translateY(-1px)}
+.mcard:focus-visible{outline:2px solid var(--lake);outline-offset:2px}
+.stamp{width:64px;height:64px;border-radius:50%;border:3px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--mincho);transform:rotate(-6deg);background:radial-gradient(circle, rgba(255,255,255,.6), transparent)}
+.stamp .g{font-size:30px;font-weight:800;line-height:1}
+.stamp .lbl{font-family:var(--mono);font-size:8px;letter-spacing:.1em;margin-top:1px}
+.stamp.a{border-color:var(--grade-a);color:var(--grade-a)}
+.stamp.b{border-color:var(--grade-b);color:var(--grade-b)}
+.stamp.c{border-color:var(--grade-c);color:var(--grade-c)}
+.stamp.na{border-color:var(--line);color:var(--ink-soft)}
+.mhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.mhead .ja{font-family:var(--mincho);font-weight:700;font-size:22px;letter-spacing:.06em}
+.mhead .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+.region-chip{font-size:11px;font-weight:500;color:var(--pine);border:1px solid var(--pine);border-radius:3px;padding:0 6px}
+.metrics{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px;font-family:var(--mono);font-size:12px}
+.metrics span b{font-weight:600}
+.metrics .k{color:var(--ink-soft);font-size:10px;display:block;letter-spacing:.06em}
+.reasons{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;padding:2px 8px;border-radius:3px;background:var(--paper-deep);color:var(--ink-soft)}
+.tag.warn{background:#F6E3D9;color:var(--shu)}
+.tag.season{background:#E4EDE6;color:var(--pine)}
+
+/* ---------- mountain list (by-mountain view) ---------- */
+.mlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+.mlist .mcard{grid-template-columns:1fr;gap:6px}
+.region-head{font-family:var(--mincho);font-size:16px;letter-spacing:.1em;border-left:4px solid var(--pine);padding-left:10px;margin:24px 0 2px}
+
+/* ---------- detail view ---------- */
+.detail{margin-top:14px}
+.back{font-family:var(--mono);font-size:12px;background:none;border:none;color:var(--lake);cursor:pointer;padding:6px 0;text-decoration:underline}
+.dhead{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:18px}
+.dhead .ja{font-family:var(--mincho);font-weight:800;font-size:clamp(28px,5vw,38px);letter-spacing:.08em}
+.dhead .sub{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:2px}
+.strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}
+.daycell{flex:0 0 auto;min-width:96px;background:var(--card);border:1px solid var(--line);border-radius:5px;padding:9px 10px;font-family:var(--mono);font-size:11px;line-height:1.7;cursor:pointer;transition:border-color .15s}
+.daycell:hover{border-color:var(--pine)}
+.daycell.sel{border-color:var(--shu);box-shadow:0 0 0 1px var(--shu)}
+.daycell .d{font-weight:600}
+.daycell .gd{font-family:var(--mincho);font-weight:800;font-size:18px}
+.daycell .gd.a{color:var(--grade-a)} .daycell .gd.b{color:var(--grade-b)} .daycell .gd.c{color:var(--grade-c)}
+.daycell .warnline{color:var(--shu);font-size:10px}
+
+/* ---------- hourly panel ---------- */
+.hourly{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:14px 16px;margin:8px 0 4px}
+.hourly h4{font-family:var(--mincho);font-size:14px;letter-spacing:.08em;margin-bottom:8px}
+.hourly .reasons{margin:0 0 8px}
+.htable{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;background:none}
+.htable th,.htable td{border:none;border-bottom:1px solid var(--paper-deep);padding:2px 8px;text-align:right;background:none;white-space:nowrap}
+.htable th{color:var(--ink-soft);font-weight:500;font-size:10px;letter-spacing:.06em}
+.htable td.hl,.htable th.hl{text-align:left}
+.hbar{display:inline-block;height:8px;background:var(--lake);border-radius:2px;vertical-align:middle;margin-left:4px}
+.om-note{font-size:11px;color:var(--ink-soft);margin-top:8px;font-family:var(--mono)}
+
+section.block{margin:26px 0}
+.block h3{font-family:var(--mincho);font-size:17px;letter-spacing:.1em;border-left:4px solid var(--shu);padding-left:10px;margin-bottom:10px}
+.block .note{font-size:12px;color:var(--ink-soft);margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--paper-deep);font-weight:700;font-size:12px}
+td.mono, .mono{font-family:var(--mono);font-size:12px}
+.season-bar{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin:6px 0 10px}
+.season-bar .mcell{text-align:center;font-family:var(--mono);font-size:10px;padding:6px 0;border-radius:3px;background:var(--paper-deep);color:var(--ink-soft)}
+.season-bar .mcell.best{background:var(--pine);color:#fff}
+.season-bar .mcell.now{outline:2px solid var(--shu)}
+.snotes{font-size:13px}
+.snotes li{margin:4px 0 4px 18px}
+.route-card{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s}
+.route-card:hover{border-color:var(--pine)}
+.route-card:focus-visible{outline:2px solid var(--lake);outline-offset:2px}
+.route-card .rname{font-weight:700}
+.route-card .rstats{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:2px}
+.route-card .ropen{font-family:var(--mono);font-size:11px;color:var(--lake);margin-top:6px}
+.rgrades{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.gchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-radius:3px;padding:1px 7px;color:var(--ink-soft);background:var(--card)}
+.gchip.official{border-color:var(--pine);color:var(--pine)}
+.gchip.est{border-style:dashed}
+.stars{color:var(--shu);font-size:12px;letter-spacing:.12em}
+.grade-src{font-size:11px;color:var(--ink-soft)}
+a{color:var(--lake)}
+.sample-flag{font-family:var(--mono);font-size:10px;color:var(--shu);letter-spacing:.08em}
+
+/* ---------- footer ---------- */
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-size:11px;color:var(--ink-soft);line-height:1.8}
+
+@media (max-width:560px){
+  .mcard{grid-template-columns:58px 1fr;padding:13px 14px}
+  .stamp{width:52px;height:52px}.stamp .g{font-size:24px}
+  .metrics{gap:12px}
+}
+@media (prefers-reduced-motion: reduce){
+  .mcard{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>山日和</h1>
+      <span class="romaji">Yamabiyori · Japan Hiking Planner</span>
+      <span class="proto-chip">PROTOTYPE v0.2</span>
+    </div>
+    <p class="tagline">日付から山を選ぶ、山から日を選ぶ。風・雨・凍結高度から独自に算出した登山指数と、登山口までの交通・山小屋・季節情報。</p>
+  </header>
+
+  <div class="controls">
+    <div class="view-toggle" role="tablist">
+      <button id="tab-date" class="active" role="tab">日付から探す</button>
+      <button id="tab-mtn" role="tab">山から探す</button>
+    </div>
+    <div class="date-row" id="dateRow"></div>
+  </div>
+
+  <div id="status" class="status">Open-Meteo から予報を取得中…</div>
+  <main id="main"></main>
+
+  <footer>
+    天気データ: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0) — 各山の予報標高で取得。グレードは本サイト独自の基準であり、安全を保証するものではありません。<br>
+    「SAMPLE — 要検証」の付いた交通・山小屋情報は未検証データです。出発前に必ず各運行会社・山小屋の公式サイトで最新情報を確認してください。
+  </footer>
+</div>
+<script src="data/mountains.js"></script>
+<script>
+/* Mountain data lives in data/mountains.js (the MOUNTAINS array),
+   loaded by the script tag above. Edit that file to add mountains. */
+
+/* ============================================================
+   WEATHER — Open-Meteo fetch + custom grading engine
+   ============================================================ */
+const state = { view:"date", dayIndex:0, selected:null, hourIdx:null, routeIdx:0, wx:{}, dates:[], loaded:false, error:false };
+
+function omUrl(m){
+  const p = new URLSearchParams({
+    latitude:m.coords.lat, longitude:m.coords.lon, elevation:m.forecast_elevation,
+    daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max",
+    hourly:"freezing_level_height,temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m,weather_code",
+    timezone:"Asia/Tokyo", wind_speed_unit:"ms", forecast_days:"7"
+  });
+  return "https://api.open-meteo.com/v1/forecast?" + p.toString();
+}
+
+/* Link to Open-Meteo's own chart page for this mountain (raw source). */
+function omSiteUrl(m){
+  return "https://open-meteo.com/en/docs#latitude="+m.coords.lat+"&longitude="+m.coords.lon
+    +"&elevation="+m.forecast_elevation
+    +"&hourly=temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m,freezing_level_height"
+    +"&timezone=Asia%2FTokyo&wind_speed_unit=ms&forecast_days=7";
+}
+
+async function loadAll(){
+  const st = document.getElementById("status");
+  st.className="status"; st.textContent="Open-Meteo から予報を取得中…（"+MOUNTAINS.length+"山）";
+  try{
+    const results = await Promise.all(MOUNTAINS.map(m => fetch(omUrl(m)).then(r=>{
+      if(!r.ok) throw new Error("HTTP "+r.status); return r.json();
+    })));
+    results.forEach((data,i)=>{
+      const H = data.hourly;
+      const days = data.daily.time.map((t,d)=>{
+        const s=d*24;
+        const fl = H.freezing_level_height.slice(s,s+24).filter(v=>v!=null);
+        return {
+          date:t,
+          tmax:data.daily.temperature_2m_max[d], tmin:data.daily.temperature_2m_min[d],
+          precip:data.daily.precipitation_sum[d], snow:data.daily.snowfall_sum[d],
+          wind:data.daily.wind_speed_10m_max[d], gust:data.daily.wind_gusts_10m_max[d],
+          frzMin: fl.length ? Math.round(Math.min(...fl)) : null,
+          hours: H.time.slice(s,s+24).map((ht,j)=>({
+            t:ht.slice(11,16),
+            temp:H.temperature_2m[s+j], pr:H.precipitation[s+j],
+            wind:H.wind_speed_10m[s+j], gust:H.wind_gusts_10m[s+j],
+            code:H.weather_code[s+j]
+          }))
+        };
+      });
+      state.wx[MOUNTAINS[i].id]=days;
+    });
+    state.dates = state.wx[MOUNTAINS[0].id].map(d=>d.date);
+    state.loaded=true; st.textContent="";
+    buildDateChips(); render();
+  }catch(e){
+    state.error=true;
+    st.className="status error";
+    st.innerHTML="予報の取得に失敗しました（インターネット接続を確認してください）。<button onclick=\"loadAll()\">再試行</button>";
+  }
+}
+
+/* Grade one day for one mountain. Returns {g:'A'|'B'|'C', reasons:[], warns:[]} */
+function gradeDay(m,d){
+  const G=m.grading; let lv=0; const reasons=[], warns=[];
+  // wind — per-mountain thresholds, so a breezy-but-fine day is NOT auto-C
+  if(d.wind>=G.wind_danger){ lv=2; warns.push("強風 "+d.wind.toFixed(0)+"m/s（突風"+d.gust.toFixed(0)+"）"); }
+  else if(d.wind>=G.wind_caution){ lv=Math.max(lv,1); reasons.push("やや風 "+d.wind.toFixed(0)+"m/s"); }
+  else reasons.push("風 "+d.wind.toFixed(0)+"m/s");
+  // precipitation
+  if(d.precip>=G.precip_danger){ lv=2; warns.push("降水 "+d.precip.toFixed(0)+"mm"); }
+  else if(d.precip>=G.precip_caution){ lv=Math.max(lv,1); reasons.push("小雨 "+d.precip.toFixed(1)+"mm"); }
+  // fresh snowfall
+  if(d.snow>=5){ lv=2; warns.push("降雪 "+d.snow.toFixed(0)+"cm"); }
+  else if(d.snow>=0.5){ lv=Math.max(lv,1); warns.push("降雪の可能性"); }
+  // seasonality-aware freeze check — this is what てんくら misses
+  const month = new Date(d.date+"T00:00:00").getMonth()+1;
+  if(G.snow_months.includes(month) && d.frzMin!=null && d.frzMin < G.ridgeline+300){
+    lv=Math.max(lv,1);
+    warns.push("凍結高度 "+d.frzMin+"m — 稜線("+G.ridgeline+"m)で凍結・残雪注意");
+  }
+  if(d.tmin<=-10){ lv=Math.max(lv,1); warns.push("最低 "+d.tmin.toFixed(0)+"℃ 厳冬装備"); }
+  return { g:["A","B","C"][lv], reasons, warns };
+}
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+const main = document.getElementById("main");
+const fmtDate = s => { const dt=new Date(s+"T00:00:00"); return (dt.getMonth()+1)+"/"+dt.getDate(); };
+const youbi = s => "日月火水木金土"[new Date(s+"T00:00:00").getDay()];
+
+function buildDateChips(){
+  const row=document.getElementById("dateRow"); row.innerHTML="";
+  state.dates.forEach((d,i)=>{
+    const b=document.createElement("button");
+    const w=new Date(d+"T00:00:00").getDay();
+    b.className="date-chip"+(i===state.dayIndex?" active":"")+(w===6?" sat":w===0?" sun":"");
+    b.innerHTML=fmtDate(d)+"<small>"+youbi(d)+(i===0?"・今日":"")+"</small>";
+    b.onclick=()=>{state.dayIndex=i; if(state.view==="detail") state.hourIdx=i; buildDateChips(); render();};
+    row.appendChild(b);
+  });
+}
+
+function seasonNoteFor(m, dateStr){
+  const month=new Date(dateStr+"T00:00:00").getMonth()+1;
+  return m.seasonality.notes[month]||null;
+}
+
+function stampHTML(g){
+  return '<div class="stamp '+g.toLowerCase()+'"><span class="g">'+g+'</span><span class="lbl">YAMABIYORI</span></div>';
+}
+
+function openDetail(id){
+  state.selected=id; state.view="detail"; state.hourIdx=state.dayIndex;
+  render(); window.scrollTo({top:0});
+}
+
+function renderByDate(){
+  const dateStr=state.dates[state.dayIndex];
+  const ranked=MOUNTAINS.map(m=>{
+    const d=state.wx[m.id][state.dayIndex];
+    const gr=gradeDay(m,d);
+    return {m,d,gr,score:["A","B","C"].indexOf(gr.g)*100+d.wind};
+  }).sort((a,b)=>a.score-b.score);
+
+  let html='<div class="cards">';
+  ranked.forEach(({m,d,gr})=>{
+    const season=seasonNoteFor(m,dateStr);
+    html+='<article class="mcard" tabindex="0" data-id="'+m.id+'">'
+      +stampHTML(gr.g)
+      +'<div><div class="mhead"><span class="ja">'+m.name_ja+'</span>'
+      +'<span class="region-chip">'+m.region+'</span>'
+      +'<span class="meta">'+m.elevation+'m'+(m.hyakumeizan?' · 百名山':'')+'</span></div>'
+      +'<div class="metrics">'
+      +'<span><span class="k">最大風速</span><b>'+d.wind.toFixed(0)+' m/s</b></span>'
+      +'<span><span class="k">降水</span><b>'+d.precip.toFixed(1)+' mm</b></span>'
+      +'<span><span class="k">気温</span><b>'+d.tmin.toFixed(0)+' / '+d.tmax.toFixed(0)+'℃</b></span>'
+      +'<span><span class="k">凍結高度</span><b>'+(d.frzMin!=null?d.frzMin+' m':'—')+'</b></span>'
+      +'</div><div class="reasons">'
+      +gr.warns.map(w=>'<span class="tag warn">⚠ '+w+'</span>').join("")
+      +(season?'<span class="tag season">🌸 '+season+'</span>':"")
+      +'</div></div></article>';
+  });
+  html+='</div>';
+  main.innerHTML=html;
+  main.querySelectorAll(".mcard").forEach(c=>{
+    const open=()=>openDetail(c.dataset.id);
+    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter")open();};
+  });
+}
+
+function renderMtnList(){
+  // group cards by region, in order of first appearance in the data file
+  const regions=[];
+  MOUNTAINS.forEach(m=>{ if(!regions.includes(m.region)) regions.push(m.region); });
+  let html='';
+  regions.forEach(rg=>{
+    html+='<h3 class="region-head">'+rg+'</h3><div class="mlist">';
+    MOUNTAINS.filter(m=>m.region===rg).forEach(m=>{
+      const d=state.wx[m.id][state.dayIndex]; const gr=gradeDay(m,d);
+      html+='<article class="mcard" tabindex="0" data-id="'+m.id+'">'
+        +'<div class="mhead"><span class="ja">'+m.name_ja+'</span>'+stampHTML(gr.g)+'</div>'
+        +'<div class="meta mono">'+m.region+' · '+m.elevation+'m · '+m.prefecture+'</div>'
+        +'<div class="reasons"><span class="tag">ベスト: '+m.seasonality.best.map(x=>x+"月").join("・")+'</span></div>'
+        +'</article>';
+    });
+    html+='</div>';
+  });
+  main.innerHTML=html;
+  main.querySelectorAll(".mcard").forEach(c=>{
+    const open=()=>openDetail(c.dataset.id);
+    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter")open();};
+  });
+}
+
+/* weather-code → small icon for the hourly table */
+function wxIcon(c){
+  if(c==null) return "";
+  if(c<=1) return "☀"; if(c===2) return "🌤"; if(c===3) return "☁";
+  if(c===45||c===48) return "🌫";
+  if(c>=95) return "⛈";
+  if((c>=71&&c<=77)||c===85||c===86) return "❄";
+  if(c>=51) return "🌧";
+  return "";
+}
+
+/* Hour-by-hour panel for one day — opens when a grade in the 7-day strip is clicked */
+function hourlyHTML(m,idx){
+  const d=state.wx[m.id][idx]; const gr=gradeDay(m,d);
+  const maxPr=Math.max(0.5,...d.hours.map(h=>h.pr||0));
+  let rows="";
+  d.hours.forEach(h=>{
+    const barW=Math.round((h.pr||0)/maxPr*60);
+    rows+='<tr><td class="hl">'+h.t+'</td>'
+      +'<td>'+wxIcon(h.code)+'</td>'
+      +'<td>'+(h.temp!=null?h.temp.toFixed(0)+'℃':'—')+'</td>'
+      +'<td>'+(h.pr!=null?h.pr.toFixed(1):'0.0')+'mm'+(barW>0?'<span class="hbar" style="width:'+barW+'px"></span>':'')+'</td>'
+      +'<td>'+(h.wind!=null?h.wind.toFixed(0):'—')+'（'+(h.gust!=null?h.gust.toFixed(0):'—')+'）m/s</td></tr>';
+  });
+  return '<div class="hourly"><h4>'+fmtDate(d.date)+'（'+youbi(d.date)+'）の時間別予報 — 判定 '+gr.g+'</h4>'
+    +((gr.warns.length||gr.reasons.length)?'<div class="reasons">'
+      +gr.warns.map(w=>'<span class="tag warn">⚠ '+w+'</span>').join("")
+      +gr.reasons.map(r=>'<span class="tag">'+r+'</span>').join("")
+      +'</div>':'')
+    +'<table class="htable"><tr><th class="hl">時刻</th><th></th><th>気温</th><th>降水</th><th>風速（突風）</th></tr>'+rows+'</table>'
+    +'<p class="om-note">データ: <a href="'+omSiteUrl(m)+'" target="_blank" rel="noopener">Open-Meteo でこの地点の予報チャートを見る →</a></p></div>';
+}
+
+/* One trailhead's transit table — used by the mountain page and the route page */
+function accessTableHTML(t){
+  let html='<p class="note"><b>'+t.name+'</b></p><table><tr><th>手段</th><th>路線 / 出発地</th><th>平日</th><th>土日祝</th><th>運行期間</th></tr>';
+  t.access.forEach(a=>{
+    html+='<tr><td>'+a.mode+(a.sample?'<br><span class="sample-flag">SAMPLE</span>':'')+'</td>'
+      +'<td>'+a.line+'<br><span class="mono">'+a.from+(a.duration&&a.duration!=="—"?' · '+a.duration:'')+'</span>'
+      +(a.url&&a.url!=="#"?' <a href="'+a.url+'" target="_blank" rel="noopener">公式</a>':'')
+      +'</td><td class="mono">'+a.weekday+'</td><td class="mono">'+a.weekend+'</td><td class="mono">'+a.season+'</td></tr>';
+  });
+  return html+'</table>';
+}
+
+/* Routes ordered for display: popularity (★) first, then official stamina grade */
+function routesSorted(m){
+  return m.routes.map((r,i)=>({r,i})).sort((a,b)=>
+    ((b.r.popularity||0)-(a.r.popularity||0)) ||
+    ((a.r.grade?a.r.grade.stamina:99)-(b.r.grade?b.r.grade.stamina:99)));
+}
+
+/* 山のグレーディング chips (official prefecture values, or dashed = our estimate) */
+function gradeChipsHTML(r){
+  if(!r.grade) return '';
+  const g=r.grade, cls=g.official?'gchip official':'gchip est';
+  let html='<div class="rgrades">'
+    +'<span class="'+cls+'">体力度 '+g.stamina+'/10</span>'
+    +'<span class="'+cls+'">技術度 '+g.skill+'</span>';
+  if(g.official) html+='<span class="grade-src">出典: '+(g.url?'<a href="'+g.url+'" target="_blank" rel="noopener">'+g.src+'</a>':g.src)+'</span>';
+  else html+='<span class="grade-src">（独自推定・要検証）</span>';
+  return html+'</div>';
+}
+
+function openRoute(i){
+  state.routeIdx=i; state.view="route";
+  render(); window.scrollTo({top:0});
+}
+
+function renderRoute(){
+  const m=MOUNTAINS.find(x=>x.id===state.selected);
+  const r=m.routes[state.routeIdx];
+  let html='<div class="detail"><button class="back" id="backBtn">← '+m.name_ja+' へ戻る</button>'
+    +'<div class="dhead"><div class="ja" style="font-size:clamp(22px,4vw,30px)">'+r.name+'</div>'
+    +'<div class="sub">'+m.name_ja+' · '+m.region+' · '+m.prefecture+'</div></div>';
+
+  // overview: level, popularity, official grading, stats
+  html+='<section class="block"><h3>ルート概要</h3>'
+    +'<div class="rgrades"><span class="tag">'+r.level+'</span>'
+    +(r.popularity?'<span class="stars">'+"★★★".slice(0,r.popularity)+'</span>':'')+'</div>'
+    +gradeChipsHTML(r)
+    +'<p class="note" style="margin-top:8px">'+r.stats+'</p>'
+    +'<p style="font-size:13px">'+r.note+'</p></section>';
+
+  // segment times
+  if(r.segments&&r.segments.length){
+    html+='<section class="block"><h3>区間タイム'+(r.sample?' <span class="sample-flag">SAMPLE — 要検証</span>':'')+'</h3>'
+      +'<table><tr><th>区間</th><th>登り</th><th>下り</th></tr>';
+    r.segments.forEach(s=>{
+      html+='<tr><td>'+s.from+' → '+s.to+'</td><td class="mono">'+(s.up||'—')+'</td><td class="mono">'+(s.down||'—')+'</td></tr>';
+    });
+    html+='</table><p class="note">標準的な目安タイム（休憩含まず）。体力・天候により大きく変わります。</p></section>';
+  }
+
+  // trailhead access (reuses the mountain's transit data — no duplication)
+  if(r.trailhead!=null&&m.trailheads[r.trailhead]){
+    const t=m.trailheads[r.trailhead];
+    const anySample=t.access.some(a=>a.sample);
+    html+='<section class="block"><h3>登山口アクセス'+(anySample?' <span class="sample-flag">SAMPLE — 要検証</span>':'')+'</h3>'
+      +accessTableHTML(t)+'</section>';
+  }
+
+  // map — GSI topo, opens in a new tab (zero dependencies)
+  html+='<section class="block"><h3>地図</h3><p style="font-size:13px">'
+    +'<a href="https://maps.gsi.go.jp/#14/'+m.coords.lat+'/'+m.coords.lon+'/" target="_blank" rel="noopener">地理院地図でこの山域を開く →</a>'
+    +'<span class="note" style="display:block">国土地理院の地形図（等高線・登山道入り）が新しいタブで開きます。</span></p></section>';
+
+  html+='</div>';
+  main.innerHTML=html;
+  document.getElementById("backBtn").onclick=()=>{state.view="detail"; render();};
+}
+
+function renderDetail(){
+  const m=MOUNTAINS.find(x=>x.id===state.selected);
+  const days=state.wx[m.id];
+  const nowMonth=new Date().getMonth()+1;
+  let html='<div class="detail"><button class="back" id="backBtn">← 一覧へ戻る</button>'
+    +'<div class="dhead"><div class="ja">'+m.name_ja+'</div>'
+    +'<div class="sub">'+m.name_en+' · '+m.region+' · '+m.prefecture+' · 標高'+m.elevation+'m'+(m.hyakumeizan?' · 日本百名山':'')+'</div></div>';
+
+  // 7-day strip (each day clickable → hourly panel)
+  html+='<section class="block"><h3>週間 登山指数（独自基準）</h3><div class="strip">';
+  days.forEach((d,i)=>{
+    const gr=gradeDay(m,d);
+    html+='<div class="daycell'+(state.hourIdx===i?' sel':'')+'" data-idx="'+i+'" tabindex="0">'
+      +'<span class="d">'+fmtDate(d.date)+'('+youbi(d.date)+')</span><br>'
+      +'<span class="gd '+gr.g.toLowerCase()+'">'+gr.g+'</span><br>'
+      +'風'+d.wind.toFixed(0)+' 雨'+d.precip.toFixed(0)+'<br>'
+      +d.tmin.toFixed(0)+'/'+d.tmax.toFixed(0)+'℃'
+      +(gr.warns.length?'<br><span class="warnline">'+gr.warns[0]+'</span>':"")
+      +'</div>';
+  });
+  html+='</div>';
+  html+='<div id="hourlyBox">'+(state.hourIdx!=null?hourlyHTML(m,state.hourIdx):'')+'</div>';
+  html+='<p class="note">日付をクリックすると時間別の予報（降水・風・気温）を表示。凍結高度が稜線（'+m.grading.ridgeline+'m）付近まで下がる日は自動的に注意フラグ。'+(m.grading.snow_note||'')+'</p></section>';
+
+  // seasonality
+  html+='<section class="block"><h3>季節カレンダー</h3><div class="season-bar">';
+  for(let i=1;i<=12;i++){
+    html+='<div class="mcell'+(m.seasonality.best.includes(i)?" best":"")+(i===nowMonth?" now":"")+'">'+i+'月</div>';
+  }
+  html+='</div><ul class="snotes">';
+  Object.keys(m.seasonality.notes).sort((a,b)=>a-b).forEach(k=>{
+    html+='<li><b>'+k+'月</b> — '+m.seasonality.notes[k]+'</li>';
+  });
+  html+='</ul></section>';
+
+  // transit — SAMPLE flag only on unverified entries
+  const anySample=m.trailheads.some(t=>t.access.some(a=>a.sample));
+  html+='<section class="block"><h3>公共交通アクセス'+(anySample?' <span class="sample-flag">SAMPLE — 要検証</span>':'')+'</h3>';
+  m.trailheads.forEach(t=>{ html+=accessTableHTML(t); });
+  html+='</section>';
+
+  // huts — with official link + phone
+  html+='<section class="block"><h3>山小屋・避難小屋</h3>';
+  if(m.huts.length){
+    html+='<table><tr><th>名称</th><th>標高</th><th>営業期間</th><th>予約</th><th>連絡先</th></tr>';
+    m.huts.forEach(h=>{
+      html+='<tr><td>'+(h.url&&h.url!=="#"?'<a href="'+h.url+'" target="_blank" rel="noopener">'+h.name+'</a>':h.name)
+        +'</td><td class="mono">'+h.elevation+'m</td><td>'+h.open+'</td><td>'+h.reservation+'</td>'
+        +'<td class="mono">'+(h.tel?'<a href="tel:'+h.tel.replace(/-/g,"")+'">'+h.tel+'</a>':'—')+'</td></tr>';
+    });
+    html+='</table>';
+  }else{
+    html+='<p class="note">この山に山小屋はありません（日帰りが基本）。</p>';
+  }
+  html+='</section>';
+
+  // routes — ★人気順、公的グレーディング付き。クリックで詳細ページへ
+  html+='<section class="block"><h3>おすすめルート</h3><p class="note">ルートをクリックすると区間タイム・登山口アクセス・地図を表示。</p>';
+  routesSorted(m).forEach(({r,i})=>{
+    html+='<div class="route-card" tabindex="0" data-ridx="'+i+'">'
+      +'<div class="rname">'+r.name+' <span class="tag">'+r.level+'</span>'
+      +(r.popularity?' <span class="stars">'+"★★★".slice(0,r.popularity)+'</span>':'')+'</div>'
+      +gradeChipsHTML(r)
+      +'<div class="rstats">'+r.stats+'</div>'
+      +'<div style="font-size:13px;margin-top:4px">'+r.note+'</div>'
+      +'<div class="ropen">▶ ルート詳細</div></div>';
+  });
+  html+='</section></div>';
+
+  main.innerHTML=html;
+  document.getElementById("backBtn").onclick=()=>{state.view=state.prevView||"date"; state.hourIdx=null; render();};
+  main.querySelectorAll(".route-card").forEach(c=>{
+    const open=()=>openRoute(+c.dataset.ridx);
+    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter")open();};
+  });
+  main.querySelectorAll(".daycell").forEach(c=>{
+    const toggle=()=>{
+      const i=+c.dataset.idx;
+      state.hourIdx=(state.hourIdx===i?null:i);
+      renderDetail();
+    };
+    c.onclick=toggle; c.onkeydown=e=>{if(e.key==="Enter")toggle();};
+  });
+}
+
+function render(){
+  if(!state.loaded) return;
+  document.getElementById("tab-date").classList.toggle("active",state.view==="date");
+  document.getElementById("tab-mtn").classList.toggle("active",state.view==="mtn");
+  if(state.view==="date") renderByDate();
+  else if(state.view==="mtn") renderMtnList();
+  else if(state.view==="route") renderRoute();
+  else renderDetail();
+}
+
+document.getElementById("tab-date").onclick=()=>{state.view="date"; state.prevView="date"; render();};
+document.getElementById("tab-mtn").onclick=()=>{state.view="mtn"; state.prevView="mtn"; render();};
+loadAll();
+</script>
+</body>
+</html>

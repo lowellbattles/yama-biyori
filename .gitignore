@@ -1,0 +1,6 @@
+# OS junk
+Thumbs.db
+desktop.ini
+
+# Claude Code machine-local settings (permissions for this PC only)
+.claude/settings.local.json
