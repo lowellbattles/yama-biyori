@@ -24,7 +24,11 @@
        precip_caution: 0,       // mm/day → B
        precip_danger: 0,        // mm/day → C
        snow_months: [],         // months when the freeze check applies
-       snow_note: ""            // human explanation shown to users
+       snow_note: "",           // human explanation shown to users
+       snow_caution: 0.5,       // (任意) 新雪cm/日 ≥ この値でB。省略時デフォルト0.5
+       snow_danger: 5,          // (任意) 新雪cm/日 ≥ この値でC。省略時デフォルト5
+       cold_warn: -10,          // (任意) 最低気温℃ ≤ この値で厳冬警告。省略時デフォルト-10
+       freeze_buffer: 300       // (任意) 凍結高度がridgeline+この値(m)を下回ると警告。省略時デフォルト300
      },
      trailheads: [{
        name: "登山口名（標高XXXm）",

@@ -140,7 +140,7 @@ Reuse the proven ② pattern (lean shape: single verify at effort:low, main-sess
 
 ### Phase 5 — strategic items (each needs a decision from you 🔒)
 
-**Task 13 🔒 · Grading engine v2 — move the last globals into per-mountain data. — M**
+**Task 13 🔒 · Grading engine v2 — move the last globals into per-mountain data. — M — ✅ done 2026-08-03** (owner approved "knobs now": optional `grading.snow_caution`/`snow_danger`/`cold_warn`/`freeze_buffer` with engine defaults 0.5 / 5 cm / −10 ℃ / +300 m — zero data edits needed, tune per mountain as hikes teach; validators type-check the knobs and require snow_caution < snow_danger; behavior proven via synthetic-day test: knobs flip warnings exactly as specified, absent knobs = identical to before. CAPE/thunder flag remains a future stretch)
 Add optional `snow_caution`/`snow_danger` (default 0.5/5 cm), `cold_warn` (default −10 ℃), `freeze_buffer` (default +300 m) to `grading`, engine falls back to defaults so **no data edits are required**; tune individual mountains as your hikes teach you (the stated purpose of this project). Reasons stay mandatory. Optional stretch, later: an afternoon-thunderstorm flag from Open-Meteo's CAPE variable in the detail view (fetch it only for the opened mountain — keeps the list fetch light).
 Decision needed: do you want the extra knobs now, or after more real-hike calibration data?
 
@@ -154,7 +154,7 @@ When you want search traffic ("山名 + 登山 バス" queries is where this sit
 - **C: stay a SPA.** Keep Task 8's hash links, accept ~zero SEO. Fine while the data is still being verified.
 My recommendation: C until a meaningful share of transit data is verified (a site Google sends people to should be right), then A. Decision: when, and A vs C.
 
-**Task 16 🔒 · Map view (Leaflet + 地理院タイル). — M, already CLAUDE.md item 5**
+**Task 16 🔒 · Map view (Leaflet + 地理院タイル). — M, already CLAUDE.md item 5 — ✅ done 2026-08-03** (owner approved: third tab 地図から探す at `#/map`; Leaflet 1.9.4 from unpkg with SRI hashes + graceful message if the CDN is unreachable; GSI 標準地図 tiles with 国土地理院 attribution in map + footer; 110 circle markers colored by the selected day's grade, popups with grade/warning/detail-link; all filters apply, filter changes zoom to results; zoom/center survive re-renders; map→detail→back returns to the map. GPX route lines remain a future stretch)
 All mountains on one GSI topo map, colored by today's grade; later GPX lines per route. Needs your OK for the Leaflet CDN dependency (one JS + one CSS file; could also be vendored locally to keep the no-CDN stance). Genuinely differentiating feature, works fine as an extra page of the SPA.
 
 **Task 17 🔒 · Continue coverage expansion (二百・三百名山). — L, per-batch go-ahead, unchanged process**
@@ -178,10 +178,10 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 | 10 ✅ | Small display wins | S | — |
 | 11 ✅ | 最終確認日 field | S | — |
 | 12 🔒 | Transit sweeps ×87 mountains | L | 11 helps |
-| 13 🔒 | Grading engine v2 knobs | M | your call |
+| 13 ✅ | Grading engine v2 knobs | M | your call |
 | 14 🔒 | Deploy | S–M | 1 |
 | 15 🔒 | Multi-page SEO | L | 12 mostly done, 14 |
-| 16 🔒 | Map view | M | your OK |
+| 16 ✅ | Map view | M | your OK |
 | 17 🔒 | More mountains | L | per batch |
 
 ---

@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
 :root{
   --paper:#F1F3EC;
@@ -163,6 +165,14 @@ a{color:var(--lake)}
 .sample-flag{font-family:var(--mono);font-size:10px;color:var(--shu);letter-spacing:.08em}
 .verified-flag{font-family:var(--mono);font-size:10px;color:var(--pine);letter-spacing:.08em}
 
+/* ---------- map view ---------- */
+#map{height:min(70vh,640px);min-height:420px;background:var(--paper-deep);border:1px solid var(--line);border-radius:6px}
+.leaflet-container{font-family:var(--gothic)}
+.map-popup .ja{font-family:var(--mincho);font-weight:700;font-size:15px}
+.map-popup .gd{font-family:var(--mincho);font-weight:800;font-size:16px;margin-left:4px}
+.map-popup .sub{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin:2px 0 4px}
+.map-popup a{font-size:12px}
+
 /* ---------- footer ---------- */
 footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-size:11px;color:var(--ink-soft);line-height:1.8}
 
@@ -191,6 +201,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-si
     <div class="view-toggle" role="tablist">
       <button id="tab-date" class="active" role="tab" aria-selected="true">日付から探す</button>
       <button id="tab-mtn" role="tab" aria-selected="false">山から探す</button>
+      <button id="tab-map" role="tab" aria-selected="false">地図から探す</button>
     </div>
     <div class="date-row" id="dateRow"></div>
   </div>
@@ -204,7 +215,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-si
   <main id="main"></main>
 
   <footer>
-    天気データ: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0) — 各山の予報標高で取得。グレードは本サイト独自の基準であり、安全を保証するものではありません。<br>
+    天気データ: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0) — 各山の予報標高で取得。地図タイル: <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">国土地理院</a>（地理院タイル）。グレードは本サイト独自の基準であり、安全を保証するものではありません。<br>
     「SAMPLE — 要検証」の付いた交通・山小屋情報は未検証データです。出発前に必ず各運行会社・山小屋の公式サイトで最新情報を確認してください。
   </footer>
 </div>
@@ -354,9 +365,18 @@ function loadAll(){
   loadMissing();
 }
 
+/* Defaults for the OPTIONAL per-mountain grading knobs. A mountain that sets
+   grading.snow_caution / snow_danger (cm/day), cold_warn (℃) or freeze_buffer (m)
+   overrides these — tune in data/mountains.js per mountain, not here. */
+const GRADE_DEFAULTS={snow_caution:0.5, snow_danger:5, cold_warn:-10, freeze_buffer:300};
+
 /* Grade one day for one mountain. Returns {g:'A'|'B'|'C', reasons:[], warns:[]} */
 function gradeDay(m,d){
   const G=m.grading; let lv=0; const reasons=[], warns=[];
+  const snowCa=G.snow_caution!=null?G.snow_caution:GRADE_DEFAULTS.snow_caution;
+  const snowDa=G.snow_danger!=null?G.snow_danger:GRADE_DEFAULTS.snow_danger;
+  const coldW=G.cold_warn!=null?G.cold_warn:GRADE_DEFAULTS.cold_warn;
+  const frzBuf=G.freeze_buffer!=null?G.freeze_buffer:GRADE_DEFAULTS.freeze_buffer;
   // wind — per-mountain thresholds, so a breezy-but-fine day is NOT auto-C
   if(d.wind>=G.wind_danger){ lv=2; warns.push("強風 "+fmt(d.wind)+"m/s（突風"+fmt(d.gust)+"）"); }
   else if(d.wind>=G.wind_caution){ lv=Math.max(lv,1); reasons.push("やや風 "+fmt(d.wind)+"m/s"); }
@@ -365,15 +385,15 @@ function gradeDay(m,d){
   if(d.precip>=G.precip_danger){ lv=2; warns.push("降水 "+fmt(d.precip)+"mm"); }
   else if(d.precip>=G.precip_caution){ lv=Math.max(lv,1); reasons.push("小雨 "+fmt(d.precip,1)+"mm"); }
   // fresh snowfall
-  if(d.snow>=5){ lv=2; warns.push("降雪 "+fmt(d.snow)+"cm"); }
-  else if(d.snow>=0.5){ lv=Math.max(lv,1); warns.push("降雪の可能性"); }
+  if(d.snow>=snowDa){ lv=2; warns.push("降雪 "+fmt(d.snow)+"cm"); }
+  else if(d.snow>=snowCa){ lv=Math.max(lv,1); warns.push("降雪の可能性"); }
   // seasonality-aware freeze check — this is what てんくら misses
   const month = new Date(d.date+"T00:00:00").getMonth()+1;
-  if(G.snow_months.includes(month) && d.frzMin!=null && d.frzMin < G.ridgeline+300){
+  if(G.snow_months.includes(month) && d.frzMin!=null && d.frzMin < G.ridgeline+frzBuf){
     lv=Math.max(lv,1);
     warns.push("凍結高度 "+d.frzMin+"m — 稜線("+G.ridgeline+"m)で凍結・残雪注意");
   }
-  if(d.tmin<=-10){ lv=Math.max(lv,1); warns.push("最低 "+fmt(d.tmin)+"℃ 厳冬装備"); }
+  if(d.tmin<=coldW){ lv=Math.max(lv,1); warns.push("最低 "+fmt(d.tmin)+"℃ 厳冬装備"); }
   return { g:["A","B","C"][lv], reasons, warns };
 }
 
@@ -422,16 +442,61 @@ function buildFilterChips(){
 }
 
 function syncFilters(){
-  const onList=state.view==="date"||state.view==="mtn";
+  const onList=state.view==="date"||state.view==="mtn"||state.view==="map";
   document.getElementById("filters").style.display=onList?"":"none";
   const ga=document.getElementById("chip-ga");
-  ga.style.display=state.view==="date"?"":"none";
+  ga.style.display=(state.view==="date"||state.view==="map")?"":"none";
   ga.classList.toggle("active",state.fGradeA);
   document.getElementById("chip-hy").classList.toggle("active",state.fHyaku);
   document.querySelectorAll("#fchips .f-chip[data-area]").forEach(b=>b.classList.toggle("active",state.fArea===b.dataset.area));
 }
 
-/* Hash routing: #/d/<day> | #/mtn | #/m/<id> | #/m/<id>/r/<n>.
+/* ---------- map view (Leaflet + 地理院タイル) ---------- */
+let lmap=null, lmarkers=null, mapPos=null;   // mapPos keeps zoom/center across re-renders
+function gradeColor(g){ return g==="A"?"#2E7D4F":g==="B"?"#C08A2D":g==="C"?"#C2452F":"#5B6660"; }
+function renderMap(){
+  main.innerHTML='<div class="detail" style="margin-top:14px"><div id="map"></div>'
+    +'<p class="note" style="margin-top:8px">マーカーの色は選択日（'+(state.dates[state.dayIndex]?fmtDate(state.dates[state.dayIndex]):'—')+'）の登山指数。マーカーをクリックすると山の詳細へ。</p></div>';
+  if(typeof L==="undefined"){
+    document.getElementById("map").innerHTML='<p class="status error" style="padding:20px">地図ライブラリ（Leaflet）を読み込めませんでした。インターネット接続を確認して再読み込みしてください。</p>';
+    return;
+  }
+  if(lmap){ mapPos={center:lmap.getCenter(), zoom:lmap.getZoom()}; lmap.remove(); lmap=null; }
+  lmap=L.map("map");
+  if(mapPos) lmap.setView(mapPos.center, mapPos.zoom);
+  else lmap.setView([38.2,137.6],5);
+  L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png",{
+    attribution:'<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">国土地理院</a>',
+    maxZoom:18
+  }).addTo(lmap);
+  lmarkers=L.layerGroup().addTo(lmap);
+  let list=filteredMountains().map(m=>{
+    const wd=state.wx[m.id];
+    const d=wd?wd[state.dayIndex]:null;
+    const gr=d?gradeDay(m,d):{g:null,reasons:[],warns:[]};
+    return {m,gr};
+  });
+  if(state.fGradeA) list=list.filter(x=>x.gr.g==="A");
+  list.forEach(({m,gr})=>{
+    const mk=L.circleMarker([m.coords.lat,m.coords.lon],{
+      radius:8, color:"#26302A", weight:1, fillColor:gradeColor(gr.g), fillOpacity:.85
+    });
+    mk.bindPopup('<div class="map-popup"><span class="ja">'+m.name_ja+'</span><span class="gd" style="color:'+gradeColor(gr.g)+'">'+(gr.g||'—')+'</span>'
+      +'<div class="sub">'+m.region+' · '+m.elevation+'m'+(m.hyakumeizan?' · 百名山':'')+'</div>'
+      +(gr.warns.length?'<div class="sub" style="color:#C2452F">⚠ '+gr.warns[0]+'</div>':'')
+      +'<a href="#/m/'+m.id+'">詳細ページへ →</a></div>');
+    mk.addTo(lmarkers);
+  });
+  // zoom to results when the FILTER SELECTION changed (not on date/grade flips).
+  // fitBounds must run AFTER invalidateSize — the container was inserted this tick.
+  const sig=(state.q||"")+"|"+(state.fArea||"")+"|"+(state.fHyaku?1:0);
+  const fitTo=(sig!==state.mapSig && (state.q||state.fArea||state.fHyaku) && list.length)
+    ? L.latLngBounds(list.map(x=>[x.m.coords.lat,x.m.coords.lon])).pad(0.2) : null;
+  state.mapSig=sig;
+  setTimeout(()=>{ if(!lmap) return; lmap.invalidateSize(); if(fitTo) lmap.fitBounds(fitTo,{maxZoom:10}); },0);
+}
+
+/* Hash routing: #/d/<day> | #/mtn | #/map | #/m/<id> | #/m/<id>/r/<n>.
    Links survive reload, and browser Back/Forward navigate the views. */
 function applyHash(){
   const old=state.view;
@@ -442,13 +507,14 @@ function applyHash(){
     state.selected=m.id;
     if(parts[2]==="r"&&m.routes[+parts[3]]){ state.view="route"; state.routeIdx=+parts[3]; }
     else{ state.view="detail"; if(old!=="detail"&&old!=="route") state.hourIdx=state.dayIndex; }
-    if(old==="date"||old==="mtn") state.prevView=old;
+    if(old==="date"||old==="mtn"||old==="map") state.prevView=old;
   }else if(parts[0]==="mtn"){ state.view="mtn"; state.prevView="mtn"; }
+  else if(parts[0]==="map"){ state.view="map"; state.prevView="map"; }
   else{
     state.view="date"; state.prevView="date";
     if(parts[0]==="d"){ const i=parseInt(parts[1],10); if(i>=0&&i<state.dates.length) state.dayIndex=i; }
   }
-  const wasList=old==="date"||old==="mtn", isList=state.view==="date"||state.view==="mtn";
+  const wasList=old==="date"||old==="mtn"||old==="map", isList=state.view==="date"||state.view==="mtn"||state.view==="map";
   if(old!==state.view&&!(wasList&&isList)) window.scrollTo({top:0});
   buildDateChips(); render();
 }
@@ -456,6 +522,7 @@ function applyHash(){
 function setTitle(){
   let t="日付から探す — 山日和 YAMABIYORI";
   if(state.view==="mtn") t="山から探す — 山日和 YAMABIYORI";
+  else if(state.view==="map") t="地図から探す — 山日和 YAMABIYORI";
   else if(state.view==="detail"||state.view==="route"){
     const m=MOUNTAINS.find(x=>x.id===state.selected);
     if(m) t=(state.view==="route"&&m.routes[state.routeIdx] ? m.routes[state.routeIdx].name+"（"+m.name_ja+"）" : m.name_ja+"（"+m.prefecture+"・"+m.elevation+"m）")+" — 山日和";
@@ -743,7 +810,7 @@ function renderDetail(){
   html+='</section></div>';
 
   main.innerHTML=html;
-  document.getElementById("backBtn").onclick=()=>{ location.hash=(state.prevView==="mtn")?"#/mtn":"#/d/"+state.dayIndex; };
+  document.getElementById("backBtn").onclick=()=>{ location.hash=(state.prevView==="mtn")?"#/mtn":(state.prevView==="map")?"#/map":"#/d/"+state.dayIndex; };
   main.querySelectorAll(".route-card").forEach(c=>{
     const open=()=>openRoute(+c.dataset.ridx);
     c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}};
@@ -762,18 +829,22 @@ function render(){
   if(!state.loaded) return;
   document.getElementById("tab-date").classList.toggle("active",state.view==="date");
   document.getElementById("tab-mtn").classList.toggle("active",state.view==="mtn");
+  document.getElementById("tab-map").classList.toggle("active",state.view==="map");
   document.getElementById("tab-date").setAttribute("aria-selected",state.view==="date");
   document.getElementById("tab-mtn").setAttribute("aria-selected",state.view==="mtn");
+  document.getElementById("tab-map").setAttribute("aria-selected",state.view==="map");
   syncFilters();
   setTitle();
   if(state.view==="date") renderByDate();
   else if(state.view==="mtn") renderMtnList();
+  else if(state.view==="map") renderMap();
   else if(state.view==="route") renderRoute();
   else renderDetail();
 }
 
 document.getElementById("tab-date").onclick=()=>{ location.hash="#/d/"+state.dayIndex; };
 document.getElementById("tab-mtn").onclick=()=>{ location.hash="#/mtn"; };
+document.getElementById("tab-map").onclick=()=>{ location.hash="#/map"; };
 window.addEventListener("hashchange",applyHash);
 buildFilterChips();
 loadAll();

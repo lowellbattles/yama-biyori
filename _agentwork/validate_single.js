@@ -55,6 +55,14 @@ if (!m.coords || typeof m.coords.lat !== "number" || typeof m.coords.lon !== "nu
 if (typeof m.forecast_elevation !== "number") errs.push(tag + ": bad forecast_elevation");
 if (typeof m.hyakumeizan !== "boolean") errs.push(tag + ": bad hyakumeizan");
 if (!m.grading || typeof m.grading.wind_caution !== "number" || typeof m.grading.wind_danger !== "number") errs.push(tag + ": bad grading");
+if (m.grading) {
+  var gk = m.grading;
+  if (gk.snow_caution != null && typeof gk.snow_caution !== "number") errs.push(tag + ": bad snow_caution");
+  if (gk.snow_danger != null && typeof gk.snow_danger !== "number") errs.push(tag + ": bad snow_danger");
+  if (gk.cold_warn != null && typeof gk.cold_warn !== "number") errs.push(tag + ": bad cold_warn");
+  if (gk.freeze_buffer != null && typeof gk.freeze_buffer !== "number") errs.push(tag + ": bad freeze_buffer");
+  if (gk.snow_caution != null && gk.snow_danger != null && gk.snow_caution >= gk.snow_danger) errs.push(tag + ": snow_caution must be < snow_danger");
+}
 if (m.grading && !m.grading.snow_note) errs.push(tag + ": missing grading.snow_note");
 if (!m.trailheads || !m.trailheads.length) errs.push(tag + ": no trailheads");
 if (!m.routes || !m.routes.length) errs.push(tag + ": no routes");
