@@ -135,7 +135,7 @@ Done when: the tab shows the stamp and a link pasted into a chat app unfurls wit
 HANDOFF §6 suggested it; with 330 unverified entries it's now the honest trust signal. On any access entry (and route segments) that has been verified, record the date; render it as small text (`確認: 2026-07-18`) where the SAMPLE flag would be. Backfill the 13 entries cleared in the ② sweep from WORKLOG dates. Update template + validators (verified and sample are mutually exclusive).
 Done when: verified entries show a date, unverified show SAMPLE, and the validator enforces the rule.
 
-**Task 12 🔒 · Transit-verification sweeps for the 87 expansion mountains. — L, batched by region, explicit go-ahead per batch**
+**Task 12 🔒 · Transit-verification sweeps for the 87 expansion mountains. — L, batched by region, explicit go-ahead per batch — ⏸ paused 2026-08-03** (two parallel runs — 北アルプス・御嶽 47 + 中央・南アルプス 41 entries — were launched and then **stopped by the owner over token cost** with 14+4 checkers finished; journals + resume pointers in WORKLOG. Rule going forward: pilot ~10 entries with a stated cost estimate before any full batch. The per-area entry export exists for all 301 unverified entries)
 Reuse the proven ② pattern (lean shape: single verify at effort:low, main-session fixes, evidence JSON, WORKLOG entry). Suggested order = value order: 北アルプス・御嶽 → 中央・南アルプス → 上信越・尾瀬 → 東北 → 北海道 → 西日本. Each batch ends with `sample:true` flags dropping and `verified:` dates appearing. The hand-check leftovers (t01–t42 disputes, 神奈中 NAVITIME items, phone-only checks) stay in WORKLOG.md's owner to-do lists — chip at them before hikes in that area.
 
 ### Phase 5 — strategic items (each needs a decision from you 🔒)

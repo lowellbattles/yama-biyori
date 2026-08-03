@@ -363,6 +363,28 @@ is too high — finish the 東北 batch, apply it, then STOP. Do NOT launch 上�
 without an explicit go-ahead from the owner in that conversation. Run future approved work lean:
 resume-with-cache, single verify at effort:low, main-session fixes.
 
+## ②-EXPANSION transit sweep — STOPPED BY OWNER 2026-08-03 (token burn), partial results salvageable
+
+Owner approved starting ROADMAP Task 12 with "as many agents as you would like", then stopped both
+runs within the hour ("insane amount of tokens"). **Directive reaffirmed and strengthened: before any
+future multi-agent launch, state the agent count + rough token estimate in chat and get a yes on the
+number; pilot ~10 items first.** Do not relaunch these sweeps without that.
+
+State when stopped (checker/skeptic per-entry design, model sonnet, keys = `<id>/t<n>a<n>`):
+- 北アルプス・御嶽 run `wf_abb71399-d23` (task w6os4e3pw): 14 of 47 checkers finished, journal intact.
+- 中央・南アルプス run `wf_e3a531f8-c7a` (task wxw0hpy97): 4 of 41 checkers finished, journal intact.
+- Journals: `...\8714fa38-ee23-436c-b9b3-c76c16c6fa75\subagents\workflows\<runId>\journal.jsonl`
+- Scripts (args-stringified guard included): `...\8714fa38-...\workflows\scripts\transit-sweep-kitaalps-wf_abb71399-d23.js`
+  and `transit-sweep-chuo-minami-wf_e3a531f8-c7a.js`
+- Entry lists (all 301 unverified expansion entries, per area): scratchpad `sweep-<slug>.json` files;
+  regenerate anytime with `_agentwork`-style export (script pattern in the 2026-08-03 session) since
+  the scratchpad is session-scoped and may be cleaned.
+- To resume LEAN later (owner go-ahead + cost estimate first): `Workflow({scriptPath, resumeFromRunId,
+  args: <same>})` — the 18 finished checkers replay from cache free; consider effort:'low' for the
+  remainder (note: changing agent opts invalidates their cache keys — apply the 2026-07-14 rule #1
+  trade-off consciously).
+- No results have been applied to data/mountains.js; no `verified:` dates were set by these runs.
+
 ## COLD-RESUME instructions for the 東北 batch (any future session, no prior context needed)
 
 Research agents Write finished mountains directly to `_agentwork/expansion/<id>.js`, so partial progress
