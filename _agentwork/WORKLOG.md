@@ -383,7 +383,42 @@ State when stopped (checker/skeptic per-entry design, model sonnet, keys = `<id>
   args: <same>})` — the 18 finished checkers replay from cache free; consider effort:'low' for the
   remainder (note: changing agent opts invalidates their cache keys — apply the 2026-07-14 rule #1
   trade-off consciously).
-- No results have been applied to data/mountains.js; no `verified:` dates were set by these runs.
+- ~~No results have been applied to data/mountains.js; no `verified:` dates were set by these runs.~~
+  → superseded by the 2026-08-10 salvage below.
+
+### SALVAGE APPLIED 2026-08-10 (zero agents launched)
+
+The 18 finished checker results were read from the two journals and **the main session ran the skeptic
+pass itself** (operator sites via WebFetch, timetable PDF/PNGs via curl+Read, 富山地鉄の時刻表JSONは
+サイト自身が使う POST エンドポイントで再取得), then applied everything to data/mountains.js. Validator
+passes (110 mountains). Result: **15 entries cleared → `verified:"2026-08-10"`**, 3 keep `sample:true`
+with confirmed corrections applied where available:
+- Cleared: tsurugi t0a0/t0a1/t0a2, tateyama t0a0/t0a3, goryu t0a0/t0a1, kashimayari t0a0/t1a0/t1a1,
+  yakushi t0a1, kurobegoro t0a0/t0a1, utsugi t0a0, kaikoma t0a2. Notable content fixes that shipped:
+  五竜シャトル 所要15分→**5分**（運営者2025年PDFの明記をarchive経由で確認・2026年PDFは所要記載なし）;
+  立山トンネル**トロリーバス→電気バス**（2024-11-30引退）; 大町市民バス 平（源汲方面）コースの実時刻
+  8:27/11:34/14:34/16:52＋鹿島−爺ガ岳スキー場間の電話予約制; 広河原〜北沢峠は**「令和8年度中の復旧
+  見込みなし」と山梨県が明言**（徒歩も不可）; 五竜テレキャビンの始発3段構造（8:15/7:30/7:00・お盆は
+  毎日7:00）; 立山線の実在時刻例＋休日の通年列車は8:20→14:00に直通空白（季節列車が4/15〜11/30は埋める）.
+- Skeptic value demonstrated — 3 checker errors caught and fixed before applying: tateyama/t0a0 の
+  休日「9〜14時台直通なし」は通年列車のみの話で在季は誤り（▲季節列車9:10/11:00/12:00/13:00が立山直通、
+  JSON再取得で確認）; utsugi/t0a0 の season「5:00始発〜16:00最終」は☆繁忙日限定を常時と誤読（基本は
+  8:00/7:00/6:00始発・11/9以降最終15:00 — R8公式PDF実読で書き直し）; goryu/t0a1 の所要「約8分」の
+  出典ページ誤り（カレンダーページに記載なし → /shokubutsuen/ トップの「約8分間の空中散歩」で確認）.
+- Kept sample (owner to-dos): tsurugi/t1a0（伊折ゲート冬期閉鎖入りの日時 — 一次ページ404、電話確認が最短。
+  2026年開通4/28 16時は上市町公式で確認済み・season反映済み）; utsugi/t0a1（駒ヶ根IC→スキー場駐車場の
+  分数は公式記載なし。菅の台まで約3分は公式確認・反映済み）; ena/t2a0（ウェストン公園前→前宮登山口の
+  徒歩約30分が公式裏付けなし）。
+- Evidence: `_agentwork/evidence/transit-sweep-salvage-2026-08-10.json`. The per-area entry exports
+  (checker input files, all 14 areas) are now durable at `_agentwork/evidence/sweep-exports/sweep-*.json`
+  — future batches should pass these as the workflow `file` arg instead of a session scratchpad path.
+- Access-entry totals after salvage: **315 sample + 28 verified = 343**. Remaining unchecked expansion
+  entries: 283 (北ア・御嶽 33, 中央・南ア 37, 他エリア 213).
+- Recommended next shape (needs owner yes per the directive): fresh checker-only runs over the remaining
+  keys (the old runs' cache value was exactly the 18 results now applied; resuming them would launch the
+  12 never-run skeptic agents for already-applied clears — waste). Single checker per entry on sonnet,
+  main session = skeptic + fixer, exactly like this salvage. Pilot ~10 entries first with a stated
+  token estimate.
 
 ## COLD-RESUME instructions for the 東北 batch (any future session, no prior context needed)
 

@@ -1,0 +1,31 @@
+{
+  "what": "Salvage + main-session skeptic pass over the 18 checker results left by the owner-stopped Task 12 runs (wf_abb71399-d23 北アルプス・御嶽 14/47, wf_e3a531f8-c7a 中央・南アルプス 4/41, both 2026-08-03). No agents were launched; the main session re-verified every proposed clear against the cited official primary sources on 2026-08-10 and applied results to data/mountains.js.",
+  "method": "Per the ② convention (sample comes off only on skeptic-confirmed verification), the main session acted as the independent skeptic: operator pages via WebFetch, timetable PDFs/PNGs downloaded via curl and read directly, and the 富山地鉄 timetable JSON reproduced via the same POST endpoint (get_train_timetable_lines.php, daycriterion 1/2 + line 4) the site itself uses. Journals with full checker notes: .claude/projects/...8714fa38-ee23-436c-b9b3-c76c16c6fa75/subagents/workflows/<runId>/journal.jsonl",
+  "outcome": { "checked": 18, "cleared_verified_2026_08_10": 15, "kept_sample": 3 },
+  "results": [
+    {"key":"tsurugi/t0a0","checker":"ok/clear","skeptic":"CONFIRMED — reproduced 立山線 weekday+holiday JSON (2026-03-14改正): 18 through-trains/day, 50-81min, qualitative claims fair","applied":"verified only"},
+    {"key":"tsurugi/t0a1","checker":"ok/clear","skeptic":"CONFIRMED — alpen-route timetable page (4/15-11/3 + 11/4-11/30別紙) and vehicles page (ケーブルカー7分/1.3km)","applied":"verified only"},
+    {"key":"tsurugi/t0a2","checker":"ok/clear","skeptic":"CONFIRMED — vehicles page 高原バス50分/23km + same season PDFs","applied":"verified only"},
+    {"key":"tsurugi/t1a0","checker":"differs/no-clear (season)","skeptic":"CONFIRMED correction — 上市町公式 page 7553: 伊折ゲート 2026-04-28(火)16時開通; winter-closure dates not on a live primary page","applied":"season corrected; sample KEPT"},
+    {"key":"tateyama/t0a0","checker":"differs/clear (weekday+weekend)","skeptic":"PARTLY REFUTED — checker's weekend claim 'no through-trains 9-14時台' is wrong in season (▲ trains 9:10/11:00/12:00/13:00 reach 立山 4/15-11/30; only the year-round-only timetable has the 8:20→14:00 gap). Applied corrected texts written from the reproduced JSON (weekday 5:50/7:14/8:20/13:50/17:30/20:30最終; holiday 5:50/8:20/14:00/15:00/18:00/20:00最終; seasonal 快特5:10)","applied":"weekday/weekend corrected (skeptic-authored); verified"},
+    {"key":"tateyama/t0a3","checker":"differs/clear (line)","skeptic":"CONFIRMED — alpen-route.com/evbus/: トロリーバス ended 2024-11-30, 立山トンネル電気バス from 2025-04-15","applied":"line corrected + season note; verified"},
+    {"key":"goryu/t0a0","checker":"differs/clear (duration 約15分→約5分)","skeptic":"CONFIRMED — bus2026.pdf: all 7 departures + periods exact; 「所要時間は約５分」 verbatim in the operator's 2025 PDF (now 404 on origin, retrieved from web.archive.org copy of hakubaescal.com/shokubutsuen/common/pdf/bus2025.pdf; route unchanged 2025→2026)","applied":"duration corrected; verified"},
+    {"key":"goryu/t0a1","checker":"differs/clear (weekday+weekend)","skeptic":"CONFIRMED with refinements — decoded the operator's own calendar HTML + CSS (td.hs/h815/h730/h700 => 運休/8:15/7:30/7:00): June-late weekdays 8:15, July-early-Aug weekdays 7:30, お盆8/9-16 all 7:00, weekends one tier earlier (7:00 midsummer / 7:30 shoulder), finals 16:00/16:30 on page; 約8分 confirmed on /shokubutsuen/ top page (checker had cited the wrong page for it)","applied":"weekday/weekend corrected (refined); verified"},
+    {"key":"kashimayari/t0a0","checker":"ok/clear","skeptic":"CONFIRMED — alpico ogizawa page: 6:15/7:05/8:00/9:00/10:00 all real, 40/35min, 2026-4/15〜11/30, 北アルプス交通共同運行, ▲◆※ codes; 扇沢橋 parking −60台 reconfirmed on kasimayari.jp/saisin.htm (updated 2026-08-09) — season wording tightened to 実施中","applied":"season wording updated; verified"},
+    {"key":"kashimayari/t1a0","checker":"ok/clear","skeptic":"CONFIRMED — kanko-omachi tozanguchi7: 30分/約6,500円/路線バスなし/下山時は山小屋から予約可/鹿島バス停徒歩50分","applied":"verified only"},
+    {"key":"kashimayari/t1a1","checker":"differs/clear (line/from/duration/weekday)","skeptic":"CONFIRMED — 大町市 R8-4/1改正 平（源汲方面）コース PDF: 駅発 8:27/11:34/14:34/16:52, 鹿島発 7:10/9:16/12:35/15:25 (all 50min to 駅), 降車のみ asymmetry, 鹿島-爺ガ岳スキー場間 予約制 TEL22-0799; 運行日PDF: 月-金のみ・土日祝・12/29-1/3運休","applied":"line/from/duration/weekday/weekend corrected; verified"},
+    {"key":"yakushi/t0a1","checker":"ok/clear","skeptic":"CONFIRMED — 有峰線乗継 PNG + R8 flyer PDF: (特)9:00→9:46, 有峰口駅前10:00→折立10:55, both period groups same times, 予約制/TEL","applied":"verified only"},
+    {"key":"kurobegoro/t0a0","checker":"ok/clear","skeptic":"CONFIRMED — direct-bus PNG + flyer: 6:10→7:50 / 12:10→14:10, 7/11-8/23毎日 + 8/29-9/27土日祝, 予約1ヶ月前9時","applied":"verified only"},
+    {"key":"kurobegoro/t0a1","checker":"ok/clear","skeptic":"CONFIRMED — same sources; weekday text now records the confirmed 特急9:00→9:46 connection","applied":"weekday note firmed; verified"},
+    {"key":"utsugi/t0a0","checker":"ok/clear","skeptic":"PARTLY REFUTED — R8 伊那バス PDF confirms 12min every run, but the entry's season line overstated (5:00始発 only on ☆ peak days; base tiers 8:00/7:00/6:00, final 15:00 from 11/9). Season rewritten from the PDF + calendar page","applied":"season corrected (skeptic-authored); verified"},
+    {"key":"utsugi/t0a1","checker":"differs/no-clear (duration)","skeptic":"CONFIRMED correction — chuo-alps.com/access/: 駒ヶ根ICから約3分; ski-lot leg has no official figure","applied":"duration corrected; sample KEPT"},
+    {"key":"ena/t2a0","checker":"unverifiable/no-clear","skeptic":"AGREED — bus fields all match official PDFs (2025-10-01改正) but the 徒歩約30分 leg has no official source","applied":"no changes; sample KEPT"},
+    {"key":"kaikoma/t0a2","checker":"differs/clear (season)","skeptic":"CONFIRMED — pref.yamanashi.jp kisei.php?id=4: 「令和8年度中の復旧見込みはありません」「徒歩での通行もできません」; minami-alpskankou: 休止・伊那側案内","applied":"season corrected; verified"}
+  ],
+  "leftovers_for_owner": [
+    "tsurugi/t1a0: 伊折ゲートの冬期閉鎖入り日時は一次ページが404 — 上市町に電話または秋の公式発表で確認してから clear",
+    "utsugi/t0a1: 駒ヶ根IC→駒ヶ根高原スキー場駐車場の所要は公式記載なし — 実走で確認するか記載を菅の台のみに絞って clear",
+    "ena/t2a0: ウェストン公園前バス停→前宮登山口 徒歩約30分は公式裏付けなし — 実踏または中津川観光協会への確認で clear"
+  ],
+  "remaining_unchecked": { "kitaalps_ontake": 33, "chuo_minami": 37, "all_expansion_areas_total": 283 }
+}
