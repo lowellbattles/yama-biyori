@@ -1,0 +1,22 @@
+{
+  "what": "Task 12 pilot batch (owner-approved 2026-08-10, 'Pilot 10'): run wf_46e5aa38-4c5, 10 checker agents (sonnet, effort:low, checker-only design), followed by a main-session skeptic pass against primary sources. Keys chosen to COMPLETE the partially-verified mountains from the salvage (tateyama, yakushi, kurobegoro) and start 裏銀座 (suisho, washiba).",
+  "cost": { "subagent_tokens": 588602, "agents": 10, "tokens_per_entry_avg": 58860, "duration_s": 125, "errors": 0 },
+  "outcome": { "checked": 10, "cleared_verified_2026_08_10": 9, "kept_sample": 1 },
+  "results": [
+    {"key":"tateyama/t0a1","checker":"ok/clear","skeptic":"CONFIRMED — read the 2026 Alpen Route PDF myself: first cable car 6:40 carries ◇ (特定日のみ), 7:00 is the daily first, all runs exactly 7 min; wording tightened to mark 6:40 as 特定日","applied":"weekday refined; verified"},
+    {"key":"tateyama/t0a2","checker":"ok/clear","skeptic":"CONFIRMED — station03 page: 美女平→弥陀ヶ原 30分/15km + 弥陀ヶ原→室堂 20分/8km verbatim; 7/1-11/10 period per timetable page","applied":"verified only"},
+    {"key":"yakushi/t0a0","checker":"unverifiable/no-clear","skeptic":"AGREED — all transit facts match the R8 flyer (read in the salvage session), but 「折立駐車場は無料・約100台」 has no official source and non-official sources say ~300台. Pref road page confirmed silent on parking","applied":"no changes; sample KEPT"},
+    {"key":"yakushi/t0a2","checker":"ok/clear","skeptic":"CONFIRMED — pref.toyama 有峰林道 page: 亀谷→折立 約40分, tolls 2,700/6,600/600円, night closure 20:00-6:00; 6/1 opening was already main-session-verified 2026-07-23 via the pref press release","applied":"verified only"},
+    {"key":"kurobegoro/t1a0","checker":"differs/no-clear (duration)","skeptic":"CONFIRMED the error, REFUTED the proposed fix — read the 濃飛 PDF myself: the checker mispaired columns (the 往路 sheet stacks 高山→平湯 and 平湯→新穂高 runs whose columns do NOT chain). True 高山→新穂高温泉: 特急6:00→7:32 (1h32m through), others ~1.5-2h via 平湯. Also the PDF's per-run 4/1-11/30 運転日 marks substantiate 積雪期減便, dissolving the checker's season blocker","applied":"duration corrected (skeptic-authored), season evidenced; verified"},
+    {"key":"kurobegoro/t1a1","checker":"differs/clear (duration+season)","skeptic":"CONFIRMED — 濃飛 松本線 page: all 7 departure times real, 約2時間20分 official, 予約制; alpico page: stop list runs …新穂高温泉→新穂高ロープウェイ→高山 so the line genuinely serves 新穂高 direct (no 平湯 transfer), 予約制 since 2024-04-01, 7/18増便, timetable posted through 11/15; 14:55 run limited to 8/8-16 & 12/29-1/3","applied":"duration+season corrected; verified"},
+    {"key":"suisho/t0a0","checker":"differs/no-clear (bus ends at 七倉)","skeptic":"CONFIRMED and COMPLETED — checker rightly caught that the 裏銀座登山バス terminates at 七倉登山口 (not 高瀬ダム) but could not read the image-only timetable; main session downloaded the operator's timetable images: 4 runs/day confirmed, 信濃大町駅発 5:15/7:15/12:20/14:20 (35 min to 七倉), return 七倉発 6:15/9:30/13:15/15:05; July calendar operates from 7/17, August daily","applied":"from/duration/weekday/weekend corrected with real times; verified"},
+    {"key":"suisho/t0a1","checker":"ok/clear","skeptic":"CONFIRMED — 七倉山荘 page verbatim: 2 operators + numbers, 片道約2,700円 (4人乗り・令和8年7月現在), 約15分, summer 朝5時 operation, first-taxi queue-only, walk 約1時間50分","applied":"verified only"},
+    {"key":"suisho/t1a0","checker":"differs/clear (season)","skeptic":"CONFIRMED — same 有峰線 sources verified in the salvage session (both timetable PNGs read directly); season aligned to the definite 7/11-9/27 two-tier structure + 雨量規制 note; weekday's vague 「本数は日により異なる」 replaced with the accurate 「運行日は直通便と同じ」","applied":"season+weekday corrected; verified"},
+    {"key":"washiba/t0a0","checker":"ok/clear (duration 'within range')","skeptic":"PARTLY REFUTED — with the PDF ground truth (1h32m-2h02m), the single figure 約1時間45分 was a lucky midpoint; harmonized to the same range text as kurobegoro/t1a0 and kasa","applied":"duration harmonized; verified"}
+  ],
+  "leftovers_for_owner": [
+    "yakushi/t0a0: 折立駐車場の台数（無料か・約100台か約300台か）を公式ソースか現地で確認 — 確認でき次第この1点だけでclear可能"
+  ],
+  "checker_quality_note": "3 of 10 checkers needed skeptic intervention (column mispairing on the 濃飛 PDF; an over-narrow proposed duration; one 'within range' pass that ground truth showed was a coincidence). Checker-only + main-session skeptic remains the right shape.",
+  "remaining_unchecked": { "kitaalps_ontake": 23, "chuo_minami": 37, "all_expansion_areas_total": 273 }
+}

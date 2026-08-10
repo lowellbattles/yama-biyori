@@ -3661,12 +3661,12 @@ const MOUNTAINS = [
        season:"通年", url:"https://www.chitetsu.co.jp/?page_id=18889", verified:"2026-08-10"},
       {mode:"ケーブルカー", line:"立山ケーブルカー（立山黒部貫光）", from:"立山駅（標高475m）",
        duration:"約7分／1.3km",
-       weekday:"立山駅発 例: 6:40 / 7:00（以降は運行日限定便が混在し等間隔ではない。全便は公式時刻表で要確認）", weekend:"同左（繁忙期は増発の場合あり）",
-       season:"2026年度は4/15〜11/3（11/4〜11/30は別紙ダイヤに切替）", url:"https://www.alpen-route.com/", sample:true},
+       weekday:"立山駅発 例: 6:40（GW・夏休み等の特定日のみ）/ 7:00（毎日運行の始発）。以降は運行日限定便が混在し等間隔ではないため全便は公式時刻表で要確認", weekend:"同左（繁忙期は増発の場合あり）",
+       season:"2026年度は4/15〜11/3（11/4〜11/30は別紙ダイヤに切替）", url:"https://www.alpen-route.com/", verified:"2026-08-10"},
       {mode:"バス", line:"立山高原バス（立山黒部貫光）", from:"美女平駅（標高977m）",
        duration:"約50分（美女平→弥陀ヶ原 約30分/15km、弥陀ヶ原→室堂 約20分/8km）",
        weekday:"要確認（立山ケーブルカーの到着に接続して運行）", weekend:"要確認",
-       season:"2026年度は4/15〜11/3（弥陀ヶ原・弘法の乗降可能期間は7/1〜11/10予定）", url:"https://www.alpen-route.com/", sample:true},
+       season:"2026年度は4/15〜11/3（弥陀ヶ原・弘法の乗降可能期間は7/1〜11/10予定）", url:"https://www.alpen-route.com/", verified:"2026-08-10"},
       {mode:"バス・ケーブルカー・ロープウェイ", line:"立山黒部アルペンルート 長野側（関電トンネル電気バス→黒部ケーブルカー→立山ロープウェイ→立山トンネル電気バス）", from:"扇沢",
        duration:"約2時間（乗り継ぎ含む）",
        weekday:"要確認", weekend:"要確認",
@@ -3727,7 +3727,7 @@ const MOUNTAINS = [
        duration:"亀谷連絡所から折立まで約40分。通行料金は小型車2,700円・大型車6,600円・二輪等600円（1回、令和8年度改定）。通行可能時間は6:00〜20:00（夜間通行禁止）。",
        weekday:"時間制限内は随時通行可（連絡所での支払いは現金のみ）", weekend:"同左",
        season:"2026年度は6月1日に小見線・折立線が開通。冬季は全線通行止め（例年11月中旬頃〜翌6月上旬、年により変動）。降雨時は雨量規制で通行止めになることがあるため事前に要確認。",
-       url:"https://www.pref.toyama.jp/1603/kendodukuri/shinrinkasen/shinrin/kj00009876/kj00009876-001-01.html", sample:true}
+       url:"https://www.pref.toyama.jp/1603/kendodukuri/shinrinkasen/shinrin/kj00009876/kj00009876-001-01.html", verified:"2026-08-10"}
     ]
   }],
   huts:[
@@ -3781,13 +3781,13 @@ const MOUNTAINS = [
       name:"新穂高温泉登山口（標高約1,090m）",
       access:[
         {mode:"バス", line:"平湯・新穂高線（濃飛バス）", from:"JR高山本線 高山駅（高山濃飛バスセンター）",
-         duration:"約45分",
+         duration:"新穂高温泉まで約1時間30分〜2時間（便により異なる。6:00発の特急便〔7/18〜10/12運転〕は約1時間30分）",
          weekday:"高山発 例: 6:00 / 7:00 / 8:10 / 9:40 / 10:40（おおむね1時間に1本）", weekend:"同左（増便日あり）",
-         season:"通年運行（高山・平湯温泉からの乗車は予約不要）。積雪期は減便。", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true},
+         season:"通年運行（高山・平湯温泉からの乗車は予約不要）。積雪期は減便（一部の便は4/1〜11/30のみ運転）。", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"},
         {mode:"高速バス", line:"松本〜新穂高線（アルピコ交通・濃飛バス共同運行）", from:"松本バスターミナル",
-         duration:"約2時間",
+         duration:"約2時間20分",
          weekday:"松本発 例: 7:40 / 9:55 / 10:55 / 11:55 / 13:05 / 14:55 / 17:45", weekend:"同ダイヤ",
-         season:"季節・便数限定運行、要予約（乗車日の1か月前から受付）。2026年は11月15日まで運行を確認。詳細な運行開始日は公式サイトで要確認。", url:"https://www.alpico.co.jp/traffic/express/matsumoto_takayama/", sample:true}
+         season:"通年運行・予約制（2024年4月1日から。乗車日の1か月前より受付）。2026年7月18日から増便。14:55発の1便のみ8/8〜16・12/29〜1/3の期間限定運行。現行時刻表の掲載は2026年11月15日分まで（以降は公式サイトで要確認）。", url:"https://www.alpico.co.jp/traffic/express/matsumoto_takayama/", verified:"2026-08-10"}
       ]
     }
   ],
@@ -3832,14 +3832,15 @@ const MOUNTAINS = [
     {
       name:"高瀬ダム登山口（ブナ立尾根登山口・標高約1,275m）",
       access:[
-        {mode:"バス", line:"裏銀座登山バス（大町市）", from:"JR信濃大町駅（大町温泉郷経由）",
-         duration:"約35分",
-         weekday:"信濃大町駅発 例: 要確認（1日4往復・特定日運行のため公式サイトで要確認）", weekend:"同左",
-         season:"2026年は7月17日〜10月25日の特定日運行（予約不要）", url:"https://uraginzabus.com/", sample:true},
+        {mode:"バス", line:"裏銀座登山バス（大町市）", from:"JR信濃大町駅（大町温泉郷・葛温泉経由）",
+         duration:"約35分（信濃大町駅→七倉登山口。バスは七倉止まりで、高瀬ダムへはさらに特定タクシー約15分または徒歩約1時間50分）",
+         weekday:"信濃大町駅発 5:15 / 7:15 / 12:20 / 14:20（1日4往復）、帰路の七倉発 6:15 / 9:30 / 13:15 / 15:05",
+         weekend:"同ダイヤ（運行日は曜日でなく特定日制 — 公式サイトの運行カレンダーで要確認）",
+         season:"2026年は7月17日〜10月25日の特定日運行（予約不要）", url:"https://uraginzabus.com/", verified:"2026-08-10"},
         {mode:"タクシー", line:"七倉〜高瀬ダム特定タクシー（アルピコタクシー大町支社・アルプス第一交通）", from:"七倉登山口（七倉山荘前ゲート）",
          duration:"約15分",
          weekday:"夏山繁忙期は朝5:00頃から運行、片道約2,700円（4人乗り普通車・2026年7月現在）。始発は個人予約不可で七倉広場タクシー乗り場に並ぶ順番待ち。", weekend:"同左",
-         season:"新高瀬川発電所管理用道路の通行可能期間中（残雪状況により変動、詳細は大町市観光協会サイトで要確認）", url:"https://webmarunaka.com/nanakura/access", sample:true}
+         season:"新高瀬川発電所管理用道路の通行可能期間中（残雪状況により変動、詳細は大町市観光協会サイトで要確認）", url:"https://webmarunaka.com/nanakura/access", verified:"2026-08-10"}
       ]
     },
     {
@@ -3847,8 +3848,8 @@ const MOUNTAINS = [
       access:[
         {mode:"バス", line:"夏山バス 有峰線（富山地方鉄道）", from:"富山駅前",
          duration:"約1時間40分（直通便の場合）",
-         weekday:"富山駅前発 例: 6:10（折立7:50着）、折立発 例: 12:10（富山駅前14:10着）。このほか有峰口駅で乗り継ぐ便もあり本数は日により異なる。", weekend:"同左",
-         season:"例年7月上旬〜9月下旬。富山駅からの直通便は期間限定（2026年の正確な運行区分・時刻は公式サイトで要確認）", url:"https://www.chitetsu.co.jp/?page_id=741", sample:true}
+         weekday:"富山駅前発 例: 6:10（折立7:50着）、折立発 例: 12:10（富山駅前14:10着）。このほか有峰口駅で乗り継ぐ便あり（運行日は直通便と同じ）。", weekend:"同左",
+         season:"2026年度は7月11日〜9月27日（7/11〜8/23は毎日、8/29〜9/27は土日祝のみ）。予約制（乗車日の1ヶ月前9時から受付、当日空席があれば現金で乗車可）。雨量規制による有峰林道通行止め時は運休。", url:"https://www.chitetsu.co.jp/?page_id=741", verified:"2026-08-10"}
       ]
     }
   ],
@@ -3890,9 +3891,9 @@ const MOUNTAINS = [
     name:"新穂高温泉登山口（標高1,091m・新穂高登山指導センター）",
     access:[
       {mode:"バス", line:"新穂高線（濃飛乗合自動車）", from:"高山濃飛バスセンター（JR高山駅前）",
-       duration:"約1時間45分",
+       duration:"新穂高温泉まで約1時間30分〜2時間（便により異なる）",
        weekday:"高山濃飛バスセンター発 例: 6:00 / 7:00 / 7:40 / 8:10（以降は要確認）", weekend:"同左",
-       season:"通年運行（積雪期は減便、詳細は要確認）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true},
+       season:"通年運行（積雪期は減便、一部の便は4/1〜11/30のみ運転）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"},
       {mode:"バス", line:"新穂高線（濃飛乗合自動車）", from:"平湯温泉（平湯バスターミナル）",
        duration:"約45分",
        weekday:"平湯温泉発 例: 7:00 / 7:40 / 8:00 / 8:40（以降は要確認）", weekend:"同左",

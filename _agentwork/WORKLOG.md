@@ -420,6 +420,34 @@ with confirmed corrections applied where available:
   main session = skeptic + fixer, exactly like this salvage. Pilot ~10 entries first with a stated
   token estimate.
 
+### PILOT BATCH RUN + APPLIED 2026-08-10 (owner-approved "Pilot 10")
+
+Run `wf_46e5aa38-4c5`: 10 checkers (sonnet, effort:low, **checker-only** — no skeptic agents), keys
+chosen to complete the salvage's partial mountains + start 裏銀座: tateyama t0a1/t0a2, yakushi t0a0/t0a2,
+kurobegoro t1a0/t1a1, suisho t0a0/t0a1/t1a0, washiba t0a0. **Cost measured: 588,602 subagent tokens
+(~59k/entry), 2m05s, 0 errors.** Main session skeptic-verified everything against primary sources
+(alpen-route 2026 PDF, 濃飛 平湯・新穂高線 PDF, uraginzabus.com の時刻表画像を実読, 県・事業者ページ).
+**9 of 10 cleared → `verified:"2026-08-10"`**; yakushi/t0a0 keeps sample (折立駐車場「無料・約100台」が
+公式裏付けなし — 非公式には約300台説もあり、要現地/公式確認。それ以外の全フィールドは確認済みなので
+この1点の解決で即clear可)。Content fixes shipped:
+- **裏銀座登山バスは七倉登山口止まり**（高瀬ダムへは特定タクシー約15分 or 徒歩約1時間50分）— suisho/t0a0
+  は実時刻も画像実読で確定（信濃大町駅発 5:15/7:15/12:20/14:20・帰路 七倉発 6:15/9:30/13:15/15:05、
+  1日4往復）。washiba/t1a0（同じバスの鷲羽岳側コピー）は未検証のまま — 次バッチで同じ証拠を適用のこと。
+- **高山→新穂高の所要「約45分」は誤り**（平湯からの数字と混同）→ 実態は約1時間30分〜2時間
+  （特急6:00発は直通1時間32分）。kurobegoro/t1a0・washiba/t0a0 とも kasa と同一表現に統一。
+  ※checker は濃飛PDFの上下段（高山→平湯／平湯→新穂高）を同一列で誤連結して52分等と読んだ —
+  このPDFの列は乗継チェーンではない。将来の checker prompt に注意書き推奨。
+- **松本〜新穂高線は通年運行・予約制**（「季節限定運行」は誤り — 14:55発の1便だけが期間限定）、
+  所要は公式の約2時間20分。新穂高温泉・新穂高RWを直行で経由することを停留所一覧で確認。
+- 有峰線の「積雪期は減便」は濃飛…もとい富山地鉄ではなく**新穂高線側の話**: 濃飛PDFの運転日注記
+  （4/1〜11/30限定の便）で実証。suisho/t1a0 の season は確定日付（7/11〜9/27の2段構成）に更新。
+- Checker quality: 3/10 needed skeptic intervention (列誤連結・過度に狭い修正案・偶然範囲内のpass)。
+  checker-only ＋ main-session skeptic の形は維持すべき。
+Evidence: `_agentwork/evidence/transit-pilot-kitaalps-2026-08-10.json`.
+**Running totals after 2026-08-10 (salvage + pilot): 306 sample + 37 verified of 343 access entries.**
+Remaining unchecked expansion entries: 273 (北ア・御嶽 23, 中央・南ア 37, 他エリア 213). Measured cost
+basis for future asks: **~59k tokens/entry** → 北ア残り23 ≈ 1.4M, 中央・南ア 37 ≈ 2.2M.
+
 ## COLD-RESUME instructions for the 東北 batch (any future session, no prior context needed)
 
 Research agents Write finished mountains directly to `_agentwork/expansion/<id>.js`, so partial progress
