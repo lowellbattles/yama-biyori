@@ -1,0 +1,44 @@
+{
+  "what": "Task 12 full Alps batch (owner-approved 2026-08-10, '北ア23＋中南ア37'): run wf_864c7818-034, 60 checker agents (sonnet, effort:low, checker-only), then a main-session skeptic pass. Prompt upgrades vs pilot: stacked-column PDF caution + image-timetable download instruction.",
+  "cost": { "subagent_tokens": 3418412, "agents": 60, "tokens_per_entry_avg": 56974, "duration_s": 571, "errors": 0 },
+  "outcome": { "checked_effectively": 58, "misfired_agents": 2, "cleared_verified_2026_08_10": 46, "kept_sample": 14 },
+  "misfires": [
+    "washiba/t1a1 agent verified yari/t1a1 instead (wrong entry match) — washiba/t1a1 stays sample, unchecked",
+    "yari/t0a1 agent re-verified yari/t0a0 — but main session verified t0a1 itself from the alpico national page and fixed its latent error (7:05/11:55 were arrivals listed as departures); cleared"
+  ],
+  "skeptic_interventions": [
+    "yake/t2a0: checker mispaired PDF columns AGAIN despite the prompt warning (7:40→8:28=48min is a false chain; 8:28 belongs to the 7:00 departure). Main session rewrote weekday (7:00/10:40/13:40 → 8:28/12:08/15:08) and duration (約1時間30分) from its own read of the 濃飛 PDF",
+    "kaikoma/t0a0 vs senjo/t0a0 checker conflict on 戸台パーク departures (8:12系 vs 8:05系): resolved by main-session read of the official 2026 calendar PDF — senjo checker right, our data had 戸台大橋 column times. BOTH mountains fixed to 5:45/6:30/8:05/10:05/12:10/14:20; the kaikoma checker's 約43分 duration 'fix' was itself a wrong-column measure (true park→pass time is a uniform 50 min, existing 約50分 kept)",
+    "akaishi/t0a1: checker wrote season end 9/23; operator page says September service ends 9/27 (Sundays/holidays incl. 9/27) — corrected",
+    "kitadake/t0a1: checker and my page-fetch disagreed on a 広河原発12:00 return run — omitted from 例 list (both agree 8:00/10:00/※14:00 exist)",
+    "yake/t1a1: checker's line rename (上高地線→松本～新島々～上高地) rejected for house-style consistency; all factual fields verified",
+    "warusawa/t1a0: stale June-rain/7-9 resumption sentence removed (source page deleted, conflicting secondary dates); rest verified verbatim incl. 3-tier reservation rules",
+    "kitadake/t0a0: unverifiable 「徒歩でも通行不可」 clause softened to the confirmed fact (冬期閉鎖 from 11/4 per 山梨県林道規制情報) and cleared"
+  ],
+  "highlights_shipped": [
+    "南アルプス林道バス: real 戸台パーク departures on kaikoma+senjo (data had the next stop's times since the July batch)",
+    "山梨交通 広河原線: weekday timetable has NO 14:05 run (hoo), 甲府→広河原 is 1h53m not 1h40m (kitadake), period-based 平日/休日ダイヤ structure recorded",
+    "芦安乗合タクシー: true weekday dyna is 5:10/7:00/16:00 (no 12:00/16:30)",
+    "奈良田線: 5:30 first bus runs ONLY 7/1-8/31 (was recorded as 9/1-11/3 weekends)",
+    "御岳ロープウェイ線バス: loop route via 開田/赤岩巣, 56-66 min not 40, real times 8:40/10:40/13:50/14:45, calendar-based operating days, url switched to 木曽町 timetable page",
+    "上高地系: ナショナルパークライナー is exactly 2 runs with no direct return bus; 平湯→上高地 last dep 17:00 (17:55 was the reverse-direction arrival); early shuttles are limited-days",
+    "千代田タクシー: concrete 2026 schedule (4:20→7:20, 7/18-8/31 daily + Sept Sun/hol to 9/27); 椹島便 runs 8/14-15 ONLY",
+    "早川町バス: the '身延駅6:11発' run doesn't exist — it's 早川町役場発・下部温泉駅行; year-end holidays also non-operating",
+    "王滝村営バス: 8/3-8/7 and 8/10 weekdays DO run (exception to 土日祝のみ)",
+    "夜叉神〜広河原: winter closure officially starts 11/4/2026"
+  ],
+  "kept_sample_leftovers": [
+    "washiba/t1a1 (unchecked misfire — same taxi as suisho/t0a1 which IS verified; trivial to clear next batch)",
+    "yake/t0a1 (中の湯マイカー: 所要1時間・駐車スペース・冬期閉鎖に公式記載なし)",
+    "yake/t2a1 (高山IC→中尾 40分に公式記載なし)",
+    "ena/t0a0, ena/t1a0, ena/t3a0 (タクシー所要時間が公式未記載; t3a0の工事期間は阿智村ページで裏取り可能になった)",
+    "kaikoma/t0a1, t1a0, t1a1 (確認済み修正は適用済み; 満車/凍結/通年の定性句が未裏付け)",
+    "senjo/t0a1 (高遠線の乗車停留所名『伊那市駅』が公式停留所一覧になし; 電話確認先 0265-98-2821 / JRバス伊那支店 0265-73-7171)",
+    "hoo/t0a1 (甲府昭和IC→夜叉神 約50分に公式記載なし; 駐車場100台・無料・24hは市公式で確認済み)",
+    "akaishi/t0a2 (東俣林道の一般車通行不可が公式ページに明文なし)",
+    "hijiri/t0a0 (協力金1,000円・駐車50台・飯田IC所要の数値が公式未記載)",
+    "hijiri/t1a1 (聖沢/聖岳登山口の乗降ルールがt-forestのバスページとFAQで食い違い — 要問合せ)"
+  ],
+  "running_totals": { "access_entries": 343, "verified": 83, "sample": 260, "verified_today_all_sessions": 70 },
+  "remaining_unchecked_expansion_entries": 213
+}

@@ -3896,16 +3896,16 @@ const MOUNTAINS = [
        season:"通年運行（積雪期は減便、一部の便は4/1〜11/30のみ運転）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"},
       {mode:"バス", line:"新穂高線（濃飛乗合自動車）", from:"平湯温泉（平湯バスターミナル）",
        duration:"約45分",
-       weekday:"平湯温泉発 例: 7:00 / 7:40 / 8:00 / 8:40（以降は要確認）", weekend:"同左",
-       season:"通年運行", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true}
+       weekday:"平湯温泉発 例: 7:00 / 7:40 / 8:00 / 8:40（以降も概ね毎時運行・公式時刻表で要確認）", weekend:"同左",
+       season:"通年運行", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"}
     ]
   },{
     name:"高瀬ダム登山口（七倉より先・標高約1,275m）",
     access:[
-      {mode:"バス", line:"裏銀座登山バス（大町市運行）", from:"JR大糸線 信濃大町駅",
-       duration:"約45分（七倉山荘前まで）",
-       weekday:"特定日運行・発車時刻は公式サイトの時刻表画像を要確認", weekend:"同左",
-       season:"2026年は7月17日〜10月25日の特定日運行（乗車予約不要）", url:"https://uraginzabus.com/", sample:true},
+      {mode:"バス", line:"裏銀座登山バス（大町市運行）", from:"JR大糸線 信濃大町駅（大町温泉郷・葛温泉経由）",
+       duration:"約35分（七倉登山口・七倉山荘前まで。高瀬ダムへはさらに特定タクシー約15分または徒歩約1時間50分）",
+       weekday:"信濃大町駅発 5:15 / 7:15 / 12:20 / 14:20（1日4往復）、帰路の七倉発 6:15 / 9:30 / 13:15 / 15:05", weekend:"同ダイヤ（運行日は曜日でなく特定日制 — 公式サイトの運行カレンダーで要確認）",
+       season:"2026年は7月17日〜10月25日の特定日運行（乗車予約不要）", url:"https://uraginzabus.com/", verified:"2026-08-10"},
       {mode:"タクシー", line:"七倉〜高瀬ダム間シャトルタクシー（アルピコタクシー大町支社・アルプス第一交通）", from:"七倉山荘前（七倉ゲート）",
        duration:"約15分",
        weekday:"随時運行 例: 夏山繁忙期は5:00〜運行開始（通常期6:30〜17:00、終業40分前まで受付）", weekend:"同左",
@@ -3955,29 +3955,29 @@ const MOUNTAINS = [
       access:[
         {mode:"バス", line:"上高地線（新島々駅－上高地、アルピコ交通）", from:"アルピコ交通上高地線 新島々駅（松本駅から私鉄で約30分）",
          duration:"約1時間5分（新島々駅から）",
-         weekday:"新島々駅発 例: 7:10 / 8:00 / 8:40 / 9:30", weekend:"新島々駅発 例: 7:10 / 8:00 / 8:40 / 9:30（平日・休日の別記載なし、繁忙期は増便）",
-         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", sample:true},
+         weekday:"新島々駅発 例: 7:10 / 8:00 / 8:40 / 9:30", weekend:"新島々駅発 例: 7:10 / 8:00 / 8:40 / 9:30（平日・土休日とも同一の単一時刻表で運行）",
+         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", verified:"2026-08-10"},
         {mode:"直行バス", line:"ナショナルパークライナー（アルピコ交通・予約優先制）", from:"松本バスターミナル",
-         duration:"約1時間35分〜45分",
-         weekday:"松本BT発 例: 5:30 / 7:05 / 10:15 / 11:55", weekend:"松本BT発 例: 5:30 / 7:05 / 10:15 / 11:55（曜日により便数増減あり、詳細は公式サイト参照）",
-         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/national/", sample:true},
+         duration:"約1時間35分〜40分",
+         weekday:"松本BT発 5:30 / 10:15（上高地着 7:05 / 11:55）", weekend:"同ダイヤ（帰りの上高地→松本方面は直行便がなく新島々駅で電車乗換）",
+         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/national/", verified:"2026-08-10"},
         {mode:"シャトルバス", line:"沢渡－上高地線（アルピコ交通、マイカー規制区間の乗り継ぎ）", from:"沢渡（さわんど）駐車場",
          duration:"約30分",
-         weekday:"要確認（約30分間隔で運行）", weekend:"要確認（繁忙期は増便）",
-         season:"2026年4月17日〜11月15日（上高地マイカー規制期間）", url:"https://www.kamikochi.or.jp/access/sawando/", sample:true}
+         weekday:"さわんどバスターミナル発 例: 5:00始発（上高地5:30着）〜16:20最終・約30分間隔", weekend:"同ダイヤ（一部早朝便は運行日限定）",
+         season:"2026年4月17日〜11月15日（上高地マイカー規制期間）", url:"https://www.kamikochi.or.jp/access/sawando/", verified:"2026-08-10"}
       ]
     },
     {
       name:"新穂高温泉（新穂高ロープウェイ第1乗り場前・登山指導センター、標高約1,091m）",
       access:[
-        {mode:"バス", line:"新穂高線（濃飛バス）", from:"高山濃飛バスセンター／平湯温泉",
-         duration:"約1時間45分（高山から）・約35分（平湯温泉から）",
-         weekday:"高山濃飛バスセンター発 例: 6:00 / 7:00 / 8:10 / 10:40", weekend:"高山濃飛バスセンター発 例: 6:00 / 7:00 / 8:10 / 10:40（繁忙期は増便、迂回運行日あり）",
-         season:"通年運行（積雪期は減便、詳細は公式サイト参照）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true},
+        {mode:"バス", line:"平湯・新穂高線（濃飛バス）", from:"高山濃飛バスセンター／平湯温泉",
+         duration:"高山から約1時間30分〜2時間・平湯温泉から約35〜45分（便により異なる）",
+         weekday:"高山濃飛バスセンター発 例: 6:00 / 7:00 / 8:10 / 10:40", weekend:"同ダイヤ（8/13〜15・12/29〜1/3のみ土日祝ダイヤ）",
+         season:"通年運行（積雪期は減便、一部の便は4/1〜11/30のみ運転）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"},
         {mode:"シャトルバス", line:"あかんだな駐車場・平湯温泉－上高地線（アルピコ交通）", from:"あかんだな駐車場（新穂高・上高地縦走時の乗り継ぎ拠点）",
          duration:"約35分（上高地まで）",
-         weekday:"あかんだな駐車場発 例: 4:50〜16:50（30分間隔）", weekend:"同左（繁忙期は増便）",
-         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/hirayu/", sample:true}
+         weekday:"あかんだな駐車場発 例: 4:50〜16:50（30分間隔。早朝2便は運行日限定）", weekend:"同左",
+         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/hirayu/", verified:"2026-08-10"}
       ]
     }
   ],
@@ -4022,16 +4022,16 @@ const MOUNTAINS = [
   trailheads:[{
     name:"上高地バスターミナル（標高1,505m）",
     access:[
-      {mode:"電車+バス", line:"松本電鉄上高地線（電車）+ 上高地線バス（アルピコ交通）", from:"JR松本駅",
+      {mode:"電車+バス", line:"上高地線電車（アルピコ交通）+ 上高地線バス（アルピコ交通）", from:"JR松本駅",
        duration:"乗継含め約1時間45分",
        weekday:"松本駅発 例: 6:31 / 8:01 / 9:24 / 12:09（新島々駅でバスに乗換、上高地着 例: 8:15 / 9:45 / 11:10 / 13:55）", weekend:"平日・休日の区別なし（上記と同一）",
-       season:"2026年4月17日〜11月15日（上高地マイカー規制期間と同一）", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", sample:true},
+       season:"2026年4月17日〜11月15日（上高地マイカー規制期間と同一）", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", verified:"2026-08-10"},
       {mode:"直行バス", line:"ナショナルパークライナー（アルピコ交通・予約優先制）", from:"松本バスターミナル",
        duration:"約1時間35分", weekday:"松本バスターミナル発 例: 5:30 / 10:15（上高地着 例: 7:05 / 11:55）", weekend:"同上（予約優先・満席時は先着順で乗車不可の場合あり）",
-       season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/national/", sample:true},
+       season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/national/", verified:"2026-08-10"},
       {mode:"バス", line:"平湯温泉〜上高地線（濃飛バス、岐阜県側からのアクセス）", from:"平湯温泉（高山方面から）",
-       duration:"約25〜30分", weekday:"平湯温泉発 例: 5:00始発、6:00以降は毎時00分・30分発、最終17:55発", weekend:"同上",
-       season:"2026年4月17日〜11月15日", url:"https://www.nouhibus.co.jp/route_bus/kamikochi-line/", sample:true}
+       duration:"約25〜30分", weekday:"平湯温泉発 例: 6:30 / 7:00 / 7:30（以降毎時00分・30分発）、最終17:00発。5:00・5:30・6:00発の早朝便はGW・夏期など運行日限定（公式時刻表の〇▲印参照）", weekend:"平日と同一ダイヤ",
+       season:"2026年4月17日〜11月15日", url:"https://www.nouhibus.co.jp/route_bus/kamikochi-line/", verified:"2026-08-10"}
     ]
   }],
   huts:[
@@ -4079,12 +4079,12 @@ const MOUNTAINS = [
       access:[
         {mode:"バス", line:"平湯・新穂高線（濃飛バス）", from:"JR高山駅前 高山濃飛バスセンター",
          duration:"約1時間30分〜2時間（便により異なる）",
-         weekday:"高山濃飛バスセンター発 例: 7:00 / 7:40 / 8:40 / 9:40 / 10:40（新穂高温泉 着 例: 8:12 / 8:32 / 10:12 / 11:12 / 12:12）", weekend:"土日祝も同ダイヤ。7月18日〜10月12日は高山6:00発の特急便を増発（公式時刻表2026/4/1版で確認）",
-         season:"通年運行。一部区間はデマンド予約制（濃飛バス高山営業所 0577-33-7780・前日18時までに要予約）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true},
+         weekday:"高山濃飛バスセンター発 例: 7:00 / 7:40 / 8:40 / 9:40 / 10:40（新穂高温泉 着 例: 8:32 / 9:12 / 10:12 / 11:12 / 12:12）", weekend:"土日祝も同ダイヤ。7月18日〜10月12日は高山6:00発の特急便を増発（公式時刻表2026/4/1版で確認）",
+         season:"通年運行。一部区間はデマンド予約制（濃飛バス高山営業所 0577-33-7780・前日18時までに要予約）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"},
         {mode:"バス", line:"平湯・新穂高線（濃飛バス）", from:"平湯温泉（松本・高山方面から乗継）",
          duration:"約25〜45分",
          weekday:"平湯温泉発 例: 7:00 / 7:40 / 8:00 / 8:40 / 9:40", weekend:"同ダイヤ",
-         season:"通年運行", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true}
+         season:"通年運行", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"}
       ]
     },
     {
@@ -4093,7 +4093,7 @@ const MOUNTAINS = [
         {mode:"バス", line:"平湯・新穂高線（濃飛バス）", from:"JR高山駅前 高山濃飛バスセンター",
          duration:"約1時間20分〜1時間30分",
          weekday:"中尾高原口 着 例: 7:27 / 8:07 / 9:07 / 10:07 / 11:07", weekend:"同ダイヤ",
-         season:"通年運行。一部区間はデマンド予約制（濃飛バス高山営業所 0577-33-7780・前日18時までに要予約）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true}
+         season:"通年運行。一部区間はデマンド予約制（濃飛バス高山営業所 0577-33-7780・前日18時までに要予約）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"}
       ]
     }
   ],
@@ -4140,7 +4140,7 @@ const MOUNTAINS = [
         {mode:"バス", line:"上高地線 路線バス（アルピコ交通・予約優先制）", from:"アルピコ交通 新島々駅",
          duration:"新島々駅から中の湯バス停まで約50分。新中の湯登山口へは中の湯バス停からさらに旧国道を約3km・登り約100m進む必要があり、公共交通機関はないため徒歩または要タクシー（要確認）",
          weekday:"新島々駅発 例: 7:10 / 8:00 / 8:40（中の湯バス停着 例: 7:58 / 8:48 / 9:28）", weekend:"2026年運行期間中は土日祝も同一ダイヤ",
-         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", sample:true},
+         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", verified:"2026-08-10"},
         {mode:"マイカー", line:"公共交通機関なし（要確認）", from:"長野自動車道 松本IC",
          duration:"約1時間（国道158号を上高地・平湯方面へ、中の湯温泉旅館の先の旧道沿いに登山口駐車スペースあり）",
          weekday:"—", weekend:"—",
@@ -4153,20 +4153,20 @@ const MOUNTAINS = [
         {mode:"シャトルバス", line:"あかんだな駐車場・平湯温泉〜上高地シャトルバス（アルピコ交通）", from:"あかんだな駐車場／平湯温泉",
          duration:"約25〜30分",
          weekday:"あかんだな駐車場発 例: 4:50始発（約30分間隔で運行、上高地発の最終は例: 17:30）", weekend:"2026年運行期間中は土日祝も同一ダイヤ",
-         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/hirayu/", sample:true},
+         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/hirayu/", verified:"2026-08-10"},
         {mode:"バス", line:"上高地線 路線バス（アルピコ交通・予約優先制）", from:"アルピコ交通 新島々駅",
          duration:"新島々駅から上高地バスターミナルまで約65分",
          weekday:"新島々駅発 例: 7:10 / 8:00 / 8:40（上高地着 例: 8:15 / 9:05 / 9:45）", weekend:"2026年運行期間中は土日祝も同一ダイヤ",
-         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", sample:true}
+         season:"2026年4月17日〜11月15日", url:"https://www.alpico.co.jp/traffic/local/kamikochi/shinshimashima/", verified:"2026-08-10"}
       ]
     },
     {
       name:"中尾焼岳登山口（中尾高原・標高約1,150m）",
       access:[
         {mode:"バス", line:"平湯・新穂高線（濃飛バス）", from:"高山濃飛バスセンター",
-         duration:"約48分",
-         weekday:"高山発 例: 7:40 / 10:40 / 13:40（中尾焼岳登山口着 例: 8:28 / 12:08 / 15:08）", weekend:"2026年運行期間中は土日祝も同一ダイヤ",
-         season:"通年運行（本数は季節により変動、最新時刻表は要確認）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", sample:true},
+         duration:"約1時間30分（平湯での系統接続を含む）",
+         weekday:"高山発 例: 7:00 / 10:40 / 13:40（中尾焼岳登山口着 例: 8:28 / 12:08 / 15:08）。中尾地区に停車しない便もあるため公式時刻表で要確認", weekend:"土日祝も同一ダイヤ",
+         season:"通年運行（本数は季節により変動、最新時刻表は要確認）", url:"https://www.nouhibus.co.jp/route_bus/shinhotaka-line/", verified:"2026-08-10"},
         {mode:"マイカー", line:"公共交通機関なし（要確認）", from:"中部縦貫自動車道 高山IC",
          duration:"約40分（国道158号・471号で新穂高温泉方面へ、中尾高原の登山口駐車場を利用）",
          weekday:"—", weekend:"—",
@@ -4215,14 +4215,14 @@ const MOUNTAINS = [
     {
       name:"御岳ロープウェイ 飯森高原駅（黒沢口七合目・標高2,150m）",
       access:[
-        {mode:"バス", line:"おんたけ交通 御岳ロープウェイ線", from:"JR中央本線 木曽福島駅",
-         duration:"約40分（ロープウェイ山麓駅まで）",
-         weekday:"要確認（季節運行・木曽福島駅前出札所で要事前確認）", weekend:"要確認（季節運行・木曽福島駅前出札所で要事前確認）",
-         season:"夏山シーズン中心（ロープウェイ営業期間に合わせて運行）", url:"https://ontakekotsu.com/regular", sample:true},
+        {mode:"バス", line:"観光路線 御岳ロープウェイ線（おんたけ交通・木曽町生活交通システム）", from:"JR中央本線 木曽福島駅",
+         duration:"約56〜66分（開田高原・赤岩巣方面を経由する周遊路線のため便により異なる）",
+         weekday:"木曽福島駅発 8:40 / 10:40（赤岩巣経由）、13:50 / 14:45（開田経由）→ 御岳ロープウェイ着 9:36 / 11:46 / 14:56 / 15:51。運行日はカレンダー制（曜日で固定されない）のため要確認", weekend:"同ダイヤ（運行日カレンダーによる）",
+         season:"2026年の夏山シーズンダイヤは6/20〜8/30（秋シーズンダイヤも別途設定）。運行日カレンダーの指定日のみ運行で、ロープウェイの運行日でもバスの運行がない日がある", url:"https://www.town-kiso.com/kurashi/douro/100071/102290/", verified:"2026-08-10"},
         {mode:"ロープウェイ", line:"おんたけロープウェイ（山麓駅 鹿ノ瀬 → 飯森高原駅・標高2,150m）", from:"山麓駅（鹿ノ瀬）",
          duration:"約15分",
-         weekday:"要確認（始発・最終便は公式サイト参照）", weekend:"要確認（始発・最終便は公式サイト参照）",
-         season:"2026年は4月25日〜11月8日予定", url:"https://ontake-rope2150.jp/guide/", sample:true}
+         weekday:"要確認（運行時間は季節・特定曜日で複数パターンに分かれるため公式サイト参照）", weekend:"要確認（同左）",
+         season:"2026年は4月25日〜11月8日予定", url:"https://ontake-rope2150.jp/guide/", verified:"2026-08-10"}
       ]
     },
     {
@@ -4230,8 +4230,8 @@ const MOUNTAINS = [
       access:[
         {mode:"バス", line:"王滝村営バス 田の原線（おんたけ交通に運行委託）", from:"JR中央本線 木曽福島駅前",
          duration:"約1時間15分",
-         weekday:"運休（土日祝日のみ運行）", weekend:"木曽福島駅発 例: 8:40 / 13:45（2026年は7月4日〜10月18日の土日祝日運行）",
-         season:"2026年は7月4日〜10月18日の土日祝日のみ", url:"https://www.vill.otaki.nagano.jp/kurashi/basu_tanohara.html", sample:true}
+         weekday:"運休（土日祝日のみ運行。ただし8/3〜8/7・8/10の平日は運行）", weekend:"木曽福島駅発 8:40 / 13:45（田の原着 9:55 / 15:00）",
+         season:"2026年は7月4日〜10月18日の土日祝日のみ（8/3〜8/7・8/10は平日も運行）", url:"https://www.vill.otaki.nagano.jp/kurashi/basu_tanohara.html", verified:"2026-08-10"}
       ]
     }
   ],
@@ -4839,10 +4839,10 @@ const MOUNTAINS = [
       access:[
         {mode:"バス", line:"南アルプス林道バス「南アルプスクイーンライン」（伊那市営）", from:"戸台パーク（仙流荘、マイカー規制のため一般車はここまで）",
          duration:"約50分（戸台パーク→北沢峠）",
-         weekday:"戸台パーク発 例: 8:12 / 10:12 / 12:17 / 14:20（毎日）。7/10〜10/12はこれに5:52発が加わる", weekend:"戸台パーク発 例: 6:37（4/25〜7/9・10/13〜11/3の土日祝のみ追加）/ 8:12 / 10:12 / 12:17 / 14:20。7/10〜10/12は5:52発も運行",
-         season:"2026年は4/25〜11/3運行（4/25〜5/31は戸台口〜歌宿間のみ、6/1〜11/3が北沢峠までの全区間運行）", url:"https://www.inacity.jp/kankojoho/sangaku_alps/minamialps/minamialps_jikokuhyo.html", sample:true},
-        {mode:"車", line:"自家用車（戸台パーク／仙流荘駐車場まで。そこから先は終日マイカー規制でバスのみ）", from:"中央自動車道 伊那IC",
-         duration:"約30分（伊那ICから戸台パークまで）",
+         weekday:"戸台パーク発 8:05 / 10:05 / 12:10 / 14:20。7/10〜10/12はこれに5:45発が加わり毎日5本", weekend:"戸台パーク発 例: 6:30（4/25〜7/5・10/17〜11/3の土休日のみ追加）/ 8:05 / 10:05 / 12:10 / 14:20。7/10〜10/12は毎日5:45発も運行",
+         season:"2026年は4/25〜11/3運行（4/25〜5/31は戸台口〜歌宿間のみ、6/1〜11/3が北沢峠までの全区間運行）", url:"https://www.inacity.jp/kankojoho/sangaku_alps/minamialps/minamialps_jikokuhyo.html", verified:"2026-08-10"},
+        {mode:"車", line:"自家用車（戸台パーク／仙流荘駐車場まで。そこから先は終日マイカー規制でバスのみ）", from:"中央自動車道 伊那IC／小黒川スマートIC",
+         duration:"約40分（ICから戸台パークまで — 伊那市公式。駐車場約600台）",
          weekday:"通行可。戸台パーク駐車場に停めてバスに乗り継ぐ", weekend:"同左。夏山シーズンの週末は駐車場が満車になることがある",
          season:"通年通行可（積雪期の道路状況は要問合せ）", url:"https://www.inacity.jp/kankojoho/sangaku_alps/minamialps/174h_nok20220621.html", sample:true},
         {mode:"バス（現在運休中）", line:"南アルプス市営バス 広河原⇄北沢峠線", from:"広河原",
@@ -4855,11 +4855,11 @@ const MOUNTAINS = [
       name:"竹宇駒ケ岳神社／尾白川渓谷駐車場（標高約770m）",
       access:[
         {mode:"タクシー", line:"タクシー（小淵沢タクシー・須玉三共タクシー・北杜タクシー等 — 北杜市観光協会の案内）", from:"JR中央本線 小淵沢駅／長坂駅／日野春駅",
-         duration:"約20〜30分（小淵沢駅から）",
+         duration:"約30分（3駅いずれからも — 北杜市観光協会・市公式の案内）",
          weekday:"バス路線は廃止されており、事前に電話でタクシーを予約するのが確実", weekend:"同左。夏山シーズンの週末は台数に余裕を持って手配を",
          season:"通年（積雪・凍結期は道路状況に注意）", url:"https://www.hokuto-kanko.jp/spot/ojiragawa_valley/", sample:true},
-        {mode:"車", line:"自家用車（尾白川渓谷駐車場、無料・普通車約100台）", from:"中央自動車道 小淵沢IC／須玉IC",
-         duration:"約20〜30分",
+        {mode:"車", line:"自家用車（尾白川渓谷駐車場、無料・普通車約100台）", from:"中央自動車道 長坂IC／須玉IC",
+         duration:"約30分（北杜市公式・市観光協会の案内）",
          weekday:"通行可", weekend:"紅葉期・夏山シーズンの週末は満車になることがある",
          season:"通年（冬期は路面凍結に注意）", url:"https://www.hokuto-kanko.jp/spot/ojiragawa_valley/", sample:true}
       ]
@@ -4907,8 +4907,8 @@ const MOUNTAINS = [
     access:[
       {mode:"バス", line:"南アルプス林道バス（伊那市営）", from:"戸台パーク（旧・仙流荘、2025年4月からバス停が仙流荘前ロータリー内に移転）",
        duration:"約50分",
-       weekday:"戸台パーク発 例: 8:12 / 10:12 / 12:17 / 14:20（毎日）。7/10〜10/12はこれに5:52発が加わる", weekend:"戸台パーク発 例: 6:37（4/25〜7/9・10/13〜11/3の土休日のみ追加）/ 8:12 / 10:12 / 12:17 / 14:20。7/10〜10/12は5:52発も運行",
-       season:"2026年4/25〜11/3。4/25〜5/31は歌宿止まり、6/1〜11/3が北沢峠まで運行（天候等で早期終了の場合あり）", url:"https://www.inacity.jp/kankojoho/sangaku_alps/minamialps/minamialps_jikokuhyo.html", sample:true},
+       weekday:"戸台パーク発 8:05 / 10:05 / 12:10 / 14:20。7/10〜10/12はこれに5:45発が加わり毎日5本", weekend:"戸台パーク発 例: 6:30（4/25〜7/5・10/17〜11/3の土休日のみ追加）/ 8:05 / 10:05 / 12:10 / 14:20。7/10〜10/12は毎日5:45発も運行",
+       season:"2026年4/25〜11/3。4/25〜5/31は歌宿止まり、6/1〜11/3が北沢峠まで運行（天候等で早期終了の場合あり）", url:"https://www.inacity.jp/kankojoho/sangaku_alps/minamialps/minamialps_jikokuhyo.html", verified:"2026-08-10"},
       {mode:"バス（乗継）", line:"JRバス関東 高遠線 → 伊那市営バス 長谷線", from:"JR飯田線 伊那市駅",
        duration:"乗継込みで約1時間", weekday:"伊那市駅発、高遠駅で長谷線（平日運行）に乗り継ぎ、南アルプス林道バスの発車時刻に接続するダイヤ。具体的な発車時刻は要確認", weekend:"長谷線は平日運行が基本のため、土休日の接続体系は別系統になる場合あり。要確認（南アルプス林道バス営業所 0265-98-2821 へ問い合わせ推奨）",
        season:"南アルプス林道バスの運行期間に準ずる", url:"https://www.inacity.jp/kurashi/kotsu_jikokuhyo/bus_rosenjikokuhyo/busjikokuhyo/index.html", sample:true}
@@ -4949,8 +4949,8 @@ const MOUNTAINS = [
       access:[
         {mode:"バス", line:"南アルプス登山バス 甲府駅・竜王・芦安駐車場～広河原線（山梨交通）", from:"JR中央本線 甲府駅",
          duration:"約1時間12分",
-         weekday:"甲府駅発 例: 9:05 / 10:05 / 12:05 / 14:05（夜叉神峠登山口着 10:17 / 11:17 / 13:17 / 15:17）", weekend:"甲府駅発 例: 4:35 / 6:55 / 9:05 / 10:05 / 12:05 / 14:05（夜叉神峠登山口着 5:47 / 8:07 / 10:17 / 11:17 / 13:17 / 15:17）",
-         season:"2026年6/26(金)〜11/3(火・祝)運行。南アルプス山岳交通適正化協議会への利用者協力金（片道300円）が別途必要", url:"https://ykbus.jp/route_bus/route_sp_info/hirogawara/", sample:true},
+         weekday:"甲府駅発 9:05 / 10:05 / 12:05（夜叉神峠登山口着 10:17 / 11:17 / 13:17）", weekend:"甲府駅発 4:35 / 6:55 / 9:05 / 10:05 / 12:05 / 14:05（夜叉神峠登山口着 5:47 / 8:07 / 10:17 / 11:17 / 13:17 / 15:17）※6/26〜7/17は毎日平日ダイヤ・7/18〜8/23は毎日休日ダイヤで運行",
+         season:"2026年6/26(金)〜11/3(火・祝)運行。南アルプス山岳交通適正化協議会への利用者協力金（片道300円）が別途必要", url:"https://ykbus.jp/route_bus/route_sp_info/hirogawara/", verified:"2026-08-10"},
         {mode:"自家用車", line:"夜叉神峠登山口駐車場（無料・約100台）", from:"中央道 甲府昭和IC",
          duration:"約50分",
          weekday:"通年利用可（夜叉神峠から先の広河原方面はマイカー規制区間）", weekend:"同左",
@@ -4963,11 +4963,11 @@ const MOUNTAINS = [
         {mode:"登山バス", line:"鳳凰三山登山バス（茅ヶ岳観光バス・完全予約制）", from:"JR中央本線 韮崎駅（駅前ロータリー2番乗り場）",
          duration:"約50分（運賃は事前確認要）",
          weekday:"運行なし（土日・三連休のみの運行）", weekend:"韮崎駅発 例: 7:10 / 9:10（青木鉱泉着 8:00 / 10:00）",
-         season:"2026年6/20(土)〜10/12(月・祝)の土日・三連休運行。完全予約制（利用日の1ヶ月前〜2日前までに要予約、定員18名）", url:"https://houougoya.jp/access/", sample:true},
+         season:"2026年6/20(土)〜10/12(月・祝)の土日・三連休運行。完全予約制（利用日の1ヶ月前〜2日前までに要予約、定員18名）", url:"https://houougoya.jp/access/", verified:"2026-08-10"},
         {mode:"タクシー", line:"甲斐タクシー", from:"JR中央本線 韮崎駅",
          duration:"約45分（運賃目安 8,500円）",
          weekday:"随時（事前予約推奨）", weekend:"随時（事前予約推奨）",
-         season:"通年", url:"https://www.kai-taxi.com/tourism.html", sample:true}
+         season:"通年", url:"https://www.kai-taxi.com/tourism.html", verified:"2026-08-10"}
       ]
     }
   ],
@@ -5003,16 +5003,16 @@ const MOUNTAINS = [
       name:"広河原（標高1,520m）",
       access:[
         {mode:"バス", line:"南アルプス登山バス 甲府・竜王・芦安駐車場～広河原線（山梨交通）", from:"JR甲府駅南口バスターミナル",
-         duration:"約1時間40分",
-         weekday:"甲府駅発 例: 6:55 / 9:05 / 10:05 / 12:05 / 14:05（7/18〜8/23は毎日運行、8/24〜11/3は土休日中心の運行）", weekend:"甲府駅発 例: 4:35 / 6:55 / 9:05 / 10:05 / 12:05 / 14:05（夏期は早朝4:35発の便あり。広河原発は例: 10:00 / 11:00 / 12:00 / 14:00 / 16:35）",
-         season:"2026年6/26(金)〜11/3(火・祝)。この期間のみ「南アルプスマイカー規制」で一般車両通行止め・バス/タクシー運行、期間外は林道が冬期閉鎖され徒歩でも通行不可。", url:"https://www.minamialps-net.jp/access/bus-1-1", sample:true},
+         duration:"約1時間53分",
+         weekday:"甲府駅発 9:05 / 10:05 / 12:05（広河原着 10:58 / 11:58 / 13:58）。4:35・6:55・14:05発は7/18〜8/23の毎日と8/24〜11/3の土休日のみ運行", weekend:"甲府駅発 例: 4:35 / 6:55 / 9:05 / 10:05 / 12:05 / 14:05（広河原発は例: 10:00 / 11:00 / 12:00 / 14:00 / 16:35）",
+         season:"2026年6/26(金)〜11/3(火・祝)。この期間は夜叉神〜広河原が「南アルプスマイカー規制」で一般車両通行止め・バス/タクシー運行、期間外は林道が冬期閉鎖される（2026年度は11/4から閉鎖予定・山梨県林道規制情報）。", url:"https://www.minamialps-net.jp/access/bus-1-1", verified:"2026-08-10"},
         {mode:"乗合タクシー", line:"市営芦安駐車場〜広河原（芦安観光タクシー）", from:"市営芦安駐車場",
          duration:"約50分",
-         weekday:"芦安駐車場発 例: 5:10 / 7:00 / 12:00 / 16:30（要事前連絡、季節・曜日により変動）", weekend:"芦安駐車場発 例: 5:10 / 7:00 / 12:00 / 16:30（夏期土休日は増便あり。広河原発は例: 8:00 / 10:00 / 12:00 / 14:00）",
-         season:"2026年6/26〜11/3", url:"https://www.minamialps-net.jp/access/taxi-1", sample:true},
+         weekday:"芦安駐車場発 5:10 / 7:00 / 16:00（平日用ダイヤ: 6/26〜7/17・9/1〜10/31の平日と11/1〜3）", weekend:"芦安駐車場発 5:10 / 7:00 / 12:00 / 16:30（休日用ダイヤ: 7/18〜8/31の毎日と6〜10月の土休日。広河原発は例: 8:00 / 10:00、※14:00発は7/18〜8/20の土休日限定）",
+         season:"2026年6/26〜11/3", url:"https://ashiyasu-kankou-taxi.co.jp/climbing-for-taxi-and-bus/taxi_for_hill_climbing2/", verified:"2026-08-10"},
         {mode:"直行バス", line:"新宿発 南アルプス登山者用バス（山梨交通・要予約）", from:"新宿駅西口",
-         duration:"夜行 約8時間15分", weekday:"新宿発 例: 22:00（毎週火曜運行日あり、広河原着 例: 6:13）", weekend:"新宿発 例: 22:00（毎週金曜運行、広河原着 例: 6:13）",
-         season:"2026年は7月上旬〜10月上旬の金曜（一部期間は火曜も増発）。運行日は年により変動するため要確認。", url:"https://ykbus.jp/travel/hirogawara/", sample:true}
+         duration:"夜行 約8時間13分", weekday:"新宿発 例: 22:00（毎週火曜運行日あり、広河原着 例: 6:13）", weekend:"新宿発 例: 22:00（毎週金曜運行、広河原着 例: 6:13）",
+         season:"2026年は7/3〜10/9の毎週金曜と7/7〜8/25の毎週火曜に運行。運行日は年により変動するため要確認。", url:"https://ykbus.jp/travel/hirogawara/", verified:"2026-08-10"}
       ]
     },
     {
@@ -5020,12 +5020,12 @@ const MOUNTAINS = [
       access:[
         {mode:"バス", line:"南アルプス登山バス 奈良田～広河原線（山梨交通）", from:"奈良田駐車場・奈良田温泉",
          duration:"約45分",
-         weekday:"奈良田発 例: 5:30 / 8:40 / 15:30（広河原発は例: 7:00 / 14:30 / 16:35）", weekend:"奈良田発 例: 5:30 / 8:40 / 15:30（同左、繁忙期は増便の場合あり）",
-         season:"2026年6/26〜11/3", url:"https://www.minamialps-net.jp/access/bus-3-1", sample:true},
+         weekday:"奈良田発 例: 5:30 / 8:40 / 15:30（広河原発は例: 7:00 / 14:30 / 16:35。5:30発は7/1〜8/31のみ・16:35発は休日ダイヤ日のみ運行）", weekend:"奈良田発 例: 5:30 / 8:40 / 15:30（同左）",
+         season:"2026年6/26〜11/3", url:"https://www.minamialps-net.jp/access/bus-3-1", verified:"2026-08-10"},
         {mode:"バス", line:"早川町乗合バス（身延駅～奈良田温泉）", from:"JR身延線 身延駅・下部温泉駅",
          duration:"身延駅から奈良田温泉まで約1時間30分",
-         weekday:"身延駅発 例: 7:05 / 11:25 / 13:45 / 16:45 / 18:30（奈良田温泉発は例: 6:35 / 9:50 / 13:50 / 15:55）", weekend:"平日とほぼ同一（土日祝は身延駅6:11発・18:30発の2便が運休）",
-         season:"通年運行（南アルプス登山バスの奈良田線と接続）", url:"https://www.town.hayakawa.yamanashi.jp/people/taffic.html", sample:true}
+         weekday:"身延駅発 例: 7:05 / 11:25 / 13:45 / 16:45 / 18:30（奈良田温泉発は例: 6:35 / 9:50 / 13:50 / 15:55）", weekend:"平日とほぼ同一（土日祝・年末年始〔12/29〜1/3〕は早川町役場6:11発〔下部温泉駅行〕と身延駅18:30発の2便が運休）",
+         season:"通年運行（南アルプス登山バスの奈良田線と接続）", url:"https://www.town.hayakawa.yamanashi.jp/people/taffic.html", verified:"2026-08-10"}
       ]
     }
   ],
@@ -5075,18 +5075,18 @@ const MOUNTAINS = [
       name:"広河原登山口（標高1,520m）",
       access:[
         {mode:"バス", line:"南アルプス登山バス 甲府駅・芦安駐車場〜広河原線（山梨交通）", from:"JR甲府駅南口・芦安駐車場",
-         duration:"甲府駅から約1時間55分／芦安駐車場から約1時間",
+         duration:"甲府駅から約1時間53分／芦安駐車場から約1時間",
          weekday:"甲府駅発 例: 9:05 / 10:05 / 12:05（7/18〜8/23は4:35・6:55・14:05発も毎日運行）", weekend:"甲府駅発 例: 9:05 / 10:05 / 12:05（8/24〜11/3の土休日は4:35・6:55・14:05発も運行）",
-         season:"2026年は6月26日〜11月3日運行（南アルプス市営バスは2026年度運行休止）", url:"https://ykbus.jp/route_bus/route_sp_info/hirogawara/", sample:true}
+         season:"2026年は6月26日〜11月3日運行（南アルプス市営バスは2026年度運行休止）", url:"https://ykbus.jp/route_bus/route_sp_info/hirogawara/", verified:"2026-08-10"}
       ]
     },
     {
       name:"奈良田登山口（白峰三山縦走・大門沢下山口、標高約830m）",
       access:[
         {mode:"バス", line:"南アルプス登山バス 奈良田〜広河原線（山梨交通）", from:"奈良田駐車場（第一発電所・野呂川発電所経由）",
-         duration:"約45分〜50分（奈良田〜広河原）",
+         duration:"約45分（奈良田〜広河原、上下便とも公式時刻表上は一律45分）",
          weekday:"広河原発（下山方向）例: 7:00 / 14:30（8/24〜11/3土休日は16:35発も運行）", weekend:"広河原発（下山方向）例: 7:00 / 14:30（7/18〜8/23は16:35発も毎日運行）",
-         season:"2026年は6月26日〜11月3日運行（奈良田発5:30便は7/1〜8/31毎日・9/1〜11/3土休日のみ）", url:"https://ykbus.jp/route_bus/route_sp_info/hirogawara/", sample:true}
+         season:"2026年は6月26日〜11月3日運行。奈良田発5:30便（☆印）は7/1〜8/31の間のみ毎日運行で、それ以外の期間は運行なし", url:"https://ykbus.jp/route_bus/route_sp_info/hirogawara/", verified:"2026-08-10"}
       ]
     }
   ],
@@ -5131,7 +5131,7 @@ const MOUNTAINS = [
       {mode:"バス", line:"南アルプス登山バス 鳥倉線（伊那バス）", from:"JR飯田線 伊那大島駅（大島駅前バス停）",
        duration:"約1時間45分",
        weekday:"大島駅前発 例: 6:45 / 12:10（鳥倉登山口着 8:30 / 13:55）", weekend:"土日祝も同一ダイヤで毎日運行（大島駅前発 例: 6:45 / 12:10）",
-       season:"2026年度は7月18日（土）〜8月30日（日）の毎日運行。運行期間外は越路ゲートまでの林道はマイカー通行可（登山口までは徒歩約50分）", url:"https://www.ibgr.jp/general-route/torikura_off2/", sample:true}
+       season:"2026年度は7月18日（土）〜8月30日（日）の毎日運行。運行期間外は越路ゲートまでの林道はマイカー通行可（登山口までは徒歩約50分）", url:"https://www.ibgr.jp/general-route/torikura_off2/", verified:"2026-08-10"}
     ]
   }],
   huts:[
@@ -5172,10 +5172,10 @@ const MOUNTAINS = [
         {mode:"バス（夏季季節運行・要予約）", line:"南アルプス登山線（しずてつジャストライン）", from:"JR静岡駅前",
          duration:"約3時間20分（白樺荘経由）",
          weekday:"静岡駅前発 例: 10:00（白樺荘13:10・畑薙夏期臨時駐車場13:20着）／復路 畑薙発14:30（白樺荘14:40・静岡駅前17:50着）", weekend:"同上（運行期間中は毎日運行）",
-         season:"2026年7月16日(木)〜8月16日(日)・毎日運行（1日1往復のみ、要事前予約・乗車前日19:00までに手続き）", url:"https://www.justline.co.jp/news/20260611/22914/", sample:true},
+         season:"2026年7月16日(木)〜8月16日(日)・毎日運行（1日1往復のみ、要事前予約・乗車前日19:00までに手続き）", url:"https://www.justline.co.jp/news/20260611/22914/", verified:"2026-08-10"},
         {mode:"タクシー（相乗り・要予約）", line:"南アルプス登山送迎便（千代田タクシー）", from:"静岡駅北口 等",
-         duration:"約3時間半", weekday:"要問合せ（相乗り便は運行日・時刻が変動）", weekend:"要問合せ",
-         season:"登山シーズン中（要事前予約）", url:"https://www.chiyodataxi.com/travel-taxi/%E5%8D%97%E3%82%A2%E3%83%AB%E3%83%97%E3%82%B9%E7%99%BB%E5%B1%B1%E9%80%81%E8%BF%8E%E4%BE%BF-%E7%9B%B8%E4%B9%97%E3%82%8A/", sample:true}
+         duration:"約3時間（通常便 静岡駅北口4:20発→畑薙夏期臨時駐車場7:20着）", weekday:"静岡駅北口4:20発（通常便）／復路 畑薙7:35発→静岡駅10:40着", weekend:"同ダイヤ（9月は日曜・祝日のみ運行）",
+         season:"2026年は7/18〜8/31毎日、9月は日曜・祝日（〜9/27）のみ運行。Googleフォームで要事前予約（運行日の7営業日前締切、最少催行4名・定員8名）", url:"https://www.chiyodataxi.com/travel-taxi/%E5%8D%97%E3%82%A2%E3%83%AB%E3%83%97%E3%82%B9%E7%99%BB%E5%B1%B1%E9%80%81%E8%BF%8E%E4%BE%BF-%E7%9B%B8%E4%B9%97%E3%82%8A/", verified:"2026-08-10"}
       ]
     },
     {
@@ -5183,8 +5183,8 @@ const MOUNTAINS = [
       access:[
         {mode:"送迎バス（対象山小屋の宿泊者専用・要予約）", line:"特種東海フォレスト送迎バス（畑薙〜椹島）", from:"畑薙第一ダム夏期臨時駐車場",
          duration:"約1時間10分",
-         weekday:"畑薙発 例: 7:30・15:00（椹島8:40・16:10着）／椹島発 例: 6:10・10:30・13:00（畑薙7:20・11:40・14:10着）", weekend:"同上（7/16〜8/31は毎日、9/1〜10/12は日祝運行・平日は月〜土運行）",
-         season:"2026年7月11日〜10月12日（4/26〜7/10・10/13以降は宿泊予約時に個別調整）。※椹島ロッヂ・千枚小屋・荒川小屋・中岳避難小屋など対象施設への1泊以上の宿泊者限定、テント泊のみは対象外。往復無料（宿泊料に含む）。2026年6月26〜27日の大雨で東俣林道の路肩が崩落し一時運休したが、仮復旧により7/9から予約受付を再開。悪天候・林道状況により運休する場合あり。", url:"https://www.t-forest.com/alpsinfo/bus/", sample:true}
+         weekday:"畑薙発 例: 7:30・15:00（椹島8:40・16:10着）／椹島発 例: 6:10・10:30・13:00（畑薙7:20・11:40・14:10着）", weekend:"同上（運行期間中は毎日運行）",
+         season:"2026年7月11日〜10月12日（4/26〜7/10・10/13以降は宿泊予約時に個別調整）。予約は7/11〜9/23と10/10〜12が事前必須、9/24〜10/9は当日乗車可。※椹島ロッヂ・千枚小屋・荒川小屋・中岳避難小屋など対象施設への1泊以上の宿泊者限定、テント泊のみは対象外。往復無料（宿泊料に含む）。悪天候・林道状況により運休する場合あり。", url:"https://www.t-forest.com/alpsinfo/bus/", verified:"2026-08-10"}
       ]
     },
     {
@@ -5193,7 +5193,7 @@ const MOUNTAINS = [
         {mode:"バス（夏季季節運行）", line:"南アルプス登山バス 鳥倉線（伊那バス）", from:"JR飯田線 伊那大島駅前",
          duration:"約1時間45分",
          weekday:"伊那大島駅前発 例: 6:45／12:10（鳥倉登山口着8:30／13:55）", weekend:"同上（運行期間中は毎日運行）",
-         season:"2026年7月18日(土)〜8月30日(日)の毎日", url:"https://www.ibgr.jp/general-route/torikura_off2/", sample:true}
+         season:"2026年7月18日(土)〜8月30日(日)の毎日", url:"https://www.ibgr.jp/general-route/torikura_off2/", verified:"2026-08-10"}
       ]
     }
   ],
@@ -5230,13 +5230,13 @@ const MOUNTAINS = [
     name:"椹島（さわらじま）登山口・椹島ロッヂ（標高1,120m）",
     access:[
       {mode:"バス（夏季限定・要予約）", line:"南アルプス登山線（しずてつジャストライン）", from:"JR静岡駅",
-       duration:"約3時間30分",
-       weekday:"静岡駅前 10:00発（畑薙臨時駐車場 14:30発）", weekend:"同左（運行期間中は毎日運行）",
-       season:"2026年は7月16日〜8月16日のみ運行（要事前予約・乗車前日19:00までに手続き）", url:"https://www.justline.co.jp/news/20260611/22914/", sample:true},
+       duration:"約3時間20分（静岡駅前10:00発→畑薙臨時駐車場13:20着。畑薙より先の椹島へは東海フォレスト送迎バスに乗継）",
+       weekday:"静岡駅前発 10:00（畑薙臨時駐車場13:20着）／復路 畑薙発14:30（静岡駅前17:50着）", weekend:"同左（運行期間中は毎日運行）",
+       season:"2026年は7月16日〜8月16日のみ運行（要事前予約・乗車前日19:00までに手続き）", url:"https://www.justline.co.jp/news/20260611/22914/", verified:"2026-08-10"},
       {mode:"乗合タクシー", line:"南アルプス登山送迎便（千代田タクシー）", from:"JR静岡駅",
-       duration:"約3時間",
-       weekday:"事前予約制。通常便8,500円/名・椹島便11,000円/名（片道・公式サイト2026年現在）", weekend:"同左（事前予約制）",
-       season:"夏山シーズン運行、詳細・運行日は要確認", url:"https://www.chiyodataxi.com/travel-taxi/%E5%8D%97%E3%82%A2%E3%83%AB%E3%83%97%E3%82%B9%E7%99%BB%E5%B1%B1%E9%80%81%E8%BF%8E%E4%BE%BF-%E7%9B%B8%E4%B9%97%E3%82%8A/", sample:true},
+       duration:"椹島便は約4時間10分（静岡駅北口4:20発→椹島ロッヂ8:30着・復路12:00発→16:00着）。ただし椹島便は2026年は8/14・15のみ運行で、通常便（約3時間）は畑薙夏期臨時駐車場まで",
+       weekday:"事前予約制（Googleフォーム・運行日の7営業日前締切）。通常便8,500円/名・椹島便11,000円/名（片道・公式サイト2026年現在）", weekend:"同左（事前予約制）",
+       season:"2026年は7/18〜8/31毎日、9月は日曜・祝日（〜9/27）のみ運行", url:"https://www.chiyodataxi.com/travel-taxi/%E5%8D%97%E3%82%A2%E3%83%AB%E3%83%97%E3%82%B9%E7%99%BB%E5%B1%B1%E9%80%81%E8%BF%8E%E4%BE%BF-%E7%9B%B8%E4%B9%97%E3%82%8A/", verified:"2026-08-10"},
       {mode:"自家用車（畑薙第一ダムまで）", line:"新東名高速・新静岡IC経由 県道189号・県道60号等", from:"新静岡IC",
        duration:"約2時間30分",
        weekday:"随時", weekend:"随時",
@@ -5244,7 +5244,7 @@ const MOUNTAINS = [
       {mode:"送迎バス（宿泊者専用・要予約）", line:"特種東海フォレスト送迎バス（畑薙第一ダム⇔椹島ロッヂ）", from:"畑薙夏期臨時駐車場",
        duration:"約70分",
        weekday:"畑薙発 例: 7:30 / 15:00　椹島発 例: 6:10 / 10:30 / 13:00", weekend:"同左",
-       season:"2026年は7月11日〜10月12日運行（7/11〜9/23は事前予約必須、9/24〜10/9は予約不要で当日乗車可）。特種東海フォレスト運営の山小屋・ロッヂに1泊以上宿泊する人限定、テント泊のみの行程は対象外", url:"https://www.t-forest.com/alpsinfo/bus/", sample:true}
+       season:"2026年は7月11日〜10月12日運行（7/11〜9/23と10/10〜12は事前予約必須、9/24〜10/9は予約不要で当日乗車可）。特種東海フォレスト運営の山小屋・ロッヂに1泊以上宿泊する人限定、テント泊のみの行程は対象外", url:"https://www.t-forest.com/alpsinfo/bus/", verified:"2026-08-10"}
     ]
   }],
   huts:[
@@ -5289,7 +5289,7 @@ const MOUNTAINS = [
          duration:"約1時間20分（易老渡まで）。易老渡から便ヶ島まではさらに徒歩約30分",
          weekday:"往路 例: 4:30発 / 復路 例: 13:00発（事業者・日により変動、要予約時確認）", weekend:"同左",
          season:"2026年は7月1日〜11月8日運行。完全事前予約制で当日申込不可。芝沢ゲート駐車場での発着は不可（道の駅遠山郷または最寄り駅からのみ）",
-         url:"https://tohyamago.com/archives/3681", sample:true}
+         url:"https://tohyamago.com/archives/3681", verified:"2026-08-10"}
       ]
     },
     {
@@ -5298,7 +5298,7 @@ const MOUNTAINS = [
         {mode:"バス（夏季限定・完全予約制）", line:"南アルプス登山線（静岡駅前〜畑薙第一ダム、しずてつジャストライン）", from:"JR静岡駅",
          duration:"約3時間20分（畑薙第一ダムまで）",
          weekday:"静岡駅前発 例: 10:00発（畑薙臨時駐車場着 例: 13:20）、復路 畑薙臨時駐車場発 例: 14:30", weekend:"同左（1日1往復のみ）",
-         season:"2026年は7月16日〜8月16日運行予定。前日19時までにWeb予約が必要", url:"https://www.justline.co.jp/", sample:true},
+         season:"2026年は7月16日〜8月16日運行。前日19時までにWeb予約が必要", url:"https://www.justline.co.jp/news/20260611/22914/", verified:"2026-08-10"},
         {mode:"送迎バス（宿泊者専用・要予約）", line:"特種東海フォレスト送迎バス（畑薙第一ダム⇔椹島、入山時のみ聖沢登山口で途中下車可）", from:"畑薙第一ダム駐車場",
          duration:"約50分（聖沢登山口まで、目安）",
          weekday:"畑薙第一ダム発 例: 7:30 / 15:00（椹島行き。聖沢登山口での下車希望は事前申告制）", weekend:"同左",
@@ -5344,11 +5344,11 @@ const MOUNTAINS = [
         {mode:"タクシー（予約制）", line:"易老渡線 乗合タクシー（信州遠山郷観光協会が取次・複数事業者運行）", from:"道の駅遠山郷",
          duration:"約1時間20分（芝沢ゲート通過は5:00〜16:00の間のみ）",
          weekday:"道の駅遠山郷発 例: 4:30／復路 易老渡駐車場発 例: 13:00（要事前予約、運賃はメーター制または時間制で事業者により異なり目安15,000〜20,000円/台）", weekend:"平日と同じ運行体制（要事前予約）",
-         season:"2026年度（令和8年度）は7/1〜11/8の運行予定。道路状況により変更の可能性があるため運行事業者へ要確認", url:"https://tohyamago.com/archives/3681", sample:true},
+         season:"2026年度（令和8年度）は7/1〜11/8の運行予定。道路状況により変更の可能性があるため運行事業者へ要確認", url:"https://tohyamago.com/archives/3681", verified:"2026-08-10"},
         {mode:"車＋徒歩", line:"国道152号→下栗経由 市道南信濃142号線（芝沢ゲートまで）＋そこから徒歩", from:"飯田市街（国道152号）",
          duration:"芝沢ゲートまでは車、そこから易老渡までは徒歩約1時間30分",
          weekday:"—", weekend:"—",
-         season:"芝沢ゲートより先は一般車両通行不可の年がほとんどで、大雨による崩落で歩行も通行止めになることがある（2026年6月にもゲート付近で土砂崩落が発生）。入山前に信州遠山郷公式サイトで最新の通行状況を要確認", url:"https://tohyamago.com/archives/1710", sample:true}
+         season:"芝沢ゲートより先は一般車両通行不可の年がほとんどで、大雨による崩落で歩行も通行止めになることがある（2026年6月にもゲート付近で土砂崩落が発生・後日解除）。入山前に信州遠山郷公式サイトで最新の通行状況を要確認", url:"https://tohyamago.com/archives/1710", verified:"2026-08-10"}
       ]
     },
     {
@@ -5357,11 +5357,11 @@ const MOUNTAINS = [
         {mode:"バス", line:"南アルプス登山線（静鉄ジャストライン）", from:"JR静岡駅前",
          duration:"約3時間20分（畑薙臨時駐車場まで）。駐車場から畑薙大吊橋までは徒歩約20分",
          weekday:"静岡駅前発 例: 10:00（畑薙臨時駐車場13:20着）", weekend:"平日と同一ダイヤで運行（運行期間中は土日祝も毎日運行）",
-         season:"2026年は7/16〜8/16のみの毎日運行（要事前予約、2026年6/12 13:00予約受付開始・乗車前日19:00締切）。運賃は片道大人5,000円", url:"https://www.justline.co.jp/news/20260611/22914/", sample:true},
-        {mode:"車", line:"新東名高速道路 新静岡ICから県道27号ほか経由", from:"新東名高速道路 新静岡IC",
+         season:"2026年は7/16〜8/16のみの毎日運行（要事前予約、2026年6/12 13:00予約受付開始・乗車前日19:00締切）。運賃は片道大人5,000円", url:"https://www.justline.co.jp/news/20260611/22914/", verified:"2026-08-10"},
+        {mode:"車", line:"新東名高速道路 新静岡ICから県道189号・富士見峠・県道60号（井川経由）", from:"新東名高速道路 新静岡IC",
          duration:"約2時間30分",
          weekday:"—", weekend:"—",
-         season:"夏期（例年7月中旬〜10月上旬）は畑薙第一ダムの約2km手前に夏期臨時駐車場が開設され、そこから先はマイカー規制。東海フォレスト送迎バスは椹島方面の宿泊者専用のため、光岳・茶臼岳方面は臨時駐車場から畑薙大吊橋まで徒歩となる", url:"https://www.t-forest.com/alpsinfo/access/", sample:true}
+         season:"夏期臨時駐車場（白樺荘の約2.5km先・約200台）は2026年は7/11〜10/12開設予定で、そこから先はマイカー規制。東海フォレスト送迎バスは椹島方面の宿泊者専用のため、光岳・茶臼岳方面は臨時駐車場から畑薙大吊橋まで徒歩となる", url:"https://www.t-forest.com/alpsinfo/access/", verified:"2026-08-10"}
       ]
     }
   ],

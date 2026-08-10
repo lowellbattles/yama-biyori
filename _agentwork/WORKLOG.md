@@ -448,6 +448,37 @@ Evidence: `_agentwork/evidence/transit-pilot-kitaalps-2026-08-10.json`.
 Remaining unchecked expansion entries: 273 (北ア・御嶽 23, 中央・南ア 37, 他エリア 213). Measured cost
 basis for future asks: **~59k tokens/entry** → 北ア残り23 ≈ 1.4M, 中央・南ア 37 ≈ 2.2M.
 
+### ALPS-60 BATCH RUN + APPLIED 2026-08-10 (owner-approved "北ア23＋中南ア37")
+
+Run `wf_864c7818-034`: 60 checker-only agents over ALL remaining Alps entries (2 prompt upgrades:
+stacked-column PDF caution, image-timetable download instruction). **Cost measured: 3,418,412 subagent
+tokens (~57k/entry), 9m31s, 0 agent errors.** Main session skeptic-verified every clear against primary
+sources (~20 cluster fetches + 7 PDF/画像実読: 伊那市2026カレンダーPDF, 山梨交通時刻表画像×3, 早川町PDF,
+鳥倉線PDF, 木曽町御岳線PDF). **46 of 60 cleared → `verified:"2026-08-10"`**, 14 keep sample.
+- 2 agents misfired onto the wrong key (washiba/t1a1→未検証のままsample維持; yari/t0a1→本セッションが
+  公式ページで自力検証し、「7:05/11:55発」が実は到着時刻という潜在誤りごと修正してclear）。
+- Skeptic interventions (7件 — 詳細は evidence JSON): yake/t2a0 の濃飛PDF列誤連結が再発（警告文でも
+  防げず — 7:40→8:28は偽チェーン、正しくは7:00発）; kaikoma/senjo の checker 同士が矛盾した
+  **戸台パーク発時刻はカレンダーPDF実読で決着 — 既存データは7月バッチ以来「戸台大橋」列の時刻を
+  掲載していた**（8:12系→8:05系に両山とも修正、所要は一律50分で既存の約50分が正しく、checker の
+  約43分「修正」の方が誤り）; akaishi/t0a1 の9月末日 9/23→9/27; ほか。
+- Content highlights: 山梨交通平日ダイヤに14:05便なし・甲府→広河原1時間53分; 芦安タクシー平日は
+  5:10/7:00/16:00の3便のみ; 奈良田5:30便は7/1〜8/31のみ; 御岳RW線バスは開田経由の周遊で56〜66分
+  （所要40分は誤り）・木曽町の時刻表ページにurl差替; ナショナルパークライナーは2便のみ・復路直行なし;
+  平湯→上高地の最終は17:00（17:55は逆方向の着時刻）; 千代田タクシー椹島便は8/14・15のみ;
+  早川町バス「身延駅6:11発」は実在せず（役場発・下部温泉駅行）; 王滝村営バスは8/3〜7・8/10の平日も運行;
+  夜叉神〜広河原の冬期閉鎖は2026年度11/4開始（山梨県公式）。
+- Kept sample (14): washiba/t1a1・yake/t0a1・yake/t2a1・ena×3・kaikoma t0a1/t1a0/t1a1（確認済み修正は
+  適用済み）・senjo/t0a1・hoo/t0a1・akaishi/t0a2・hijiri/t0a0・hijiri/t1a1 — 各残課題は evidence JSON の
+  leftovers に整理（多くは「公式に数値記載がない」型で、実踏か電話で解決する類）。
+Evidence: `_agentwork/evidence/transit-sweep-alps60-2026-08-10.json`.
+**Running totals after 2026-08-10 (salvage 15 + pilot 9 + alps60 46 = 70 cleared today):
+260 sample + 83 verified of 343 access entries (24.2% verified, was 3.8% this morning).**
+Alps areas (北ア・御嶽/中央・南ア) are now fully checked except the 14 keeps.
+Remaining unchecked expansion entries: **213** (上信越・尾瀬, 東北, 北海道, 関東周辺ほか — per-area
+exports in `_agentwork/evidence/sweep-exports/`). Next batch needs a fresh owner yes with token estimate
+(~57k/entry measured twice).
+
 ## COLD-RESUME instructions for the 東北 batch (any future session, no prior context needed)
 
 Research agents Write finished mountains directly to `_agentwork/expansion/<id>.js`, so partial progress
