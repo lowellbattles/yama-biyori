@@ -144,7 +144,7 @@ Reuse the proven ② pattern (lean shape: single verify at effort:low, main-sess
 Add optional `snow_caution`/`snow_danger` (default 0.5/5 cm), `cold_warn` (default −10 ℃), `freeze_buffer` (default +300 m) to `grading`, engine falls back to defaults so **no data edits are required**; tune individual mountains as your hikes teach you (the stated purpose of this project). Reasons stay mandatory. Optional stretch, later: an afternoon-thunderstorm flag from Open-Meteo's CAPE variable in the detail view (fetch it only for the opened mountain — keeps the list fetch light).
 Decision needed: do you want the extra knobs now, or after more real-hike calibration data?
 
-**Task 14 🔒 · Deploy the site. — S–M**
+**Task 14 🔒 · Deploy the site. — S–M — ✅ done 2026-09-28** (owner chose GitHub Pages + public repo, matching the Tokyo Events project. Live at **https://lowellbattles.github.io/yama-biyori/**. `.github/workflows/deploy-pages.yml` publishes only `index.html` + `data/` on every push that touches them — `_agentwork`, mockups and docs are visible in the repo but not served by the site. Verified live: weather, detail pages with 確認 dates, map. Follow-ups still open: robots.txt + canonical/og:url meta)
 Netlify (drag-and-drop or git-connected) or GitHub Pages — both free, both fine for this architecture; git-connected means "push = deploy". Nothing about the code needs to change. Decision: host + site name. (After deploy: add robots.txt + a canonical URL to the meta from Task 9.)
 
 **Task 15 🔒 · Multi-page conversion for real SEO. — L, the big architectural step**
@@ -179,7 +179,7 @@ Candidate batches already listed at the end of the 2026-07-27 WORKLOG entry (東
 | 11 ✅ | 最終確認日 field | S | — |
 | 12 🔒 | Transit sweeps ×87 mountains | L | 11 helps |
 | 13 ✅ | Grading engine v2 knobs | M | your call |
-| 14 🔒 | Deploy | S–M | 1 |
+| 14 ✅ | Deploy | S–M | 1 |
 | 15 🔒 | Multi-page SEO | L | 12 mostly done, 14 |
 | 16 ✅ | Map view | M | your OK |
 | 17 🔒 | More mountains | L | per batch |
