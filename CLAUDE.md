@@ -13,13 +13,13 @@ A beginner programmer and experienced hiker. Explain changes in plain language, 
 - Grading thresholds are per-mountain data, not global constants. Tuning them is a feature.
 - Transit/hut data is hand-curated. Each access entry keeps its official `url` and a `sample: true` flag until the owner verifies it; render unverified data with the 「SAMPLE — 要検証」 flag. Verification = replace `sample: true` with `verified: "YYYY-MM-DD"` (最終確認日, shown as 「確認 日付」). Validators require exactly one of the two on every access entry.
 - Never scrape or copy content from Yamap, Yamareco, or てんきとくらす.
-- UI language is Japanese-first with English subtitles. Mountain names use 漢字 prominently.
+- UI is bilingual: 日本語/English toggle top-right (default follows the browser language; choice saved in localStorage). Every UI string lives in STR.ja + STR.en in index.html — add both when adding UI text. Mountain data (notes, timetables, huts, routes) stays Japanese; English mode shows a notice. Mountain names keep 漢字 prominent in both languages.
 
 ## Design system (do not casually replace)
 Topographic-map aesthetic: paper background #F1F3EC, ink #26302A, pine #2E4B38, lake #3E6B8C, vermillion #C2452F. Fonts: Shippori Mincho (display/mountain names), Zen Kaku Gothic New (body), IBM Plex Mono (timetables/data). Signature element: the circular hanko-style grade stamp. Grades: A #2E7D4F / B #C08A2D / C #C2452F.
 
 ## Data schema
-One mountain = one JS object in data/mountains.js (plain JS, not JSON, so double-clicking index.html keeps working — browsers block fetch() of local files). The schema template lives in the comment block at the top of that file; see also HANDOFF.md §3. Huts carry `url` + `tel`; transit entries keep `sample: true` until the owner verifies them. When adding fields, update the template comment and all existing mountains together.
+One mountain = one JS object in data/mountains.js (plain JS, not JSON, so double-clicking index.html keeps working — browsers block fetch() of local files). The schema template lives in the comment block at the top of that file; see also HANDOFF.md §3. Huts carry `url` + `tel`; transit entries keep `sample: true` until the owner verifies them. Each mountain also carries `trip:{tokyo_day, hut, car}` (our own estimates behind the 東京から日帰り / 山小屋泊 / 車・タクシー filter chips; both validators enforce it). When adding fields, update the template comment and all existing mountains together.
 
 ## Current state / next tasks
 Full architecture review + prioritized fix/add roadmap: **ROADMAP.md** (2026-07-27). Work it top-to-bottom, one task per session.

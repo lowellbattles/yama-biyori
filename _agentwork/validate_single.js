@@ -54,6 +54,8 @@ if (typeof m.elevation !== "number") errs.push(tag + ": bad elevation");
 if (!m.coords || typeof m.coords.lat !== "number" || typeof m.coords.lon !== "number") errs.push(tag + ": bad coords");
 if (typeof m.forecast_elevation !== "number") errs.push(tag + ": bad forecast_elevation");
 if (typeof m.hyakumeizan !== "boolean") errs.push(tag + ": bad hyakumeizan");
+if (!m.trip || typeof m.trip.tokyo_day !== "boolean" || typeof m.trip.hut !== "boolean" || typeof m.trip.car !== "boolean") errs.push(tag + ": trip needs {tokyo_day, hut, car} booleans");
+else if (m.trip.tokyo_day && (m.trip.hut || m.trip.car)) errs.push(tag + ": trip.tokyo_day cannot be true together with hut or car");
 if (!m.grading || typeof m.grading.wind_caution !== "number" || typeof m.grading.wind_danger !== "number") errs.push(tag + ": bad grading");
 if (m.grading) {
   var gk = m.grading;
