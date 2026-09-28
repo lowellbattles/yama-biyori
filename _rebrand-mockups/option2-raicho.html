@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雷鳥 RAICHŌ — リブランド試作②</title>
+<meta name="description" content="山日和リブランド試作② 雷鳥 RAICHŌ — 昭和の山岳部・ワッペン風レトロ案（本サイト未適用のモックアップ）">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23D9A13B'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%23FFF9EA' stroke-width='2.5' stroke-dasharray='5 4'/%3E%3Cpath d='M14 42 L25 27 31 34 40 22 50 42 Z' fill='%23FFF9EA'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;500;700&family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7EFDC;
+  --card:#FFF9EA;
+  --ink:#3B2E25;
+  --dim:#8A7A66;
+  --green:#487048;
+  --mustard:#D9A13B;
+  --teal:#2F7E79;
+  --kaki:#D2603A;
+  --stripe:#EFE3C8;
+  --maru:'Kiwi Maru',serif;
+  --body:'Zen Maru Gothic',sans-serif;
+  --dot:'DotGothic16',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.8;
+  background-image:radial-gradient(rgba(59,46,37,.05) 1px,transparent 1px);background-size:14px 14px}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px 72px}
+
+/* ---- review chrome (not part of the brand) ---- */
+.mockbar{position:sticky;top:0;z-index:60;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  background:#101010F0;border-bottom:1px solid #2E2E2E;padding:7px 16px;font-size:11px;color:#AFAFAF}
+.mockbar nav{display:flex;gap:4px}
+.mockbar a{color:#CFCFCF;text-decoration:none;padding:3px 9px;border-radius:3px}
+.mockbar a:hover{background:#2A2A2A}
+.mockbar a.on{background:#D9A13B;color:#141414;font-weight:700}
+
+/* ---- header ---- */
+header{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:30px 0 20px}
+.emblem{flex:0 0 auto}
+.brand h1{font-family:var(--maru);font-weight:500;font-size:46px;letter-spacing:.2em;line-height:1.2}
+.brand .romaji{font-family:var(--dot);font-size:13px;letter-spacing:.5em;color:var(--teal);display:block;margin-top:2px}
+.brand .tagline{font-size:13.5px;color:var(--dim);margin-top:6px}
+.brand .tagline b{color:var(--kaki);font-weight:500}
+.stripes{height:12px;border-radius:6px;margin:6px 0 0;
+  background:repeating-linear-gradient(-45deg,var(--green) 0 16px,var(--stripe) 16px 32px,var(--mustard) 32px 48px,var(--stripe) 48px 64px)}
+
+/* ---- hero ---- */
+.hero{display:flex;align-items:center;gap:30px;flex-wrap:wrap;padding:46px 0 20px}
+.hero .copy{flex:1 1 380px}
+.hero h2{font-family:var(--maru);font-weight:500;font-size:clamp(28px,4.6vw,40px);letter-spacing:.08em;line-height:1.6}
+.hero h2 mark{background:linear-gradient(transparent 62%,#EFD08F 62%);color:inherit}
+.hero .sub{margin-top:12px;font-size:14px;color:var(--dim)}
+.hero .en{font-family:var(--dot);font-size:11px;letter-spacing:.28em;color:var(--teal);margin-top:10px}
+.mascot{flex:0 0 auto;text-align:center}
+.mascot .name{font-family:var(--dot);font-size:11px;color:var(--dim);margin-top:4px}
+.cta{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-family:var(--maru);font-weight:500;font-size:16px;letter-spacing:.12em;
+  padding:13px 30px;border-radius:999px;border:2.5px solid var(--ink);box-shadow:3px 3px 0 rgba(59,46,37,.25)}
+.btn-g{background:var(--green);color:var(--card)}
+.btn-m{background:var(--mustard);color:var(--ink)}
+.btn small{display:block;font-family:var(--dot);font-size:9px;letter-spacing:.3em;text-align:center;opacity:.8}
+
+/* ---- section labels ---- */
+.sec{margin-top:56px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sec .dotmark{width:14px;height:14px;border-radius:50%;background:var(--kaki);border:2.5px solid var(--ink)}
+.sec h3{font-family:var(--maru);font-weight:500;font-size:24px;letter-spacing:.14em}
+.sec .date{margin-left:auto;font-family:var(--dot);font-size:12px;color:var(--dim)}
+
+/* ---- mountain cards ---- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:22px}
+.card{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:20px 20px 14px;
+  box-shadow:4px 4px 0 rgba(59,46,37,.16)}
+.card:nth-child(odd){transform:rotate(-.5deg)}
+.card:nth-child(even){transform:rotate(.45deg)}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.card h4{font-family:var(--maru);font-weight:500;font-size:27px;letter-spacing:.1em;line-height:1.35}
+.card .meta{font-size:12px;color:var(--dim);margin-top:4px}
+.card .meta b{font-family:var(--dot);color:var(--teal);font-weight:400;letter-spacing:.06em}
+.patch{flex:0 0 auto}
+.patch text{font-family:var(--maru);font-weight:500}
+.why{margin-top:12px;border-top:2px dashed rgba(59,46,37,.28);padding-top:10px;font-size:13.5px}
+.why .t{font-size:11px;color:var(--dim);margin-bottom:6px;letter-spacing:.14em}
+.why li{list-style:none;padding:2px 0 2px 22px;position:relative}
+.why li::before{content:"○";position:absolute;left:2px;color:var(--green);font-size:11px;top:5px}
+.why li.warn::before{content:"⚠";color:var(--kaki);font-size:12px;top:3px}
+.why li.warn{color:#9C4526}
+.data{margin-top:12px;padding-top:8px;border-top:2px dashed rgba(59,46,37,.28);
+  font-family:var(--dot);font-size:12px;color:var(--dim);letter-spacing:.05em}
+
+/* ---- 7-day badges ---- */
+.mtn-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:22px}
+.mtn-head h4{font-family:var(--maru);font-weight:500;font-size:30px;letter-spacing:.12em}
+.mtn-head .m{font-family:var(--dot);font-size:12px;color:var(--dim)}
+.week{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:18px 20px;box-shadow:4px 4px 0 rgba(59,46,37,.16)}
+.wday{text-align:center}
+.wday .mini{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;
+  font-family:var(--maru);font-weight:500;font-size:20px;color:var(--card);margin:0 auto;
+  box-shadow:inset 0 0 0 3px var(--card), inset 0 0 0 4.5px rgba(255,249,234,.55)}
+.wday.a .mini{background:var(--green)} .wday.b .mini{background:var(--mustard);color:var(--ink)} .wday.c .mini{background:var(--kaki)}
+.wday .d{font-size:11px;color:var(--dim);margin-top:5px}
+.wday.today .d{color:var(--kaki);font-weight:700}
+.wday.today .mini{outline:2.5px solid var(--kaki);outline-offset:2.5px}
+
+/* ---- tickets ---- */
+.tickets{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:16px}
+.ticket{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:16px 20px 14px;box-shadow:4px 4px 0 rgba(59,46,37,.16)}
+.ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:18px;height:18px;border-radius:50%;
+  background:var(--paper);border:2.5px solid var(--ink);transform:translateY(-50%)}
+.ticket::before{left:-11px}.ticket::after{right:-11px}
+.ticket .co{font-size:12px;color:var(--dim);letter-spacing:.1em}
+.ticket .time{font-family:var(--dot);font-size:17px;margin-top:6px;letter-spacing:.04em}
+.ticket .time b{color:var(--kaki);font-weight:400}
+.ticket .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px;border-top:2px dashed rgba(59,46,37,.28);padding-top:9px}
+.ticket .fare{font-family:var(--dot);font-size:14px}
+.tag{font-family:var(--dot);font-size:10px;letter-spacing:.12em;padding:2.5px 9px;border-radius:999px;border:2px solid}
+.tag-sample{color:var(--kaki);border-color:var(--kaki);background:#F9E4D9}
+.tag-ok{color:var(--card);border-color:var(--ink);background:var(--green)}
+
+/* ---- footer ---- */
+footer{margin-top:70px;background:var(--green);color:#F2EAD3;border-radius:16px 16px 0 0;padding:24px 26px;font-size:12px;line-height:2}
+footer a{color:#F7D98C}
+.mocknote{font-family:var(--dot);font-size:11px;letter-spacing:.14em;color:#F7D98C;margin-top:8px}
+@media (max-width:640px){.hero{flex-direction:column-reverse}.mascot{margin:0 auto}}
+</style>
+</head>
+<body>
+
+<div class="mockbar">
+  <span>リブランド試作 — 本サイトには未適用（数値はダミー）</span>
+  <nav>
+    <a href="index.html">一覧</a>
+    <a href="option1-ryosen.html">① 稜線</a>
+    <a href="option2-raicho.html" class="on">② 雷鳥</a>
+    <a href="option3-goraiko.html">③ ご来光</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<header>
+  <div class="emblem">
+    <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true">
+      <circle cx="48" cy="48" r="45" fill="#D9A13B" stroke="#3B2E25" stroke-width="3"/>
+      <circle cx="48" cy="48" r="37" fill="none" stroke="#FFF9EA" stroke-width="2.5" stroke-dasharray="6 4.5"/>
+      <path d="M20 62 L36 40 45 50 57 32 76 62 Z" fill="#FFF9EA"/>
+      <circle cx="33" cy="27" r="6.5" fill="#FFF9EA"/>
+      <circle cx="35.4" cy="25.8" r="1.1" fill="#3B2E25"/>
+      <path d="M30.5 22.5 q3 -3.5 6.5 -1" fill="none" stroke="#D2603A" stroke-width="2" stroke-linecap="round"/>
+      <path d="M39.5 27 l3.5 1.2 -3.5 1.2 Z" fill="#3B2E25"/>
+    </svg>
+  </div>
+  <div class="brand">
+    <h1>雷鳥</h1>
+    <span class="romaji">RAICHŌ</span>
+    <div class="tagline">山の天気と、なかよく歩く。 <b>— MOUNTAIN WEATHER CLUB</b></div>
+  </div>
+</header>
+<div class="stripes"></div>
+
+<section class="hero">
+  <div class="copy">
+    <h2>この週末、<br><mark>どの山にする？</mark></h2>
+    <p class="sub">風・雨・凍結高度をまとめて見て、きょう歩ける山にバッジを付けます。理由もぜんぶ書きます。</p>
+    <p class="en">YOUR FRIENDLY MOUNTAIN-WEATHER CLUB — EST. 2026</p>
+    <div class="cta">
+      <a class="btn btn-g" href="#">日付からえらぶ<small>BY DATE</small></a>
+      <a class="btn btn-m" href="#">山からえらぶ<small>BY MOUNTAIN</small></a>
+    </div>
+  </div>
+  <div class="mascot">
+    <svg width="150" height="132" viewBox="0 0 150 132" aria-hidden="true">
+      <ellipse cx="75" cy="122" rx="52" ry="8" fill="#EDE3CC"/>
+      <ellipse cx="68" cy="84" rx="42" ry="34" fill="#FFFDF6" stroke="#3B2E25" stroke-width="3"/>
+      <path d="M30 78 q-10 -4 -14 -12 q9 1 16 4" fill="#FFFDF6" stroke="#3B2E25" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="102" cy="52" r="21" fill="#FFFDF6" stroke="#3B2E25" stroke-width="3"/>
+      <circle cx="108" cy="49" r="2.8" fill="#3B2E25"/>
+      <path d="M100 41 q5.5 -5.5 11.5 -1.5" fill="none" stroke="#D2603A" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M121 51 l8 2.8 -8 2.8 Z" fill="#8A7A66" stroke="#3B2E25" stroke-width="2" stroke-linejoin="round"/>
+      <ellipse cx="52" cy="76" rx="6" ry="4" fill="#CFC2A8"/>
+      <ellipse cx="70" cy="94" rx="7" ry="4.5" fill="#CFC2A8"/>
+      <ellipse cx="86" cy="78" rx="5" ry="3.5" fill="#CFC2A8"/>
+      <path d="M58 117 v8 m-5 -2 l5 2 5 -2" fill="none" stroke="#3B2E25" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M82 117 v8 m-5 -2 l5 2 5 -2" fill="none" stroke="#3B2E25" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div class="name">らいちゃん（仮）</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec">
+    <span class="dotmark"></span>
+    <h3>きょうのバッジ</h3>
+    <span class="date">8月3日（月）</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="top">
+        <div>
+          <h4>霧ヶ峰</h4>
+          <div class="meta">きりがみね <b>1,925m</b>・美ヶ原・霧ヶ峰</div>
+        </div>
+        <svg class="patch" width="62" height="62" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="29" fill="#487048" stroke="#3B2E25" stroke-width="2.5"/>
+          <circle cx="32" cy="32" r="23" fill="none" stroke="#FFF9EA" stroke-width="2" stroke-dasharray="4.5 3.5"/>
+          <text x="32" y="42" font-size="26" text-anchor="middle" fill="#FFF9EA">A</text>
+        </svg>
+      </div>
+      <ul class="why">
+        <div class="t">なぜこのバッジ？（判定理由）</div>
+        <li>一日じゅう晴れそう</li>
+        <li>風はそよそよ 3m/s</li>
+        <li>雨の心配ほぼなし（10%）</li>
+      </ul>
+      <div class="data">カゼ 3m/s・アメ 10%・トウケツ 4,800m</div>
+    </div>
+
+    <div class="card">
+      <div class="top">
+        <div>
+          <h4>槍ヶ岳</h4>
+          <div class="meta">やりがたけ <b>3,180m</b>・北アルプス南部</div>
+        </div>
+        <svg class="patch" width="62" height="62" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="29" fill="#D9A13B" stroke="#3B2E25" stroke-width="2.5"/>
+          <circle cx="32" cy="32" r="23" fill="none" stroke="#FFF9EA" stroke-width="2" stroke-dasharray="4.5 3.5"/>
+          <text x="32" y="42" font-size="26" text-anchor="middle" fill="#3B2E25">B</text>
+        </svg>
+      </div>
+      <ul class="why">
+        <div class="t">なぜこのバッジ？（判定理由）</div>
+        <li>午前中は晴れ</li>
+        <li class="warn">稜線は風つよめ 14m/s</li>
+        <li class="warn">午後はにわか雨かも（60%）</li>
+      </ul>
+      <div class="data">カゼ 14m/s・アメ 60%・トウケツ 4,600m</div>
+    </div>
+
+    <div class="card">
+      <div class="top">
+        <div>
+          <h4>富士山</h4>
+          <div class="meta">ふじさん <b>3,776m</b>・富士・伊豆・箱根</div>
+        </div>
+        <svg class="patch" width="62" height="62" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="29" fill="#D2603A" stroke="#3B2E25" stroke-width="2.5"/>
+          <circle cx="32" cy="32" r="23" fill="none" stroke="#FFF9EA" stroke-width="2" stroke-dasharray="4.5 3.5"/>
+          <text x="32" y="42" font-size="26" text-anchor="middle" fill="#FFF9EA">C</text>
+        </svg>
+      </div>
+      <ul class="why">
+        <div class="t">なぜこのバッジ？（判定理由）</div>
+        <li class="warn">風 24m/s — きょうは危険</li>
+        <li class="warn">山頂は氷点下（凍結高度 3,400m）</li>
+        <li class="warn">まわりが見えないかも</li>
+      </ul>
+      <div class="data">カゼ 24m/s・アメ 40%・トウケツ 3,400m</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="sec">
+    <span class="dotmark"></span>
+    <h3>山のページはこんな感じ</h3>
+  </div>
+  <div class="mtn-head">
+    <h4>槍ヶ岳</h4>
+    <span class="m">YARIGATAKE・3,180m・長野県／岐阜県</span>
+  </div>
+  <div class="week">
+    <div class="wday b today"><div class="mini">B</div><div class="d">3日(月)</div></div>
+    <div class="wday a"><div class="mini">A</div><div class="d">4日(火)</div></div>
+    <div class="wday a"><div class="mini">A</div><div class="d">5日(水)</div></div>
+    <div class="wday c"><div class="mini">C</div><div class="d">6日(木)</div></div>
+    <div class="wday b"><div class="mini">B</div><div class="d">7日(金)</div></div>
+    <div class="wday a"><div class="mini">A</div><div class="d">8日(土)</div></div>
+    <div class="wday a"><div class="mini">A</div><div class="d">9日(日)</div></div>
+  </div>
+  <div class="tickets">
+    <div class="ticket">
+      <div class="co">夜行バス｜さわやか信州号</div>
+      <div class="time">新宿 22:25 <b>→→</b> 上高地 05:20</div>
+      <div class="bottom">
+        <span class="fare">¥10,400</span>
+        <span class="tag tag-sample">SAMPLE — 要検証</span>
+      </div>
+    </div>
+    <div class="ticket">
+      <div class="co">路線バス｜アルピコ交通</div>
+      <div class="time">松本 07:00 <b>→</b> 新島々 <b>→</b> 上高地 08:35</div>
+      <div class="bottom">
+        <span class="fare">¥2,710</span>
+        <span class="tag tag-ok">確認 2026-07-18</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  天気データ: <a href="https://open-meteo.com/">Open-Meteo.com</a> (CC BY 4.0) — 各山の予報標高で取得。地図タイル: 国土地理院（地理院タイル）。バッジは本サイト独自の基準であり、安全を保証するものではありません。<br>
+  「SAMPLE — 要検証」の付いた交通・山小屋情報は未検証データです。出発前に必ず公式サイトで最新情報を確認してください。
+  <div class="mocknote">REBRAND MOCK-UP ② — デザイン試作。表示中の予報・時刻・運賃はすべてダミーです。</div>
+</footer>
+
+</div>
+</body>
+</html>

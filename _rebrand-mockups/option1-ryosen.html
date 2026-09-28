@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稜線 RYŌSEN — リブランド試作①</title>
+<meta name="description" content="山日和リブランド試作① 稜線 RYŌSEN — ダーク×データ主導のアルパインUI案（本サイト未適用のモックアップ）">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230E1116'/%3E%3Cpolyline points='6,44 18,26 27,36 40,16 50,30 58,22' fill='none' stroke='%23FF6B2C' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0E1116;
+  --panel:#151B23;
+  --panel2:#1B2330;
+  --line:#26303D;
+  --text:#E9EEF4;
+  --dim:#8B98A8;
+  --acc:#FF6B2C;   /* headlamp orange */
+  --ice:#6FB3D8;   /* pre-dawn ice blue */
+  --ga:#2EE59D;
+  --gb:#F5B942;
+  --gc:#FF5D5D;
+  --mono:'JetBrains Mono',monospace;
+  --latin:'Space Grotesk',sans-serif;
+  --jp:'Noto Sans JP',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--jp);line-height:1.7;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:56px 56px;background-position:center top;}
+a{color:inherit}
+.wrap{max-width:1020px;margin:0 auto;padding:0 20px 72px}
+
+/* ---- review chrome (not part of the brand) ---- */
+.mockbar{position:sticky;top:0;z-index:60;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  background:#101010F0;border-bottom:1px solid #2E2E2E;padding:7px 16px;font-size:11px;color:#AFAFAF;font-family:var(--jp)}
+.mockbar nav{display:flex;gap:4px}
+.mockbar a{color:#CFCFCF;text-decoration:none;padding:3px 9px;border-radius:3px}
+.mockbar a:hover{background:#2A2A2A}
+.mockbar a.on{background:#FF6B2C;color:#141414;font-weight:700}
+
+/* ---- header ---- */
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;
+  padding:34px 0 18px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:16px}
+.brand svg{display:block}
+.brand h1{font-weight:900;font-size:44px;letter-spacing:.14em;line-height:1}
+.brand .romaji{display:block;font-family:var(--latin);font-weight:700;font-size:13px;letter-spacing:.55em;color:var(--acc);margin-top:8px;text-transform:uppercase}
+.head-right{text-align:right;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;line-height:2}
+.head-right b{color:var(--ice);font-weight:400}
+
+/* ---- hero ---- */
+.hero{padding:64px 0 40px}
+.hero h2{font-weight:900;font-size:clamp(34px,6vw,58px);letter-spacing:.06em;line-height:1.35}
+.hero h2 em{font-style:normal;color:var(--acc)}
+.hero .sub{margin-top:14px;font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+.cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:15px;padding:14px 30px;letter-spacing:.1em}
+.btn small{display:block;font-family:var(--latin);font-weight:700;font-size:10px;letter-spacing:.35em;margin-top:3px;opacity:.75}
+.btn-fill{background:var(--acc);color:#160D06}
+.btn-line{border:1px solid var(--ice);color:var(--ice)}
+.stats{display:flex;gap:0;margin-top:52px;border:1px solid var(--line);background:var(--panel)}
+.stats div{flex:1;padding:18px 22px;border-right:1px solid var(--line)}
+.stats div:last-child{border-right:none}
+.stats .num{font-family:var(--latin);font-weight:700;font-size:30px;color:var(--ice)}
+.stats .lab{font-size:11.5px;color:var(--dim);margin-top:2px}
+
+/* ---- section labels ---- */
+.sec{margin-top:64px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.sec h3{font-weight:900;font-size:20px;letter-spacing:.14em}
+.sec .en{font-family:var(--mono);font-size:10.5px;letter-spacing:.3em;color:var(--acc);text-transform:uppercase}
+.sec .date{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--dim)}
+
+/* ---- mountain cards ---- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px}
+.card{background:var(--panel);border:1px solid var(--line);padding:22px 22px 16px;position:relative}
+.card:hover{border-color:var(--ice)}
+.card .top{display:flex;justify-content:space-between;gap:14px}
+.card h4{font-weight:900;font-size:26px;letter-spacing:.08em;line-height:1.3}
+.card .meta{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:6px;letter-spacing:.08em}
+.card .meta b{color:var(--ice);font-weight:400}
+.grade{flex:0 0 auto;width:66px;height:66px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--latin);font-weight:700;font-size:36px;border:2px solid}
+.g-a{color:var(--ga);border-color:var(--ga);background:rgba(46,229,157,.07);box-shadow:0 0 22px rgba(46,229,157,.18)}
+.g-b{color:var(--gb);border-color:var(--gb);background:rgba(245,185,66,.07);box-shadow:0 0 22px rgba(245,185,66,.15)}
+.g-c{color:var(--gc);border-color:var(--gc);background:rgba(255,93,93,.07);box-shadow:0 0 22px rgba(255,93,93,.16)}
+.why{margin-top:16px;border-top:1px dashed var(--line);padding-top:12px;font-size:13px}
+.why .t{font-family:var(--mono);font-size:9.5px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
+.why li{list-style:none;padding:2.5px 0 2.5px 20px;position:relative}
+.why li::before{content:"▸";position:absolute;left:2px;color:var(--ice);font-family:var(--mono)}
+.why li.warn::before{content:"!";color:var(--acc);font-weight:700}
+.why li.warn{color:#FFC9AE}
+.data{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.06em}
+
+/* ---- 7-day strip ---- */
+.mtn-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-top:22px;background:var(--panel2);border:1px solid var(--line);padding:18px 22px}
+.mtn-head h4{font-weight:900;font-size:28px;letter-spacing:.1em}
+.mtn-head .m{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:12px}
+.day{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--dim);text-align:center;padding:10px 4px 12px}
+.day .d{font-family:var(--mono);font-size:10px;color:var(--dim)}
+.day .g{font-family:var(--latin);font-weight:700;font-size:26px;margin-top:2px}
+.day.a{border-top-color:var(--ga)} .day.a .g{color:var(--ga)}
+.day.b{border-top-color:var(--gb)} .day.b .g{color:var(--gb)}
+.day.c{border-top-color:var(--gc)} .day.c .g{color:var(--gc)}
+.day .today{display:inline-block;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--acc);border:1px solid var(--acc);padding:0 4px;margin-top:5px}
+
+/* ---- access ---- */
+.access{margin-top:12px;background:var(--panel);border:1px solid var(--line)}
+.access .row{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:13px 20px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12.5px}
+.access .row:last-child{border-bottom:none}
+.access .route b{color:var(--ice);font-weight:400}
+.access .fare{color:var(--dim)}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;padding:2px 8px;border:1px solid}
+.tag-sample{color:var(--acc);border-color:var(--acc)}
+.tag-ok{color:var(--ga);border-color:var(--ga)}
+
+/* ---- footer ---- */
+footer{margin-top:72px;border-top:1px solid var(--line);padding:22px 0;font-size:11.5px;color:var(--dim);line-height:2}
+footer a{color:var(--ice)}
+.mocknote{font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--acc);margin-top:8px}
+@media (max-width:640px){.week{grid-template-columns:repeat(4,1fr)}.stats{flex-direction:column}.stats div{border-right:none;border-bottom:1px solid var(--line)}}
+</style>
+</head>
+<body>
+
+<div class="mockbar">
+  <span>リブランド試作 — 本サイトには未適用（数値はダミー）</span>
+  <nav>
+    <a href="index.html">一覧</a>
+    <a href="option1-ryosen.html" class="on">① 稜線</a>
+    <a href="option2-raicho.html">② 雷鳥</a>
+    <a href="option3-goraiko.html">③ ご来光</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <svg width="132" height="36" viewBox="0 0 132 36" aria-hidden="true">
+      <polyline points="2,30 22,10 34,22 54,4 68,18 84,8 102,20 118,10 130,18"
+        fill="none" stroke="#FF6B2C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="54" cy="4" r="3.2" fill="#6FB3D8"/>
+    </svg>
+    <div>
+      <h1>稜線</h1>
+      <span class="romaji">RYŌSEN</span>
+    </div>
+  </div>
+  <div class="head-right">
+    Alpine Weather Grading<br>
+    <b>山岳気象グレーディング — 風・雨・凍結高度</b>
+  </div>
+</header>
+
+<section class="hero">
+  <h2>登る日を、<br><em>データ</em>で決める。</h2>
+  <p class="sub">Wind / Rain / Freezing level — 7-day grades for 110 peaks</p>
+  <div class="cta">
+    <a class="btn btn-fill" href="#">日付から探す<small>BY DATE</small></a>
+    <a class="btn btn-line" href="#">山から探す<small>BY MOUNTAIN</small></a>
+  </div>
+  <div class="stats">
+    <div><div class="num">110</div><div class="lab">収録座数 — 日本百名山100座を含む</div></div>
+    <div><div class="num">7<span style="font-size:16px">DAYS</span></div><div class="lab">先読みできる予報グレード</div></div>
+    <div><div class="num">3<span style="font-size:16px">FACTORS</span></div><div class="lab">風・雨・凍結高度。理由は必ず表示</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec">
+    <h3>本日のグレード</h3><span class="en">Today's grades</span>
+    <span class="date">2026-08-03 MON</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="top">
+        <div>
+          <h4>霧ヶ峰</h4>
+          <div class="meta">KIRIGAMINE — <b>1,925m</b> / 美ヶ原・霧ヶ峰</div>
+        </div>
+        <div class="grade g-a">A</div>
+      </div>
+      <ul class="why">
+        <div class="t">Why this grade / 判定理由</div>
+        <li>終日晴れの予想</li>
+        <li>風 3m/s — 微風</li>
+        <li>降水確率 10%</li>
+      </ul>
+      <div class="data">WIND 03m/s · PRECIP 10% · FRZ 4,800m</div>
+    </div>
+
+    <div class="card">
+      <div class="top">
+        <div>
+          <h4>槍ヶ岳</h4>
+          <div class="meta">YARIGATAKE — <b>3,180m</b> / 北アルプス南部</div>
+        </div>
+        <div class="grade g-b">B</div>
+      </div>
+      <ul class="why">
+        <div class="t">Why this grade / 判定理由</div>
+        <li>午前は晴れ</li>
+        <li class="warn">稜線の風 14m/s — やや強風</li>
+        <li class="warn">午後 にわか雨 60%</li>
+      </ul>
+      <div class="data">WIND 14m/s · PRECIP 60% · FRZ 4,600m</div>
+    </div>
+
+    <div class="card">
+      <div class="top">
+        <div>
+          <h4>富士山</h4>
+          <div class="meta">FUJISAN — <b>3,776m</b> / 富士・伊豆・箱根</div>
+        </div>
+        <div class="grade g-c">C</div>
+      </div>
+      <ul class="why">
+        <div class="t">Why this grade / 判定理由</div>
+        <li class="warn">風 24m/s — 危険な強風</li>
+        <li class="warn">凍結高度 3,400m — 山頂は氷点下</li>
+        <li class="warn">視界不良の可能性</li>
+      </ul>
+      <div class="data">WIND 24m/s · PRECIP 40% · FRZ 3,400m</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="sec">
+    <h3>山ページの例</h3><span class="en">Mountain page sample</span>
+  </div>
+  <div class="mtn-head">
+    <h4>槍ヶ岳</h4>
+    <span class="m">YARIGATAKE · 3,180m · 長野県／岐阜県 · 北アルプス南部</span>
+  </div>
+  <div class="week">
+    <div class="day b"><div class="d">08.03 月</div><div class="g">B</div><span class="today">TODAY</span></div>
+    <div class="day a"><div class="d">08.04 火</div><div class="g">A</div></div>
+    <div class="day a"><div class="d">08.05 水</div><div class="g">A</div></div>
+    <div class="day c"><div class="d">08.06 木</div><div class="g">C</div></div>
+    <div class="day b"><div class="d">08.07 金</div><div class="g">B</div></div>
+    <div class="day a"><div class="d">08.08 土</div><div class="g">A</div></div>
+    <div class="day a"><div class="d">08.09 日</div><div class="g">A</div></div>
+  </div>
+  <div class="access">
+    <div class="row">
+      <span class="route">さわやか信州号 — バスタ新宿 22:25 <b>→</b> 上高地 05:20</span>
+      <span class="fare">¥10,400</span>
+      <span class="tag tag-sample">SAMPLE — 要検証</span>
+    </div>
+    <div class="row">
+      <span class="route">アルピコ交通 — 松本 07:00 <b>→</b> 新島々 <b>→</b> 上高地 08:35</span>
+      <span class="fare">¥2,710</span>
+      <span class="tag tag-ok">確認 2026-07-18</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  天気データ: <a href="https://open-meteo.com/">Open-Meteo.com</a> (CC BY 4.0) — 各山の予報標高で取得。地図タイル: 国土地理院（地理院タイル）。グレードは本サイト独自の基準であり、安全を保証するものではありません。<br>
+  「SAMPLE — 要検証」の付いた交通・山小屋情報は未検証データです。出発前に必ず公式サイトで最新情報を確認してください。
+  <div class="mocknote">REBRAND MOCK-UP ① — デザイン試作。表示中の予報・時刻・運賃はすべてダミーです。</div>
+</footer>
+
+</div>
+</body>
+</html>
