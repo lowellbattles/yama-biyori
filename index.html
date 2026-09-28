@@ -9,7 +9,11 @@
 <meta property="og:description" content="風・雨・凍結高度から理由つきで算出する独自の登山指数。公共交通アクセス・山小屋・ルート・季節情報つき。日本百名山100座を含む110山。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lowellbattles.github.io/yama-biyori/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://lowellbattles.github.io/yama-biyori/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="山日和 YAMABIYORI — 判子風の「山」スタンプと、登山指数・公共交通・山小屋 110座">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://lowellbattles.github.io/yama-biyori/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg transform='rotate(-6 32 32)'%3E%3Ccircle cx='32' cy='32' r='27' fill='%23F1F3EC' stroke='%23C2452F' stroke-width='5'/%3E%3Ctext x='32' y='43' font-size='30' text-anchor='middle' fill='%23C2452F' font-family='serif' font-weight='700'%3E%E5%B1%B1%3C/text%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,6 +121,14 @@ header{padding:28px 0 10px;border-bottom:2px solid var(--ink);position:relative}
 .tag.trip{background:#E3ECF2;color:var(--lake)}
 .tag.night{background:#E6E9F3;color:#3B4C7A}
 .daycell .nightline{color:#3B4C7A;font-size:10px}
+.tag.best{background:transparent;border:1px solid currentColor;font-weight:500}
+.metrics small{font-weight:400;color:var(--ink-soft);font-size:10px}
+.fav{border:none;background:none;cursor:pointer;font-size:20px;line-height:1;color:var(--ink-soft);padding:2px 4px;margin-left:auto;border-radius:3px}
+.fav.on{color:var(--grade-b)}
+.fav:hover{color:var(--grade-b)}
+.fav:focus-visible{outline:2px solid var(--lake);outline-offset:1px}
+.htable tr.hw td{background:rgba(46,75,56,.06)}
+.sunline{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin:0 0 8px}
 
 /* ---------- mountain list (by-mountain view) ---------- */
 .mlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
@@ -242,7 +254,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:14px;font-si
    (notes, timetables, huts, routes) is Japanese-only; the English
    UI says so on the pages that show it.
    ============================================================ */
-const LANG_KEY="yb-lang";
+const LANG_KEY="yb-lang", FAV_KEY="yb-fav";
 function initialLang(){
   try{ const s=localStorage.getItem(LANG_KEY); if(s==="ja"||s==="en") return s; }catch(e){}
   return (navigator.language||"ja").toLowerCase().indexOf("ja")===0?"ja":"en";
@@ -260,14 +272,17 @@ const STR={
     tipTokyo:"都心（新宿・東京駅）を朝出発し、公共交通だけで当日中に往復できる目安の山（独自判断）",
     tipHut:"標準的な計画で山小屋（またはテント）1泊以上が前提の山（独自判断）",
     tipCar:"どの登山口にも実用的な路線バス・鉄道がなく、レンタカーかタクシーが必要な山（独自判断）",
-    tipA:"A判定の山を表示", tipB:"B判定の山を表示（🌙 は雨が夜間中心で日中は回復見込みの日）",
+    tipA:"A判定の山を表示", tipB:"B判定の山を表示",
+    chipFav:"★ お気に入り", tipFav:"☆で登録した山だけを表示（このブラウザに保存）",
+    favOn:"お気に入りに追加", favOff:"お気に入りから外す",
+    favEmpty:"お気に入りはまだありません。山のカードの ☆ をタップすると登録できます。",
     badgeTokyo:"🚆 東京から日帰り", badgeHut:"🛖 山小屋泊", badgeCar:"🚗 車・タクシー",
     loading:(h,n)=>"Open-Meteo から予報を取得中…（"+h+"/"+n+"山）",
     loadFailAll:"予報の取得に失敗しました（インターネット接続を確認してください）。グレードは「—」表示ですが、交通・山小屋・ルート情報は閲覧できます。",
     loadFailSome:n=>"⚠ "+n+"山の予報を取得できませんでした（グレードは「—」表示）。",
     retry:"再試行", retryFailed:"失敗分を再試行",
     fcount:(n,N)=>n+" / "+N+"山", none:"条件に合う山が見つかりません。",
-    kWind:"最大風速", kPrecip:"降水", kTemp:"気温", kFrz:"凍結高度",
+    kWind:"最大風速（日中）", kPrecip:"降水（日中）", kTemp:"気温", kFrz:"凍結高度", total24:p=>"（終日 "+p+"）",
     hyaku:"百名山", hyakuLong:"日本百名山", elev:"標高",
     best:"ベスト", month:n=>n+"月",
     wStrong:(w,g)=>"強風 "+w+"m/s（突風"+g+"）", wBreezy:w=>"やや風 "+w+"m/s", wCalm:w=>"風 "+w+"m/s",
@@ -275,7 +290,11 @@ const STR={
     sHeavy:s=>"降雪 "+s+"cm", sLight:"降雪の可能性",
     frz:(f,r)=>"凍結高度 "+f+"m — 稜線("+r+"m)で凍結・残雪注意",
     cold:t=>"最低 "+t+"℃ 厳冬装備",
-    night:p=>"🌙 雨は夜間中心（日中5–17時 "+p+"mm）", nightShort:"🌙 夜雨・日中回復",
+    night:(n,dp)=>"🌙 夜間の雨 "+n+"mm — 日中(5–17時)は "+dp+"mm", nightShort:"🌙 夜雨・日中回復",
+    nightHeavy:n=>"夜間を含め大雨（終日 "+n+"mm）— 沢の増水・ぬかるみ注意",
+    thunderCode:h=>"⚡ 雷雨予報（"+h+"頃）", thunderCape:c=>"⚡ 大気不安定（CAPE "+c+"）— 午後の雷に注意",
+    sun:(r,s,dl)=>"🌅 日の出 "+r+" · 日の入 "+s+" · 昼の長さ "+dl, dur:(h,mi)=>h+"時間"+mi+"分",
+    bestWeek:(d,g)=>"今週の好機 "+d+" "+g,
     mapNote:d=>"マーカーの色は選択日（"+d+"）の登山指数。マーカーをクリックすると山の詳細へ。",
     mapFail:"地図ライブラリ（Leaflet）を読み込めませんでした。インターネット接続を確認して再読み込みしてください。",
     toDetail:"詳細ページへ →",
@@ -284,7 +303,7 @@ const STR={
     back:"← 一覧へ戻る", backTo:n=>"← "+n+" へ戻る",
     hWeek:"週間 登山指数（独自基準）", hSeason:"季節カレンダー", hTransit:"公共交通アクセス", hHuts:"山小屋・避難小屋", hRoutes:"おすすめルート",
     wxMissing:"この山の予報を取得できませんでした。",
-    weekNote:r=>"日付をクリックすると時間別の予報（降水・風・気温）を表示。凍結高度が稜線（"+r+"m）付近まで下がる日は自動的に注意フラグ。",
+    weekNote:r=>"日付をクリックすると時間別の予報を表示。判定は登山時間帯（5–17時・表の色付きの行）の風・雨・雷と、終日の降雪・凍結高度・最低気温で計算。夜間だけの雨は🌙で表示（大雨なら注意）。凍結高度が稜線（"+r+"m）付近まで下がる日は自動的に注意フラグ。",
     stripShort:(w,p)=>"風"+w+" 雨"+p,
     hourlyTitle:(d,g)=>d+"の時間別予報 — 判定 "+g,
     hTime:"時刻", hTemp:"気温", hPr:"降水", hWind:"風速（突風）", hFrz:"凍結高度",
@@ -314,14 +333,17 @@ const STR={
     tipTokyo:"Doable as a same-day round trip from central Tokyo using public transport only (our estimate)",
     tipHut:"Standard plans involve at least one night in a mountain hut or tent (our estimate)",
     tipCar:"No practical bus or train reaches any trailhead — you'll need a rental car or taxi (our estimate)",
-    tipA:"Show grade-A mountains", tipB:"Show grade-B mountains (🌙 = rain mostly overnight, clearing by day)",
+    tipA:"Show grade-A mountains", tipB:"Show grade-B mountains",
+    chipFav:"★ Favorites", tipFav:"Show only mountains you have starred (saved in this browser)",
+    favOn:"Add to favorites", favOff:"Remove from favorites",
+    favEmpty:"No favorites yet — tap ☆ on any mountain card to add it.",
     badgeTokyo:"🚆 Tokyo day trip", badgeHut:"🛖 Hut stay", badgeCar:"🚗 Car / taxi",
     loading:(h,n)=>"Loading forecasts from Open-Meteo… ("+h+"/"+n+")",
     loadFailAll:"Couldn't load the forecast (check your connection). Grades show “—”, but transit, hut and route info is still available.",
     loadFailSome:n=>"⚠ Couldn't load the forecast for "+n+" mountains (their grades show “—”).",
     retry:"Retry", retryFailed:"Retry failed ones",
     fcount:(n,N)=>n+" / "+N+" mountains", none:"No mountains match these filters.",
-    kWind:"Max wind", kPrecip:"Precip", kTemp:"Temp", kFrz:"Freezing lvl",
+    kWind:"Max wind (day)", kPrecip:"Rain (day)", kTemp:"Temp", kFrz:"Freezing lvl", total24:p=>" (24h "+p+")",
     hyaku:"Hyakumeizan", hyakuLong:"One of Japan's 100 Famous Mountains", elev:"Elevation",
     best:"Best", month:n=>["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][n-1],
     wStrong:(w,g)=>"Strong wind "+w+" m/s (gusts "+g+")", wBreezy:w=>"Breezy "+w+" m/s", wCalm:w=>"Wind "+w+" m/s",
@@ -329,7 +351,11 @@ const STR={
     sHeavy:s=>"Snowfall "+s+" cm", sLight:"Possible snow",
     frz:(f,r)=>"Freezing level "+f+" m — ice/snow risk on the ridge ("+r+" m)",
     cold:t=>"Low "+t+"℃ — full winter gear",
-    night:p=>"🌙 Rain mostly overnight (daytime 5–17h: "+p+" mm)", nightShort:"🌙 Night rain, clears",
+    night:(n,dp)=>"🌙 Night rain "+n+" mm — daytime (5–17h) only "+dp+" mm", nightShort:"🌙 Night rain, clears",
+    nightHeavy:n=>"Heavy rain incl. overnight (24h "+n+" mm) — swollen streams, muddy trail",
+    thunderCode:h=>"⚡ Thunderstorm forecast (around "+h+")", thunderCape:c=>"⚡ Unstable air (CAPE "+c+") — watch for afternoon thunder",
+    sun:(r,s,dl)=>"🌅 Sunrise "+r+" · Sunset "+s+" · Daylight "+dl, dur:(h,mi)=>h+"h "+mi+"m",
+    bestWeek:(d,g)=>"Best this week: "+d+" "+g,
     mapNote:d=>"Marker colours show the hiking grade for the selected date ("+d+"). Click a marker for the mountain page.",
     mapFail:"Couldn't load the map library (Leaflet). Check your connection and reload.",
     toDetail:"Open mountain page →",
@@ -338,7 +364,7 @@ const STR={
     back:"← Back to list", backTo:n=>"← Back to "+n,
     hWeek:"7-day hiking grade (our criteria)", hSeason:"Seasonal calendar", hTransit:"Public transit access", hHuts:"Mountain huts & shelters", hRoutes:"Recommended routes",
     wxMissing:"Couldn't load the forecast for this mountain.",
-    weekNote:r=>"Click a day for the hourly forecast (precipitation, wind, temperature). Days when the freezing level drops toward the ridgeline ("+r+" m) are flagged automatically.",
+    weekNote:r=>"Click a day for the hourly forecast. Grades use wind, rain and thunder during hiking hours (5–17h, the shaded rows) plus the whole day's snowfall, freezing level and low temperature. Rain that falls only at night is shown with 🌙 (flagged if heavy). Days when the freezing level drops toward the ridgeline ("+r+" m) are flagged automatically.",
     stripShort:(w,p)=>"Wind "+w+" Rain "+p,
     hourlyTitle:(d,g)=>"Hourly forecast for "+d+" — Grade "+g,
     hTime:"Time", hTemp:"Temp", hPr:"Precip", hWind:"Wind (gust)", hFrz:"Freezing lvl",
@@ -402,7 +428,15 @@ const regionLabel=m=>isEN()?areaName(m.area):m.region;
    ============================================================ */
 const state = { view:"date", dayIndex:0, selected:null, hourIdx:null, routeIdx:0, wx:{}, dates:[], loaded:false, error:false, fetching:false,
                 prevView:"date", q:"", fArea:null, fHyaku:false, fGrades:{A:false,B:false},
-                fTrip:{tokyo_day:false,hut:false,car:false}, lang:initialLang() };
+                fTrip:{tokyo_day:false,hut:false,car:false}, lang:initialLang(), favs:loadFavs(), fFav:false };
+
+/* Favorites — a per-browser list of starred mountain ids (no accounts). */
+function loadFavs(){ try{ const a=JSON.parse(localStorage.getItem(FAV_KEY)); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function toggleFav(id){
+  const i=state.favs.indexOf(id); if(i>=0) state.favs.splice(i,1); else state.favs.push(id);
+  try{ localStorage.setItem(FAV_KEY,JSON.stringify(state.favs)); }catch(e){ /* private mode — stars last until reload */ }
+  render();
+}
 
 /* One batched Open-Meteo URL for a LIST of mountains — comma-separated
    coordinates; the API answers with an array of results in the same order. */
@@ -411,8 +445,8 @@ function omBatchUrl(list){
     latitude:list.map(m=>m.coords.lat).join(","),
     longitude:list.map(m=>m.coords.lon).join(","),
     elevation:list.map(m=>m.forecast_elevation).join(","),
-    daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max",
-    hourly:"freezing_level_height,temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m,weather_code",
+    daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max,sunrise,sunset,daylight_duration",
+    hourly:"freezing_level_height,temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m,weather_code,cape",
     timezone:"Asia/Tokyo", wind_speed_unit:"ms", forecast_days:"7"
   });
   return "https://api.open-meteo.com/v1/forecast?" + p.toString();
@@ -448,18 +482,20 @@ function processOm(data){
       precip:data.daily.precipitation_sum[d], snow:data.daily.snowfall_sum[d],
       wind:data.daily.wind_speed_10m_max[d], gust:data.daily.wind_gusts_10m_max[d],
       frzMin: fl.length ? Math.round(Math.min(...fl)) : null,
+      sunrise:(data.daily.sunrise[d]||"").slice(11,16), sunset:(data.daily.sunset[d]||"").slice(11,16),
+      daylight:data.daily.daylight_duration[d],
       hours: H.time.slice(s,s+24).map((ht,j)=>({
         t:ht.slice(11,16),
         temp:H.temperature_2m[s+j], pr:H.precipitation[s+j],
         wind:H.wind_speed_10m[s+j], gust:H.wind_gusts_10m[s+j],
-        code:H.weather_code[s+j], fl:H.freezing_level_height[s+j]
+        code:H.weather_code[s+j], fl:H.freezing_level_height[s+j], cape:H.cape[s+j]
       }))
     };
   });
 }
 
 /* sessionStorage cache — a reload within 45 min (same calendar day) costs zero API calls. */
-const WX_CACHE_KEY="yb-wx-v2", WX_TTL_MIN=45;  // v2: hours gained the per-hour freezing level (fl)
+const WX_CACHE_KEY="yb-wx-v3", WX_TTL_MIN=45;  // v3: hours gained CAPE, days gained sunrise/sunset/daylight
 function readWxCache(){
   try{
     const c=JSON.parse(sessionStorage.getItem(WX_CACHE_KEY));
@@ -545,35 +581,53 @@ function loadAll(){
 }
 
 /* Defaults for the OPTIONAL per-mountain grading knobs. A mountain that sets
-   grading.snow_caution / snow_danger (cm/day), cold_warn (℃) or freeze_buffer (m)
+   grading.snow_caution / snow_danger (cm/day), cold_warn (℃), freeze_buffer (m) or cape_warn (J/kg)
    overrides these — tune in data/mountains.js per mountain, not here. */
-const GRADE_DEFAULTS={snow_caution:0.5, snow_danger:5, cold_warn:-10, freeze_buffer:300};
+const GRADE_DEFAULTS={snow_caution:0.5, snow_danger:5, cold_warn:-10, freeze_buffer:300, cape_warn:1000};
 
-/* Daytime hiking window used to spot rain that falls mostly at night (hours 05:00–16:59). */
+/* Hiking hours: wind, rain and thunder are graded on 05:00–16:59 only.
+   Snowfall, freezing level and the overnight low still use the whole day. */
 const DAY_FROM=5, DAY_TO=17;
-/* Daytime rain (mm) when the day's rain is enough to lower the grade but falls mostly
-   outside the hiking window; null otherwise. Never changes the grade — it's an extra reason. */
-function nightRain(m,d){
-  if(!d||!d.hours||d.precip==null||d.precip<m.grading.precip_caution) return null;
-  let dp=0;
-  d.hours.forEach((h,i)=>{ if(i>=DAY_FROM&&i<DAY_TO) dp+=h.pr||0; });
-  return dp<m.grading.precip_caution/2 ? dp : null;
+function hikeWindow(d){
+  if(!d.hours||d.hours.length<DAY_TO) return {pr:d.precip, night:0, wind:d.wind, gust:d.gust, capeMax:null, thunderAt:null, wet:d.precip>0};
+  let pr=0, night=0, wind=null, gust=null, capeMax=null, thunderAt=null, wet=false;
+  d.hours.forEach((h,i)=>{
+    if(i<DAY_FROM||i>=DAY_TO){ night+=h.pr||0; return; }
+    pr+=h.pr||0;
+    if((h.pr||0)>=0.1) wet=true;
+    if(h.wind!=null) wind=Math.max(wind||0,h.wind);
+    if(h.gust!=null) gust=Math.max(gust||0,h.gust);
+    if(h.cape!=null) capeMax=Math.max(capeMax||0,h.cape);
+    if(h.code>=95&&thunderAt==null) thunderAt=h.t;   // WMO 95–99 = thunderstorm
+  });
+  return {pr, night, wind, gust, capeMax, thunderAt, wet};
 }
 
-/* Grade one day for one mountain. Returns {g:'A'|'B'|'C', reasons:[], warns:[], night:mm|null} */
+/* Grade one day for one mountain.
+   Returns {g:'A'|'B'|'C', reasons:[], warns:[], night:mm|null, dayPr, dayWind} —
+   night = overnight rain worth mentioning because the hiking hours stay dry enough. */
 function gradeDay(m,d){
   const G=m.grading; let lv=0; const reasons=[], warns=[];
   const snowCa=G.snow_caution!=null?G.snow_caution:GRADE_DEFAULTS.snow_caution;
   const snowDa=G.snow_danger!=null?G.snow_danger:GRADE_DEFAULTS.snow_danger;
   const coldW=G.cold_warn!=null?G.cold_warn:GRADE_DEFAULTS.cold_warn;
   const frzBuf=G.freeze_buffer!=null?G.freeze_buffer:GRADE_DEFAULTS.freeze_buffer;
+  const capeW=G.cape_warn!=null?G.cape_warn:GRADE_DEFAULTS.cape_warn;
+  const w=hikeWindow(d);
   // wind — per-mountain thresholds, so a breezy-but-fine day is NOT auto-C
-  if(d.wind>=G.wind_danger){ lv=2; warns.push(t("wStrong",fmt(d.wind),fmt(d.gust))); }
-  else if(d.wind>=G.wind_caution){ lv=Math.max(lv,1); reasons.push(t("wBreezy",fmt(d.wind))); }
-  else reasons.push(t("wCalm",fmt(d.wind)));
-  // precipitation
-  if(d.precip>=G.precip_danger){ lv=2; warns.push(t("pHeavy",fmt(d.precip))); }
-  else if(d.precip>=G.precip_caution){ lv=Math.max(lv,1); reasons.push(t("pLight",fmt(d.precip,1))); }
+  if(w.wind>=G.wind_danger){ lv=2; warns.push(t("wStrong",fmt(w.wind),fmt(w.gust))); }
+  else if(w.wind>=G.wind_caution){ lv=Math.max(lv,1); reasons.push(t("wBreezy",fmt(w.wind))); }
+  else reasons.push(t("wCalm",fmt(w.wind)));
+  // rain during hiking hours
+  if(w.pr>=G.precip_danger){ lv=2; warns.push(t("pHeavy",fmt(w.pr))); }
+  else if(w.pr>=G.precip_caution){ lv=Math.max(lv,1); reasons.push(t("pLight",fmt(w.pr,1))); }
+  // rain outside hiking hours: a heavy 24h total → swollen streams / muddy trail (B); moderate → just noted
+  let night=null;
+  if(w.pr<G.precip_danger&&(w.night>=G.precip_danger||(d.precip!=null&&d.precip>=G.precip_danger))){ lv=Math.max(lv,1); warns.push(t("nightHeavy",fmt(d.precip!=null?d.precip:w.pr+w.night))); }
+  else if(w.night>=G.precip_caution&&w.pr<G.precip_caution) night=w.night;
+  // thunder — the model's own thunderstorm code, or unstable air (CAPE) with some rain around
+  if(w.thunderAt){ lv=Math.max(lv,1); warns.push(t("thunderCode",w.thunderAt)); }
+  else if(w.capeMax!=null&&w.capeMax>=capeW&&w.wet){ lv=Math.max(lv,1); warns.push(t("thunderCape",Math.round(w.capeMax))); }
   // fresh snowfall
   if(d.snow>=snowDa){ lv=2; warns.push(t("sHeavy",fmt(d.snow))); }
   else if(d.snow>=snowCa){ lv=Math.max(lv,1); warns.push(t("sLight")); }
@@ -584,7 +638,7 @@ function gradeDay(m,d){
     warns.push(t("frz",d.frzMin,G.ridgeline));
   }
   if(d.tmin<=coldW){ lv=Math.max(lv,1); warns.push(t("cold",fmt(d.tmin))); }
-  return { g:["A","B","C"][lv], reasons, warns, night:nightRain(m,d) };
+  return { g:["A","B","C"][lv], reasons, warns, night, dayPr:w.pr, dayWind:w.wind };
 }
 
 /* ============================================================
@@ -613,6 +667,7 @@ function filteredMountains(){
   if(state.fArea) list=list.filter(m=>m.area===state.fArea);
   if(state.fHyaku) list=list.filter(m=>m.hyakumeizan);
   TRIP_KEYS.forEach(([k])=>{ if(state.fTrip[k]) list=list.filter(m=>m.trip&&m.trip[k]); });
+  if(state.fFav) list=list.filter(m=>state.favs.indexOf(m.id)>=0);
   return list;
 }
 const prefNameEN=p=>p.split("・").map(x=>x.replace(/[^（）]+/g,w=>PREF_EN[w]||w)).join(" ").toLowerCase();
@@ -634,6 +689,7 @@ function buildFilterChips(){
   sep("sep-grade");
   TRIP_KEYS.forEach(([k])=>{ mk("chip-"+k,"trip").onclick=()=>{state.fTrip[k]=!state.fTrip[k]; render();}; });
   sep();
+  mk("chip-fav").onclick=()=>{state.fFav=!state.fFav; render();};
   mk("chip-hy").onclick=()=>{state.fHyaku=!state.fHyaku; render();};
   AREA_ORDER.forEach(a=>{
     const b=mk("area-"+AREA_ORDER.indexOf(a)); b.dataset.area=a;
@@ -650,6 +706,7 @@ function labelFilterChips(){
   const set=(id,txt,tip)=>{const b=document.getElementById(id); b.textContent=txt; if(tip) b.title=tip;};
   set("chip-ga",t("chipA"),t("tipA")); set("chip-gb",t("chipB"),t("tipB"));
   TRIP_KEYS.forEach(([k,s])=>set("chip-"+k,t("chip"+s),t("tip"+s)));
+  set("chip-fav",t("chipFav"),t("tipFav"));
   set("chip-hy",t("chipHy"));
   document.querySelectorAll("#fchips .f-chip[data-area]").forEach(b=>{ b.textContent=areaName(b.dataset.area); });
   const q=document.getElementById("q"); q.placeholder=t("search"); q.setAttribute("aria-label",t("searchLabel"));
@@ -666,6 +723,7 @@ function syncFilters(){
   document.getElementById("chip-gb").classList.toggle("active",state.fGrades.B);
   TRIP_KEYS.forEach(([k])=>document.getElementById("chip-"+k).classList.toggle("active",state.fTrip[k]));
   document.getElementById("chip-hy").classList.toggle("active",state.fHyaku);
+  document.getElementById("chip-fav").classList.toggle("active",state.fFav);
   document.querySelectorAll("#fchips .f-chip[data-area]").forEach(b=>b.classList.toggle("active",state.fArea===b.dataset.area));
   // explain what an active trip chip means (its criteria are our own judgment)
   const notes=TRIP_KEYS.filter(([k])=>state.fTrip[k]).map(([,s])=>t("tip"+s));
@@ -678,8 +736,32 @@ function tripBadges(m){
   return TRIP_KEYS.filter(([k])=>m.trip[k]).map(([,s])=>'<span class="tag trip" title="'+t("tip"+s)+'">'+t("badge"+s)+'</span>').join("");
 }
 function nightTag(gr,short){
-  return gr&&gr.night!=null?'<span class="tag night">'+(short?t("nightShort"):t("night",fmt(gr.night,1)))+'</span>':"";
+  return gr&&gr.night!=null?'<span class="tag night">'+(short?t("nightShort"):t("night",fmt(gr.night,1),fmt(gr.dayPr,1)))+'</span>':"";
 }
+/* ☆/★ toggle — a real button, so it must not trigger the card it sits on. */
+function favBtn(m){
+  const on=state.favs.indexOf(m.id)>=0, lbl=t(on?"favOff":"favOn");
+  return '<button type="button" class="fav'+(on?' on':'')+'" data-fav="'+m.id+'" aria-pressed="'+on+'" title="'+lbl+'" aria-label="'+lbl+'">'+(on?"★":"☆")+'</button>';
+}
+function wireCards(){
+  main.querySelectorAll(".fav").forEach(b=>{ b.onclick=e=>{ e.stopPropagation(); toggleFav(b.dataset.fav); }; });
+  main.querySelectorAll(".mcard").forEach(c=>{
+    const open=()=>openDetail(c.dataset.id);
+    c.onclick=open; c.onkeydown=e=>{ if(e.target!==c) return; if(e.key==="Enter"||e.key===" "){e.preventDefault();open();} };
+  });
+}
+/* The week's best day for one mountain: lowest grade, earliest date on ties. */
+function bestDay(m){
+  const wd=state.wx[m.id]; if(!wd) return null;
+  let best=null;
+  wd.forEach(d=>{ const g=gradeDay(m,d).g, r="ABC".indexOf(g); if(!best||r<best.r) best={r,g,date:d.date}; });
+  return best;
+}
+function bestTag(m){
+  const b=bestDay(m); if(!b) return "";
+  return '<span class="tag best" style="color:'+gradeColor(b.g)+'">'+t("bestWeek",dayLabel(b.date),b.g)+'</span>';
+}
+const emptyMsg=()=>'<p class="status">'+(state.fFav&&!state.favs.length?t("favEmpty"):t("none"))+'</p>';
 
 /* ---------- map view (Leaflet + 地理院タイル) ---------- */
 let lmap=null, lmarkers=null, mapPos=null;   // mapPos keeps zoom/center across re-renders
@@ -714,7 +796,7 @@ function renderMap(){
       +(isEN()?'<div class="sub">'+m.name_en+'</div>':'')
       +'<div class="sub">'+regionLabel(m)+' · '+m.elevation+'m'+(m.hyakumeizan?' · '+t("hyaku"):'')+'</div>'
       +(gr.warns.length?'<div class="sub" style="color:#C2452F">⚠ '+gr.warns[0]+'</div>':'')
-      +(gr.night!=null?'<div class="sub" style="color:#3B4C7A">'+t("night",fmt(gr.night,1))+'</div>':'')
+      +(gr.night!=null?'<div class="sub" style="color:#3B4C7A">'+t("night",fmt(gr.night,1),fmt(gr.dayPr,1))+'</div>':'')
       +'<a href="#/m/'+m.id+'">'+t("toDetail")+'</a></div>');
     mk.addTo(lmarkers);
   });
@@ -796,12 +878,11 @@ function renderByDate(){
     const wd=state.wx[m.id];
     const d=wd?wd[state.dayIndex]:null;
     const gr=d?gradeDay(m,d):{g:null,reasons:[],warns:[],night:null};
-    // within a grade, days whose rain falls mostly overnight rank ahead of all-day rain
-    return {m,d,gr,score:d?["A","B","C"].indexOf(gr.g)*100+(d.wind||0)-(gr.night!=null?50:0):9999};
+    return {m,d,gr,score:d?["A","B","C"].indexOf(gr.g)*100+(gr.dayWind||0):9999};
   }).sort((a,b)=>a.score-b.score));
 
   let html=ranked.length<MOUNTAINS.length?'<p class="fcount">'+t("fcount",ranked.length,MOUNTAINS.length)+'</p>':'';
-  if(!ranked.length){ main.innerHTML=html+'<p class="status">'+t("none")+'</p>'; return; }
+  if(!ranked.length){ main.innerHTML=html+emptyMsg(); return; }
   html+='<div class="cards">';
   ranked.forEach(({m,d,gr})=>{
     const season=isEN()?null:seasonNoteFor(m,dateStr);
@@ -809,10 +890,10 @@ function renderByDate(){
       +stampHTML(gr.g)
       +'<div><div class="mhead">'+nameHTML(m)
       +'<span class="region-chip">'+regionLabel(m)+'</span>'
-      +'<span class="meta">'+m.elevation+'m'+(m.hyakumeizan?' · '+t("hyaku"):'')+'</span></div>'
+      +'<span class="meta">'+m.elevation+'m'+(m.hyakumeizan?' · '+t("hyaku"):'')+'</span>'+favBtn(m)+'</div>'
       +'<div class="metrics">'
-      +'<span><span class="k">'+t("kWind")+'</span><b>'+(d?fmt(d.wind)+' m/s':'—')+'</b></span>'
-      +'<span><span class="k">'+t("kPrecip")+'</span><b>'+(d?fmt(d.precip,1)+' mm':'—')+'</b></span>'
+      +'<span><span class="k">'+t("kWind")+'</span><b>'+(d?fmt(gr.dayWind)+' m/s':'—')+'</b></span>'
+      +'<span><span class="k">'+t("kPrecip")+'</span><b>'+(d?fmt(gr.dayPr,1)+' mm'+(d.precip!=null&&Math.abs(d.precip-gr.dayPr)>=0.1?'<small>'+t("total24",fmt(d.precip,1))+'</small>':''):'—')+'</b></span>'
       +'<span><span class="k">'+t("kTemp")+'</span><b>'+(d?fmt(d.tmin)+' / '+fmt(d.tmax)+'℃':'—')+'</b></span>'
       +'<span><span class="k">'+t("kFrz")+'</span><b>'+(d&&d.frzMin!=null?d.frzMin+' m':'—')+'</b></span>'
       +'</div><div class="reasons">'
@@ -824,17 +905,14 @@ function renderByDate(){
   });
   html+='</div>';
   main.innerHTML=html;
-  main.querySelectorAll(".mcard").forEach(c=>{
-    const open=()=>openDetail(c.dataset.id);
-    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}};
-  });
+  wireCards();
 }
 
 function renderMtnList(){
   // group cards by the coarse area (fixed 13, north→south); region stays as the card's sub-label
   const list=filteredMountains();
   let html=list.length<MOUNTAINS.length?'<p class="fcount">'+t("fcount",list.length,MOUNTAINS.length)+'</p>':'';
-  if(!list.length){ main.innerHTML=html+'<p class="status">'+t("none")+'</p>'; return; }
+  if(!list.length){ main.innerHTML=html+emptyMsg(); return; }
   AREA_ORDER.forEach(area=>{
     const group=list.filter(m=>m.area===area);
     if(!group.length) return;
@@ -842,18 +920,15 @@ function renderMtnList(){
     group.forEach(m=>{
       const wd=state.wx[m.id]; const gr=wd?gradeDay(m,wd[state.dayIndex]):{g:null,reasons:[],warns:[],night:null};
       html+='<article class="mcard" tabindex="0" data-id="'+m.id+'">'
-        +'<div class="mhead">'+nameHTML(m)+stampHTML(gr.g)+'</div>'
+        +'<div class="mhead">'+nameHTML(m)+favBtn(m)+stampHTML(gr.g)+'</div>'
         +'<div class="meta mono">'+(isEN()?'':m.region+' · ')+m.elevation+'m · '+prefName(m.prefecture)+'</div>'
-        +'<div class="reasons"><span class="tag">'+t("best")+': '+m.seasonality.best.map(x=>t("month",x)).join(isEN()?", ":"・")+'</span>'+tripBadges(m)+'</div>'
+        +'<div class="reasons">'+bestTag(m)+'<span class="tag">'+t("best")+': '+m.seasonality.best.map(x=>t("month",x)).join(isEN()?", ":"・")+'</span>'+tripBadges(m)+'</div>'
         +'</article>';
     });
     html+='</div>';
   });
   main.innerHTML=html;
-  main.querySelectorAll(".mcard").forEach(c=>{
-    const open=()=>openDetail(c.dataset.id);
-    c.onclick=open; c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}};
-  });
+  wireCards();
 }
 
 /* weather-code → small icon for the hourly table */
@@ -872,16 +947,18 @@ function hourlyHTML(m,idx){
   const d=state.wx[m.id][idx]; const gr=gradeDay(m,d);
   const maxPr=Math.max(0.5,...d.hours.map(h=>h.pr||0));
   let rows="";
-  d.hours.forEach(h=>{
+  d.hours.forEach((h,i)=>{
     const barW=Math.round((h.pr||0)/maxPr*60);
-    rows+='<tr><td class="hl">'+h.t+'</td>'
+    rows+='<tr'+(i>=DAY_FROM&&i<DAY_TO?' class="hw"':'')+'><td class="hl">'+h.t+'</td>'
       +'<td>'+wxIcon(h.code)+'</td>'
       +'<td>'+(h.temp!=null?h.temp.toFixed(0)+'℃':'—')+'</td>'
       +'<td>'+(h.pr!=null?h.pr.toFixed(1):'0.0')+'mm'+(barW>0?'<span class="hbar" style="width:'+barW+'px"></span>':'')+'</td>'
       +'<td>'+(h.wind!=null?h.wind.toFixed(0):'—')+'（'+(h.gust!=null?h.gust.toFixed(0):'—')+'）m/s</td>'
       +'<td>'+(h.fl!=null?Math.round(h.fl)+'m':'—')+'</td></tr>';
   });
+  const dl=d.daylight!=null?t("dur",Math.floor(d.daylight/3600),Math.round(d.daylight%3600/60)):"—";
   return '<div class="hourly"><h4>'+t("hourlyTitle",dayLabel(d.date),gr.g)+'</h4>'
+    +(d.sunrise?'<p class="sunline">'+t("sun",d.sunrise,d.sunset,dl)+'</p>':'')
     +'<div class="reasons">'
       +nightTag(gr)
       +gr.warns.map(w=>'<span class="tag warn">⚠ '+w+'</span>').join("")
@@ -981,7 +1058,7 @@ function renderDetail(){
   const days=state.wx[m.id];
   const nowMonth=new Date().getMonth()+1;
   let html='<div class="detail"><button class="back" id="backBtn">'+t("back")+'</button>'
-    +'<div class="dhead"><div class="ja">'+m.name_ja+(isEN()?' <span class="en-name" style="font-size:16px">'+m.name_en+'</span>':'')+'</div>'
+    +'<div class="dhead"><div class="ja" style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">'+m.name_ja+(isEN()?' <span class="en-name" style="font-size:16px">'+m.name_en+'</span>':'')+favBtn(m)+'</div>'
     +'<div class="sub">'+(isEN()?'':m.name_en+' · ')+regionLabel(m)+' · '+prefName(m.prefecture)+' · '+t("elev")+' '+m.elevation+'m'+(m.hyakumeizan?' · '+t("hyakuLong"):'')+'</div>'
     +(tripBadges(m)?'<div class="reasons">'+tripBadges(m)+'</div>':'')
     +langNoteHTML()+'</div>';
@@ -995,7 +1072,7 @@ function renderDetail(){
       html+='<div class="daycell'+(state.hourIdx===i?' sel':'')+'" data-idx="'+i+'" tabindex="0">'
         +'<span class="d">'+fmtDate(d.date)+'('+youbi(d.date)+')</span><br>'
         +'<span class="gd '+gr.g.toLowerCase()+'">'+gr.g+'</span><br>'
-        +t("stripShort",fmt(d.wind),fmt(d.precip))+'<br>'
+        +t("stripShort",fmt(gr.dayWind),fmt(gr.dayPr))+'<br>'
         +fmt(d.tmin)+'/'+fmt(d.tmax)+'℃'
         +(gr.night!=null?'<br><span class="nightline">'+t("nightShort")+'</span>':"")
         +(gr.warns.length?'<br><span class="warnline">'+gr.warns[0]+'</span>':"")
@@ -1054,6 +1131,7 @@ function renderDetail(){
   html+='</section></div>';
 
   main.innerHTML=html;
+  wireCards();
   document.getElementById("backBtn").onclick=()=>{ location.hash=(state.prevView==="mtn")?"#/mtn":(state.prevView==="map")?"#/map":"#/d/"+state.dayIndex; };
   main.querySelectorAll(".route-card").forEach(c=>{
     const open=()=>openRoute(+c.dataset.ridx);

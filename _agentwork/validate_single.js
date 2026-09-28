@@ -63,6 +63,7 @@ if (m.grading) {
   if (gk.snow_danger != null && typeof gk.snow_danger !== "number") errs.push(tag + ": bad snow_danger");
   if (gk.cold_warn != null && typeof gk.cold_warn !== "number") errs.push(tag + ": bad cold_warn");
   if (gk.freeze_buffer != null && typeof gk.freeze_buffer !== "number") errs.push(tag + ": bad freeze_buffer");
+  if (gk.cape_warn != null && typeof gk.cape_warn !== "number") errs.push(tag + ": bad cape_warn");
   if (gk.snow_caution != null && gk.snow_danger != null && gk.snow_caution >= gk.snow_danger) errs.push(tag + ": snow_caution must be < snow_danger");
 }
 if (m.grading && !m.grading.snow_note) errs.push(tag + ": missing grading.snow_note");

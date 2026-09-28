@@ -3,7 +3,7 @@ name: Deploy site to GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ["index.html", "data/**", ".github/workflows/**"]
+    paths: ["index.html", "data/**", "og-image.png", ".github/workflows/**"]
   workflow_dispatch: {}          # manual run button
 
 concurrency:
@@ -23,6 +23,7 @@ jobs:
         run: |
           mkdir _site
           cp index.html _site/
+          cp og-image.png _site/
           cp -r data _site/
 
       - uses: actions/upload-pages-artifact@v3
